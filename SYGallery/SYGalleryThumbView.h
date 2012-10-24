@@ -7,7 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYGalleryDelegates.h"
+#import "GMGridView.h"
 
-@interface SYGalleryThumbView : UIView
+#define CELL_SIZE 75.f
+#define CELL_SPACING 4.f
+
+@interface SYGalleryThumbView : UIView <SYGalleryView,
+GMGridViewActionDelegate,
+GMGridViewDataSource,
+GMGridViewSortingDelegate>
+{
+    GMGridView *_gridView;
+}
+
+@property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
+@property (weak, nonatomic) id<SYGalleryActions> actionDelegate;
+
+-(void)reloadGallery;
 
 @end

@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYGalleryDelegates.h"
+@class SYGalleryThumbView;
+@class SYGalleryFullView;
 
-@interface SYViewController : UIViewController
+@interface SYViewController : UIViewController <SYGalleryDataSource, SYGalleryActions> {
+@private
+    NSMutableArray *_localPathsThumbs;
+    NSMutableArray *_localPathsFulls;
+    NSMutableArray *_distantPathsThumbs;
+    NSMutableArray *_distantPathsFulls;
+}
+
+@property (weak, nonatomic) IBOutlet SYGalleryThumbView *thumbsView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 
 @end
