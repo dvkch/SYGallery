@@ -31,6 +31,7 @@
         self->_mainView = [[UIView alloc] init];
     [self->_mainView setFrame:subViewFrame];
     [self->_mainView setBackgroundColor:[UIColor whiteColor]];
+    [self->_mainView setClipsToBounds:YES];
     [self->_mainView.layer setBorderColor:[UIColor blackColor].CGColor];
     [self->_mainView.layer setBorderWidth:1.0f];
     [self->_mainView setAutoresizingMask:
@@ -40,12 +41,14 @@
         self->_label = [[UILabel alloc] init];
     [self->_label setFrame:subViewFrame];
     [self->_label setBackgroundColor:[UIColor clearColor]];
+    [self->_label setClipsToBounds:YES];
     [self->_label setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
     if(!self->_thumbImageView)
         self->_thumbImageView = [[UIImageView alloc] init];
     [self->_thumbImageView setFrame:subViewFrame];
+    [self->_thumbImageView setClipsToBounds:YES];
     [self->_thumbImageView setBackgroundColor:[UIColor clearColor]];
     [self->_thumbImageView setContentMode:UIViewContentModeCenter];
     [self->_thumbImageView setAutoresizingMask:

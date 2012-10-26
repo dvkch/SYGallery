@@ -6,6 +6,12 @@
 //  Copyright (c) 2012 Syan. All rights reserved.
 //
 
+
+// SPECIAL THX FOR Konstantin Leonov
+// http://www.flickr.com/people/73003003@N07/
+// FOR LOCAL PICTURES IN THIS EXAMPLE
+
+
 #import "SYViewController.h"
 #import "SYGalleryThumbView.h"
 #import "SYGalleryFullView.h"
@@ -31,9 +37,22 @@
     [super viewDidLoad];
     
     self->_localPathsThumbs = [NSMutableArray arrayWithObjects:
-                               @"a", @"a", @"a", @"a", nil];
+                               @"1_s",
+                               @"2_s",
+                               @"3_s",
+                               @"4_s",
+                               @"5_s",
+                               @"6_s",
+                               nil];
+    
     self->_localPathsFulls = [NSMutableArray arrayWithObjects:
-                              @"a", @"a", @"a", @"a", nil];
+                              @"1",
+                              @"2",
+                              @"3",
+                              @"4",
+                              @"5",
+                              @"6",
+                              nil];
     
     self->_distantPathsThumbs = [NSMutableArray arrayWithObjects:
                                  @"http://farm8.staticflickr.com/7035/6772235451_6ebca876b9_s.jpg",
@@ -185,10 +204,14 @@
 
 - (NSString*)gallery:(id<SYGalleryView>)gallery absolutePathAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
 {
+    NSString *resourceName = nil;
     if(size == SYGalleryPhotoSizeThumb)
-        return [self->_localPathsThumbs objectAtIndex:index];
+        resourceName = [self->_localPathsThumbs objectAtIndex:index];
     else
-        return [self->_localPathsFulls objectAtIndex:index];
+        resourceName = [self->_localPathsFulls objectAtIndex:index];
+    
+    NSString *resourcePath = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"jpg"];
+    return resourcePath;
 }
 
 - (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
