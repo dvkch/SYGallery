@@ -19,10 +19,12 @@ GMGridViewDataSource,
 GMGridViewSortingDelegate>
 {
     GMGridView *_gridView;
+    NSMutableArray *_cachedCells;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
 @property (weak, nonatomic) id<SYGalleryActions> actionDelegate;
+@property (nonatomic) BOOL cacheImages;
 
 -(void)reloadGallery;
 

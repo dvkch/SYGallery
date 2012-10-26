@@ -12,10 +12,15 @@
 
 @interface SYGalleryThumbView (Private)
 -(void)loadView;
+-(void)setupCachedCellsArray;
 @end
 
 
 @implementation SYGalleryThumbView
+
+@synthesize dataSource = _dataSource;
+@synthesize actionDelegate = _actionDelegate;
+@synthesize cacheImages = _cacheImages;
 
 #pragma mark - Initialization
 
@@ -44,15 +49,32 @@
     self->_gridView.itemSpacing = CELL_SPACING;
     self->_gridView.minEdgeInsets = UIEdgeInsetsMake(CELL_SPACING, CELL_SPACING, CELL_SPACING, CELL_SPACING);
     self->_gridView.centerGrid = NO;
-
+    self->_gridView.showsVerticalScrollIndicator = YES;
+    self->_gridView.showsHorizontalScrollIndicator = NO;
+    
     self->_gridView.actionDelegate = self;
     self->_gridView.sortingDelegate = self;
     self->_gridView.dataSource = self;
 }
 
+-(void)setupCachedCellsArray {
+    int capacity = [self numberOfItemsInGMGridView:self->_gridView];
+    capacity = capacity < 0 ? 0 : capacity;
+    
+    if(self->_cacheImages) {
+        self->_cachedCells = [NSMutableArray arrayWithCapacity:(uint)capacity];
+        for (uint i = 0; i < (uint)capacity; ++i)
+            [self->_cachedCells addObject:[[SYGalleryThumbCell alloc] init]];
+    }
+    
+    else
+        self->_cachedCells = nil;
+}
+
 #pragma mark - View methods
 
 -(void)reloadGallery {
+    [self setupCachedCellsArray];
     [self->_gridView reloadData];
 }
 
@@ -64,6 +86,11 @@
 -(void)setActionDelegate:(id<SYGalleryActions>)actionDelegate {
     self->_actionDelegate = actionDelegate;
     [self reloadGallery];
+}
+
+-(void)setCacheImages:(BOOL)cacheImages {
+    self->_cacheImages = cacheImages;
+    [self setupCachedCellsArray];
 }
 
 -(void)setFrame:(CGRect)frame {
@@ -83,6 +110,7 @@
     if(self.dataSource)
         numberOfItems = (int)[self.dataSource numberOfItemsInGallery:self];
     numberOfItems = numberOfItems >= 0 ? numberOfItems : 0;
+    
     return numberOfItems;
 }
 
@@ -91,34 +119,47 @@
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
+    
+    if(index < 0)
+        return  [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
+
     SYGallerySourceType sourceType = [self.dataSource gallery:self
                                             sourceTypeAtIndex:(uint)index];
 
     SYGalleryThumbCell *cell = nil;
     NSString *cellIdentifier = @"photoCell";
-    
-    cell = (SYGalleryThumbCell *)[self->_gridView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if(!cell)
-        cell = [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
 
-    [cell updateCellForEmptyImage:(sourceType == SYGallerySourceTypeDistant ?
-                                   [NSString stringWithFormat:@"%d", index] :
-                                   @"X")];
+    // loading cached cell if said so
+    if(self->_cacheImages)
+        cell = [self->_cachedCells objectAtIndex:(uint)index];
+    else
+        cell = (SYGalleryThumbCell *)[self->_gridView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    if(index < 0)
-        return cell;
+    // cell couldn't be loaded from cached nor queued reusable cells
+    if(!cell) {
+        NSLog(@"no existing cell %d", self->_cacheImages);
+        cell = [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
+    }
     
-    switch (sourceType) {
-        case SYGallerySourceTypeDistant:
-            [cell updateCellForUrl:[self.dataSource gallery:self
-                                                 urlAtIndex:(uint)index
-                                                    andSize:SYGalleryPhotoSizeThumb]];
-            break;
-        case SYGallerySourceTypeLocal:
-            [cell updateCellForAbsolutePath:[self.dataSource gallery:self
-                                                 absolutePathAtIndex:(uint)index
-                                                             andSize:SYGalleryPhotoSizeThumb]];
-            break;
+    // caching cell if necessary
+    if(self->_cacheImages)
+        [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
+    
+    if(!self->_cacheImages || !cell.hasBeenLoaded) {
+        [cell resetCell];
+        
+        switch (sourceType) {
+            case SYGallerySourceTypeDistant:
+                [cell updateCellForUrl:[self.dataSource gallery:self
+                                                     urlAtIndex:(uint)index
+                                                        andSize:SYGalleryPhotoSizeThumb]];
+                break;
+            case SYGallerySourceTypeLocal:
+                [cell updateCellForAbsolutePath:[self.dataSource gallery:self
+                                                     absolutePathAtIndex:(uint)index
+                                                                 andSize:SYGalleryPhotoSizeThumb]];
+                break;
+        }
     }
 
     return cell;

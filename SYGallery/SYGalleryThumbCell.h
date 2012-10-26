@@ -14,8 +14,22 @@ UIViewAutoresizingFlexibleLeftMargin      | \
 UIViewAutoresizingFlexibleRightMargin     | \
 UIViewAutoresizingFlexibleTopMargin
 
-@interface SYGalleryThumbCell : GMGridViewCell
+@interface SYGalleryThumbCell : GMGridViewCell <NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
+@private
+    UIView *_mainView;
+    UIImageView *_thumbImageView;
+    UILabel *_label;
+    UIActivityIndicatorView *_activityIndicatorView;
+    NSURLConnection *_thumbLoadConnection;
+    NSMutableData *_thumbLoadData;
+}
+
+-(void)resetCell;
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath;
 -(void)updateCellForUrl:(NSString*)url;
--(void)updateCellForEmptyImage:(NSString*)customText;
+-(void)updateCellForMissingImage;
+-(void)updateCellForText:(NSString *)text andFont:(UIFont*)font;
+
+@property (atomic) BOOL hasBeenLoaded;
+
 @end
