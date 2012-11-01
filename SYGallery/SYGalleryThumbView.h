@@ -25,6 +25,9 @@ GMGridViewSortingDelegate>
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
 @property (weak, nonatomic) id<SYGalleryActions> actionDelegate;
 @property (nonatomic) BOOL cacheImages;
+@property (nonatomic) BOOL edit;
+
+@property (readonly) NSUInteger lastClickedItemIndex;
 
 -(void)reloadGallery;
 

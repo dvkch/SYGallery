@@ -19,8 +19,12 @@
 		F81891D8163AD28E00C8E806 /* 5_s.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891CC163AD28E00C8E806 /* 5_s.jpg */; };
 		F81891D9163AD28E00C8E806 /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891CD163AD28E00C8E806 /* 6.jpg */; };
 		F81891DA163AD28E00C8E806 /* 6_s.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891CE163AD28E00C8E806 /* 6_s.jpg */; };
+		F81891E6163ADA8000C8E806 /* SYGalleryFullPage.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891E5163ADA8000C8E806 /* SYGalleryFullPage.m */; };
+		F81891E9163AF23700C8E806 /* SYViewControllerFull.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891E8163AF23700C8E806 /* SYViewControllerFull.m */; };
+		F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891EB163AF33E00C8E806 /* SYDataSource.m */; };
 		F847C53016387AC300245B53 /* no_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52C16387AC300245B53 /* no_picture.png */; };
 		F847C53116387AC300245B53 /* no_picture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52D16387AC300245B53 /* no_picture@2x.png */; };
+		F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */; };
 		F8B96E111638116600EC9487 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E101638116600EC9487 /* UIKit.framework */; };
 		F8B96E131638116600EC9487 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E121638116600EC9487 /* Foundation.framework */; };
 		F8B96E151638116600EC9487 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E141638116600EC9487 /* CoreGraphics.framework */; };
@@ -31,7 +35,7 @@
 		F8B96E251638116600EC9487 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B96E241638116600EC9487 /* Default@2x.png */; };
 		F8B96E271638116600EC9487 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B96E261638116600EC9487 /* Default-568h@2x.png */; };
 		F8B96E2A1638116600EC9487 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B96E281638116600EC9487 /* MainStoryboard.storyboard */; };
-		F8B96E301638116600EC9487 /* SYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B96E2F1638116600EC9487 /* SYViewController.m */; };
+		F8B96E301638116600EC9487 /* SYViewControllerThumbs.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B96E2F1638116600EC9487 /* SYViewControllerThumbs.m */; };
 		F8B96E3D163813B100EC9487 /* SYGalleryThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B96E3C163813B100EC9487 /* SYGalleryThumbView.m */; };
 		F8F2ADEE16383C9000B96784 /* SYGalleryFullView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F2ADED16383C9000B96784 /* SYGalleryFullView.m */; };
 		F8F2ADF116383EFF00B96784 /* SYGalleryThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F2ADF016383EFF00B96784 /* SYGalleryThumbCell.m */; };
@@ -56,10 +60,18 @@
 		F81891CC163AD28E00C8E806 /* 5_s.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5_s.jpg; sourceTree = "<group>"; };
 		F81891CD163AD28E00C8E806 /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
 		F81891CE163AD28E00C8E806 /* 6_s.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6_s.jpg; sourceTree = "<group>"; };
+		F81891E4163ADA8000C8E806 /* SYGalleryFullPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryFullPage.h; sourceTree = "<group>"; };
+		F81891E5163ADA8000C8E806 /* SYGalleryFullPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryFullPage.m; sourceTree = "<group>"; };
+		F81891E7163AF23700C8E806 /* SYViewControllerFull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYViewControllerFull.h; sourceTree = "<group>"; };
+		F81891E8163AF23700C8E806 /* SYViewControllerFull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYViewControllerFull.m; sourceTree = "<group>"; };
+		F81891EA163AF33E00C8E806 /* SYDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYDataSource.h; sourceTree = "<group>"; };
+		F81891EB163AF33E00C8E806 /* SYDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYDataSource.m; sourceTree = "<group>"; };
 		F847C52C16387AC300245B53 /* no_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_picture.png; sourceTree = "<group>"; };
 		F847C52D16387AC300245B53 /* no_picture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_picture@2x.png"; sourceTree = "<group>"; };
 		F847C52E16387AC300245B53 /* no_picture_org.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = no_picture_org.pdf; sourceTree = "<group>"; };
 		F847C52F16387AC300245B53 /* no_picture_org.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_picture_org.png; sourceTree = "<group>"; };
+		F8A9CE5D16419C3B0097372D /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
+		F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		F8B96E0C1638116600EC9487 /* SYGalleryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SYGalleryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B96E101638116600EC9487 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F8B96E121638116600EC9487 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -74,8 +86,8 @@
 		F8B96E241638116600EC9487 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		F8B96E261638116600EC9487 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F8B96E291638116600EC9487 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		F8B96E2E1638116600EC9487 /* SYViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYViewController.h; sourceTree = "<group>"; };
-		F8B96E2F1638116600EC9487 /* SYViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYViewController.m; sourceTree = "<group>"; };
+		F8B96E2E1638116600EC9487 /* SYViewControllerThumbs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYViewControllerThumbs.h; sourceTree = "<group>"; };
+		F8B96E2F1638116600EC9487 /* SYViewControllerThumbs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYViewControllerThumbs.m; sourceTree = "<group>"; };
 		F8B96E3B163813B100EC9487 /* SYGalleryThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryThumbView.h; sourceTree = "<group>"; };
 		F8B96E3C163813B100EC9487 /* SYGalleryThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryThumbView.m; sourceTree = "<group>"; };
 		F8B96E4C163817F800EC9487 /* GMGridView-Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "GMGridView-Constants.h"; path = "../Lib/GMGridView/GMGridView/GMGridView-Constants.h"; sourceTree = "<group>"; };
@@ -143,6 +155,16 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		F8A9CE5C16419C3B0097372D /* DACircularProgress */ = {
+			isa = PBXGroup;
+			children = (
+				F8A9CE5D16419C3B0097372D /* DACircularProgressView.h */,
+				F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */,
+			);
+			name = DACircularProgress;
+			path = ../Lib/DACircularProgres/DACircularProgress;
+			sourceTree = "<group>";
+		};
 		F8B96E011638116600EC9487 = {
 			isa = PBXGroup;
 			children = (
@@ -150,7 +172,6 @@
 				F8B96E3A163813B100EC9487 /* SYGallery */,
 				F8B96E0F1638116600EC9487 /* Frameworks */,
 				F8B96E0D1638116600EC9487 /* Products */,
-				F8B96E47163815F000EC9487 /* Libs */,
 			);
 			sourceTree = "<group>";
 		};
@@ -178,11 +199,15 @@
 			children = (
 				F8B96E1F1638116600EC9487 /* SYAppDelegate.h */,
 				F8B96E201638116600EC9487 /* SYAppDelegate.m */,
-				F8B96E2E1638116600EC9487 /* SYViewController.h */,
-				F8B96E2F1638116600EC9487 /* SYViewController.m */,
+				F8B96E2E1638116600EC9487 /* SYViewControllerThumbs.h */,
+				F8B96E2F1638116600EC9487 /* SYViewControllerThumbs.m */,
+				F81891E7163AF23700C8E806 /* SYViewControllerFull.h */,
+				F81891E8163AF23700C8E806 /* SYViewControllerFull.m */,
 				F8B96E281638116600EC9487 /* MainStoryboard.storyboard */,
 				F8B96E171638116600EC9487 /* Supporting Files */,
 				F81891C2163AD28E00C8E806 /* Images */,
+				F81891EA163AF33E00C8E806 /* SYDataSource.h */,
+				F81891EB163AF33E00C8E806 /* SYDataSource.m */,
 			);
 			path = SYGalleryExample;
 			sourceTree = "<group>";
@@ -204,10 +229,13 @@
 		F8B96E3A163813B100EC9487 /* SYGallery */ = {
 			isa = PBXGroup;
 			children = (
+				F8B96E47163815F000EC9487 /* Libs */,
 				F847C52B16387AC300245B53 /* Resources */,
 				F8F2ADEA16383BD200B96784 /* SYGalleryDelegates.h */,
 				F8F2ADEC16383C9000B96784 /* SYGalleryFullView.h */,
 				F8F2ADED16383C9000B96784 /* SYGalleryFullView.m */,
+				F81891E4163ADA8000C8E806 /* SYGalleryFullPage.h */,
+				F81891E5163ADA8000C8E806 /* SYGalleryFullPage.m */,
 				F8B96E3B163813B100EC9487 /* SYGalleryThumbView.h */,
 				F8B96E3C163813B100EC9487 /* SYGalleryThumbView.m */,
 				F8F2ADEF16383EFF00B96784 /* SYGalleryThumbCell.h */,
@@ -220,10 +248,11 @@
 		F8B96E47163815F000EC9487 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				F8A9CE5C16419C3B0097372D /* DACircularProgress */,
 				F8B96E4B163817DA00EC9487 /* GMGridView */,
 			);
 			name = Libs;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		F8B96E4B163817DA00EC9487 /* GMGridView */ = {
 			isa = PBXGroup;
@@ -340,10 +369,14 @@
 				F8F2ADF616384D8800B96784 /* GMGridViewLayoutStrategies.m in Sources */,
 				F8B96E1D1638116600EC9487 /* main.m in Sources */,
 				F8B96E211638116600EC9487 /* SYAppDelegate.m in Sources */,
-				F8B96E301638116600EC9487 /* SYViewController.m in Sources */,
+				F8B96E301638116600EC9487 /* SYViewControllerThumbs.m in Sources */,
 				F8B96E3D163813B100EC9487 /* SYGalleryThumbView.m in Sources */,
 				F8F2ADEE16383C9000B96784 /* SYGalleryFullView.m in Sources */,
 				F8F2ADF116383EFF00B96784 /* SYGalleryThumbCell.m in Sources */,
+				F81891E6163ADA8000C8E806 /* SYGalleryFullPage.m in Sources */,
+				F81891E9163AF23700C8E806 /* SYViewControllerFull.m in Sources */,
+				F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */,
+				F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

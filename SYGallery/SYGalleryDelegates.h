@@ -25,6 +25,7 @@ typedef enum {
 } SYGalleryPhotoSize;
 
 @protocol SYGalleryDataSource <NSObject>
+@required
 - (NSUInteger)numberOfItemsInGallery:(id<SYGalleryView>)gallery;
 - (SYGallerySourceType)gallery:(id<SYGalleryView>)gallery sourceTypeAtIndex:(NSUInteger)index;
 
@@ -32,10 +33,11 @@ typedef enum {
 - (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 
 - (BOOL)gallery:(id<SYGalleryView>)gallery canDeleteAtIndex:(NSUInteger)index;
+- (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index;
 @end
 
 @protocol SYGalleryActions <NSObject>
 - (void)gallery:(id<SYGalleryView>)gallery didTapOnItemAtIndex:(NSUInteger)index;
-- (void)gallery:(id<SYGalleryView>)gallery processDeleteActionForItemAtIndex:(NSUInteger)index;
+- (void)gallery:(id<SYGalleryView>)gallery deletActionForItemAtIndex:(NSUInteger)index;
 - (void)gallery:(id<SYGalleryView>)gallery changedEditStateTo:(BOOL)edit;
 @end

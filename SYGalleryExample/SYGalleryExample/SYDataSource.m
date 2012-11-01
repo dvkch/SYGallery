@@ -1,41 +1,34 @@
 //
-//  SYViewController.m
+//  SYDataSource.m
 //  SYGalleryExample
 //
-//  Created by rominet on 24/10/12.
+//  Created by rominet on 26/10/12.
 //  Copyright (c) 2012 Syan. All rights reserved.
 //
 
+#import "SYDataSource.h"
 
-// SPECIAL THX FOR Konstantin Leonov
-// http://www.flickr.com/people/73003003@N07/
-// FOR LOCAL PICTURES IN THIS EXAMPLE
+@implementation SYDataSource
 
-
-#import "SYViewController.h"
-#import "SYGalleryThumbView.h"
-#import "SYGalleryFullView.h"
-
-@implementation SYViewController
+@synthesize useLocalPathsNotDistantUrl = _useLocalPathsNotDistantUrl;
 
 #pragma mark - Initialization
-/*
--(id)init
-{ if (self = [super init]) { [self loadView]; } return self; }
 
--(id)initWithCoder:(NSCoder *)aDecoder
-{ if (self = [super initWithCoder:aDecoder]) { [self loadView]; } return self; }
++(id)sharedDataSource {
+    static dispatch_once_t once;
+    static id sharedInstance;
+    dispatch_once(&once, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
+}
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{ if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) { [self loadView]; } return self; }
-*/
-
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+-(id)init {
+    self = [super init];
+    if(!self)
+        return nil;
     
+    self->_useLocalPathsNotDistantUrl = YES;
     self->_localPathsThumbs = [NSMutableArray arrayWithObjects:
                                @"1_s",
                                @"2_s",
@@ -155,48 +148,25 @@
                                 @"http://farm8.staticflickr.com/7168/6408044361_fc0fbd5ecd.jpg",
                                 @"http://farm7.staticflickr.com/6226/6408045667_1f447b1367.jpg",
                                 nil];
-
-    [self.thumbsView setDataSource:self];
-    [self.thumbsView setActionDelegate:self];
-    [self.thumbsView setCacheImages:YES];
-    [self.thumbsView reloadGallery];
-    
-    //    self->_fullView = [[SYGalleryFullView alloc] init];
-    //    [self->_fullView setDataSource:self];
-    //    [self->_fullView setActionDelegate:self];
+    return self;
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-#pragma mark - IBActions
-
-- (IBAction)segmentedControlClick:(id)sender {
-    [self.thumbsView reloadGallery];
-}
-
 
 #pragma mark - SYGalleryDataSource
 
 - (NSUInteger)numberOfItemsInGallery:(id<SYGalleryView>)gallery
 {
     uint numberOfItems = 0;
-    if(self.segmentedControl.selectedSegmentIndex == 0)
+    if(self.useLocalPathsNotDistantUrl)
         numberOfItems = [self->_localPathsFulls count];
     else
         numberOfItems = [self->_distantPathsFulls count];
-
-    NSLog(@"INFO: Displaying %d items", numberOfItems);
+    
     return numberOfItems;
 }
 
 - (SYGallerySourceType)gallery:(id<SYGalleryView>)gallery sourceTypeAtIndex:(NSUInteger)index
 {
-    if(self.segmentedControl.selectedSegmentIndex == 0)
+    if(self.useLocalPathsNotDistantUrl)
         return SYGallerySourceTypeLocal;
     else
         return SYGallerySourceTypeDistant;
@@ -228,25 +198,9 @@
     return index % 2 == 0;
 }
 
-
-#pragma mark - SYGalleryActions
-
-- (void)gallery:(id<SYGalleryView>)gallery didTapOnItemAtIndex:(NSUInteger)index
-{
-    [[[UIAlertView alloc] initWithTitle:@"Tapped"
-                                message:[NSString stringWithFormat:@"Tapped on item %d", (int)index]
-                               delegate:nil
-                      cancelButtonTitle:nil
-                      otherButtonTitles:@"OK", nil] show];
+- (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index {
     
-    NSLog(@"Tapped item at index %d", (int)index);
-}
-
-- (void)gallery:(id<SYGalleryView>)gallery processDeleteActionForItemAtIndex:(NSUInteger)index
-{
-    NSLog(@"Deleting item at index %d", (int)index);
-    
-    if([self gallery:self.thumbsView sourceTypeAtIndex:index] == SYGallerySourceTypeDistant) {
+    if([self gallery:nil sourceTypeAtIndex:index] == SYGallerySourceTypeDistant) {
         [self->_distantPathsFulls removeObjectAtIndex:index];
         [self->_distantPathsThumbs removeObjectAtIndex:index];
     }
@@ -254,17 +208,7 @@
         [self->_localPathsFulls removeObjectAtIndex:index];
         [self->_localPathsThumbs removeObjectAtIndex:index];
     }
-}
 
-- (void)gallery:(id<SYGalleryView>)gallery changedEditStateTo:(BOOL)edit
-{
-    NSLog(@"Gallery in edit mode: %@", edit ? @"YES" : @"NO");
-}
-
-- (void)viewDidUnload {
-    [self setSegmentedControl:nil];
-    [self setThumbsView:nil];
-    [super viewDidUnload];
 }
 
 @end

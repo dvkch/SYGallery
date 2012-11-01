@@ -21,6 +21,8 @@
 @synthesize dataSource = _dataSource;
 @synthesize actionDelegate = _actionDelegate;
 @synthesize cacheImages = _cacheImages;
+@synthesize edit = _edit;
+@synthesize lastClickedItemIndex = _lastClickedItemIndex;
 
 #pragma mark - Initialization
 
@@ -38,6 +40,9 @@
 
 -(void)loadView {
     
+    self->_edit = NO;
+    self->_cacheImages = NO;
+    
     self.clipsToBounds = YES;
     self->_gridView = [[GMGridView alloc] initWithFrame:
                        CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height)];
@@ -51,6 +56,7 @@
     self->_gridView.centerGrid = NO;
     self->_gridView.showsVerticalScrollIndicator = YES;
     self->_gridView.showsHorizontalScrollIndicator = NO;
+    self->_gridView.alwaysBounceVertical = YES;
     
     self->_gridView.actionDelegate = self;
     self->_gridView.sortingDelegate = self;
@@ -93,6 +99,11 @@
     [self setupCachedCellsArray];
 }
 
+-(void)setEdit:(BOOL)edit {
+    self->_edit = edit;
+    [self->_gridView setEditing:edit animated:YES];
+}
+
 -(void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     [self->_gridView setFrame:
@@ -123,9 +134,6 @@
     if(index < 0)
         return  [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
 
-    SYGallerySourceType sourceType = [self.dataSource gallery:self
-                                            sourceTypeAtIndex:(uint)index];
-
     SYGalleryThumbCell *cell = nil;
     NSString *cellIdentifier = @"photoCell";
 
@@ -136,14 +144,15 @@
         cell = (SYGalleryThumbCell *)[self->_gridView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     // cell couldn't be loaded from cached nor queued reusable cells
-    if(!cell) {
-        NSLog(@"no existing cell %d", self->_cacheImages);
+    if(!cell)
         cell = [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
-    }
     
     // caching cell if necessary
     if(self->_cacheImages)
         [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
+    
+    SYGallerySourceType sourceType = [self.dataSource gallery:self
+                                            sourceTypeAtIndex:(uint)index];
     
     if(!self->_cacheImages || !cell.hasBeenLoaded) {
         [cell resetCell];
@@ -175,6 +184,11 @@
 
 #pragma mark Protocol GMGridViewActionDelegate
 - (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {
+
+    self->_lastClickedItemIndex = (position < 0 || position >= (int)[self.dataSource numberOfItemsInGallery:self] ?
+                                   0 :
+                                   (uint)position);
+    
     if(self.actionDelegate && position >= 0)
        [self.actionDelegate gallery:self didTapOnItemAtIndex:(uint)position];
 }
@@ -185,7 +199,10 @@
 
 - (void)GMGridView:(GMGridView *)gridView processDeleteActionForItemAtIndex:(NSInteger)index {
     if(self.actionDelegate && index >= 0)
-        [self.actionDelegate gallery:self processDeleteActionForItemAtIndex:(uint)index];
+        [self.actionDelegate gallery:self deletActionForItemAtIndex:(uint)index];
+    
+    if(self.dataSource && index >= 0)
+        [self.dataSource gallery:self deleteItemInAtIndex:(uint)index];
 }
 
 - (void)GMGridView:(GMGridView *)gridView changedEdit:(BOOL)edit {

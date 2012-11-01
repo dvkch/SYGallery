@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
     </dependencies>
     <scenes>
-        <!--View Controller - SYGallery-->
+        <!--View Controller Thumbs - SYGallery-->
         <scene sceneID="5">
             <objects>
-                <viewController id="2" customClass="SYViewController" sceneMemberID="viewController">
+                <viewController id="2" customClass="SYViewControllerThumbs" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -32,31 +32,36 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="SYGallery" id="cqa-tp-ELy">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="s8Z-bV-QKv">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="HjR-BK-fzG">
                             <connections>
-                                <segue destination="J6x-Sg-hEr" kind="push" id="h18-HZ-fle"/>
+                                <action selector="editButtonClick:" destination="2" id="tXb-4D-DDN"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="All" id="s8Z-bV-QKv">
+                            <connections>
+                                <segue destination="J6x-Sg-hEr" kind="push" identifier="segueToFullSizeAll" id="h18-HZ-fle"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="segmentedControl" destination="KVx-vr-oPA" id="G74-Me-Lcs"/>
                         <outlet property="thumbsView" destination="Mkw-g6-hBF" id="oFQ-9V-zYA"/>
-                        <segue destination="J6x-Sg-hEr" kind="push" id="bpb-q1-5F6"/>
+                        <segue destination="J6x-Sg-hEr" kind="push" identifier="segueToFullSizeItem" id="bpb-q1-5F6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="370" y="217"/>
         </scene>
-        <!--View Controller-->
+        <!--View Controller Full-->
         <scene sceneID="edC-VN-0Cp">
             <objects>
-                <viewController id="J6x-Sg-hEr" sceneMemberID="viewController">
+                <viewController id="J6x-Sg-hEr" customClass="SYViewControllerFull" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="s2y-hp-sMB">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" id="C9M-V8-xEr">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" id="C9M-V8-xEr" customClass="SYGalleryFullView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </scrollView>
@@ -64,6 +69,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="9E8-vw-eXm"/>
+                    <connections>
+                        <outlet property="fullPicView" destination="C9M-V8-xEr" id="Swq-ly-0QU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRO-0N-2LA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -86,12 +94,22 @@
         </scene>
     </scenes>
     <classes>
+        <class className="SYGalleryFullView" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYGalleryFullView.h"/>
+        </class>
         <class className="SYGalleryThumbView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SYGalleryThumbView.h"/>
         </class>
-        <class className="SYViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYViewController.h"/>
+        <class className="SYViewControllerFull" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYViewControllerFull.h"/>
             <relationships>
+                <relationship kind="outlet" name="fullPicView" candidateClass="SYGalleryFullView"/>
+            </relationships>
+        </class>
+        <class className="SYViewControllerThumbs" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYViewControllerThumbs.h"/>
+            <relationships>
+                <relationship kind="action" name="editButtonClick:"/>
                 <relationship kind="action" name="segmentedControlClick:"/>
                 <relationship kind="outlet" name="segmentedControl" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="thumbsView" candidateClass="SYGalleryThumbView"/>
@@ -104,6 +122,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="h18-HZ-fle"/>
+        <segue reference="bpb-q1-5F6"/>
     </inferredMetricsTieBreakers>
 </document>

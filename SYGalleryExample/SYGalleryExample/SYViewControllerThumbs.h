@@ -1,5 +1,5 @@
 //
-//  SYViewController.h
+//  SYViewControllerThumbs.h
 //  SYGalleryExample
 //
 //  Created by rominet on 24/10/12.
@@ -11,13 +11,7 @@
 @class SYGalleryThumbView;
 @class SYGalleryFullView;
 
-@interface SYViewController : UIViewController <SYGalleryDataSource, SYGalleryActions> {
-@private
-    NSMutableArray *_localPathsThumbs;
-    NSMutableArray *_localPathsFulls;
-    NSMutableArray *_distantPathsThumbs;
-    NSMutableArray *_distantPathsFulls;
-}
+@interface SYViewControllerThumbs : UIViewController <SYGalleryActions>
 
 @property (weak, nonatomic) IBOutlet SYGalleryThumbView *thumbsView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;

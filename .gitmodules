@@ -1,6 +1,6 @@
 [submodule "Lib/GMGridView"]
 	path = Lib/GMGridView
 	url = git://github.com/gmoledina/GMGridView.git
-[submodule "Lib/NSURLConnection-Blocks"]
-	path = Lib/NSURLConnection-Blocks
-	url = git://github.com/rickerbh/NSURLConnection-Blocks.git
+[submodule "Lib/DACircularProgres"]
+	path = Lib/DACircularProgres
+	url = git://github.com/danielamitay/DACircularProgress.git
