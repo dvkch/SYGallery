@@ -287,8 +287,6 @@
     if(self->_picDataExpectedLenght > 0)
         progress = (CGFloat)[self->_picData length] / (CGFloat)self->_picDataExpectedLenght;
     
-    NSLog(@"frame %@", NSStringFromCGRect(self->_circularProgressView.frame));
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         [safeSelf->_circularProgressView setProgress:progress animated:YES];
     });
