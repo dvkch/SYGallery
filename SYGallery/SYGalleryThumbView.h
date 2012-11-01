@@ -20,6 +20,9 @@ GMGridViewSortingDelegate>
 {
     GMGridView *_gridView;
     NSMutableArray *_cachedCells;
+    
+    UIColor *_cellBorderColor;
+    CGFloat _cellBorderWidth;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
@@ -30,5 +33,6 @@ GMGridViewSortingDelegate>
 @property (readonly) NSUInteger lastClickedItemIndex;
 
 -(void)reloadGallery;
+-(void)setCellBorderWidth:(CGFloat)width andColor:(UIColor*)color;
 
 @end

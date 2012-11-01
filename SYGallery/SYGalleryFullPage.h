@@ -17,6 +17,7 @@
     DACircularProgressView *_circularProgressView;
 
     NSURLConnection *_picConnection;
+    long long _picDataExpectedLenght;
     NSMutableData *_picData;
 	NSTimer *_tapTimer;
 }

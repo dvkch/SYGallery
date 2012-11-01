@@ -12,7 +12,6 @@
 
 @interface SYGalleryFullView (Private)
 -(void)loadView;
--(void)layoutViews;
 
 -(uint)numberOfPictures;
 
@@ -122,11 +121,6 @@
         [[self->_galleryPages objectAtIndex:index] resetZoomFactors];
 }
 
--(void)layoutViews {
-    [self updateScrollView];
-    [self updatePagesFrames];
-}
-
 #pragma mark - View methods
 /*
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -172,7 +166,13 @@
         [self->_galleryPages addObject:[NSNull null]];
     
     NSUInteger indexToLoad = index >= [self numberOfPictures] ? 0 : index;
-    [self layoutViews];
+    
+    [self loadPageAtIndex:indexToLoad];
+    
+    [self updateScrollView];
+    [self updatePagesFrames];
+    [self resetPagesZooms];
+
     [self scrollToPage:indexToLoad animated:NO];
 }
 
@@ -216,6 +216,9 @@
                              self->_scrollView.frame.size.height);
 
     [self loadPageAtIndex:pageIndex];
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+    
     [self->_scrollView scrollRectToVisible:rect
                                   animated:animated];
 }

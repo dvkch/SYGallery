@@ -43,6 +43,9 @@
     self->_edit = NO;
     self->_cacheImages = NO;
     
+    self->_cellBorderColor = [UIColor blackColor];
+    self->_cellBorderWidth = 1.f;
+    
     self.clipsToBounds = YES;
     self->_gridView = [[GMGridView alloc] initWithFrame:
                        CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height)];
@@ -115,6 +118,16 @@
     [self->_gridView setBackgroundColor:backgroundColor];
 }
 
+-(void)setCellBorderWidth:(CGFloat)width andColor:(UIColor*)color {
+    self->_cellBorderColor = color;
+    self->_cellBorderWidth = width;
+    
+    for (SYGalleryThumbCell *cell in self->_cachedCells) {
+        [cell updateCellBorderWidth:width andColor:color];
+        [cell setNeedsDisplay];
+    }
+}
+
 #pragma mark - GMGridViewDataSource
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
     int numberOfItems = 0;
@@ -151,11 +164,12 @@
     if(self->_cacheImages)
         [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
     
+    [cell updateCellBorderWidth:self->_cellBorderWidth andColor:self->_cellBorderColor];
+    
     SYGallerySourceType sourceType = [self.dataSource gallery:self
                                             sourceTypeAtIndex:(uint)index];
     
     if(!self->_cacheImages || !cell.hasBeenLoaded) {
-        [cell resetCell];
         
         switch (sourceType) {
             case SYGallerySourceTypeDistant:

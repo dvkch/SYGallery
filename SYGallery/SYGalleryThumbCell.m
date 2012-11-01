@@ -10,6 +10,12 @@
 #import "SYGalleryThumbCell.h"
 #import "GMGridViewCell.h"
 
+
+@interface SYGalleryThumbCell (Private)
+-(void)setDefaults;
+-(void)resetCellUsingDefaults:(BOOL)useDefaults;
+@end
+
 @implementation SYGalleryThumbCell : GMGridViewCell
 
 @synthesize hasBeenLoaded = _hasBeenLoaded;
@@ -17,12 +23,21 @@
 #pragma mark - Initialization
 - (id)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithFrame:frame]) { [self resetCell]; }
+    if (self = [super initWithFrame:frame]) { [self resetCellUsingDefaults:YES]; }
     return self;
 }
 
 #pragma mark - Private methods
--(void)resetCell {
+
+-(void)setDefaults {
+    self->_cellBorderColor = [UIColor blackColor];
+    self->_cellBorderWidth = 1.f;
+}
+
+-(void)resetCellUsingDefaults:(BOOL)useDefaults {
+    if(useDefaults)
+        [self setDefaults];
+    
     self.hasBeenLoaded = NO;
     
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
@@ -30,10 +45,10 @@
     if (!self->_mainView)
         self->_mainView = [[UIView alloc] init];
     [self->_mainView setFrame:subViewFrame];
-    [self->_mainView setBackgroundColor:[UIColor whiteColor]];
+    [self->_mainView setBackgroundColor:[UIColor colorWithRed:1.f green:1.f blue:1.f alpha:0.8f]];
     [self->_mainView setClipsToBounds:YES];
-    [self->_mainView.layer setBorderColor:[UIColor blackColor].CGColor];
-    [self->_mainView.layer setBorderWidth:1.0f];
+    [self->_mainView.layer setBorderColor:self->_cellBorderColor.CGColor];
+    [self->_mainView.layer setBorderWidth:self->_cellBorderWidth];
     [self->_mainView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
@@ -73,15 +88,24 @@
 
 #pragma mark - View methods
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath {
-    [self resetCell];
+    [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;
     
     [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self->_thumbImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
+    [self->_activityIndicatorView startAnimating];
+    
+    __block SYGalleryThumbCell *safeSelf = self;
+    int64_t delayInMilliSeconds = 10.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [safeSelf->_thumbImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
+        [safeSelf->_activityIndicatorView stopAnimating];
+        [safeSelf setNeedsDisplay];
+    });
 }
 
 -(void)updateCellForUrl:(NSString*)url {
-    [self resetCell];
+    [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;
     
     // cannot use a block version of NSURLConnection because if we load another picture
@@ -100,7 +124,7 @@
 }
 
 -(void)updateCellForMissingImage {
-    [self resetCell];
+    [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;
     
     [self->_thumbImageView setContentMode:UIViewContentModeCenter];
@@ -108,7 +132,7 @@
 }
 
 -(void)updateCellForText:(NSString *)text andFont:(UIFont*)font {
-    [self resetCell];
+    [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;
     
     CGFloat fontSize = self.frame.size.width * 0.4f;
@@ -118,6 +142,16 @@
     self->_label.text = text;
     self->_label.textColor = [UIColor whiteColor];
     self->_label.textAlignment = NSTextAlignmentCenter;
+}
+
+-(void)updateCellBorderWidth:(CGFloat)width andColor:(UIColor*)color {
+    self->_cellBorderColor = color;
+    self->_cellBorderWidth = width;
+    
+    if (self->_mainView) {
+        [self->_mainView.layer setBorderColor:self->_cellBorderColor.CGColor];
+        [self->_mainView.layer setBorderWidth:self->_cellBorderWidth];
+    }
 }
 
 #pragma mark - NSURLConnection delegate methods

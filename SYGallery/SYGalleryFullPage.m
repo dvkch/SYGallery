@@ -14,6 +14,8 @@
 @interface SYGalleryFullPage (Private)
 -(void)loadView;
 
+-(void)centerSubView:(UIView*)subview;
+
 -(void)singleTapOnImageView:(UIGestureRecognizer*)gestureRecognizer;
 -(void)doubleTapOnImageView:(UIGestureRecognizer*)gestureRecognizer;
 
@@ -53,12 +55,14 @@
     if([self->_fullImageView superview] == nil)
         [self addSubview:self->_fullImageView];
     
+    CGFloat progressSize = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 80.f;
     if(!self->_circularProgressView)
-        self->_circularProgressView = [[DACircularProgressView alloc] initWithFrame:CGRectMake(1000.f, 1000.f, 100.0f, 100.0f)];
+        self->_circularProgressView = [[DACircularProgressView alloc]
+                                       initWithFrame:CGRectMake(0.f, 0.f, progressSize, progressSize)];
     [self->_circularProgressView setHidden:YES];
-    [self->_circularProgressView setRoundedCorners:NO];
-    [self->_circularProgressView setTrackTintColor:[UIColor redColor]];
-    [self->_circularProgressView setProgressTintColor:[UIColor greenColor]];
+    [self->_circularProgressView setRoundedCorners:YES];
+    [self->_circularProgressView setTrackTintColor:[UIColor colorWithRed:1.f green:1.f blue:1.f alpha:0.2f]];
+    [self->_circularProgressView setProgressTintColor:[UIColor whiteColor]];
     
     if([self->_circularProgressView superview] == nil)
         [self addSubview:self->_circularProgressView];
@@ -151,12 +155,42 @@
     return 1.f * (factor == 0.f ? 1.f : factor);
 }
 
+-(void)centerSubView:(UIView*)subview {
+    // http://stackoverflow.com/questions/1316451/center-content-of-uiscrollview-when-smaller
+
+    CGSize boundsSize = self.bounds.size;
+    CGRect frameToCenter = subview.frame;
+    
+    // center horizontally
+    if (frameToCenter.size.width < boundsSize.width)
+        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+    else
+        frameToCenter.origin.x = 0;
+    
+    // center vertically
+    if (frameToCenter.size.height < boundsSize.height)
+        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+    else
+        frameToCenter.origin.y = 0;
+    
+    subview.frame = frameToCenter;
+}
+
 #pragma mark - View methods
 
 -(void)updateImageWithAbsolutePath:(NSString*)absolutePath {
     self.hasBeenLoaded = YES;
-    [self->_fullImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
-    [self resetZoomFactors];
+    
+    [self->_circularProgressView setHidden:YES];
+    
+    __block SYGalleryFullPage *safeSelf = self;
+    int64_t delayInMilliSeconds = 10.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [safeSelf->_fullImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
+        [safeSelf resetZoomFactors];
+        [safeSelf setNeedsDisplay];
+    });
 }
 
 -(void)updateImageWithUrl:(NSString*)url {
@@ -173,8 +207,10 @@
                                                 timeoutInterval:5.f];
     self->_picConnection = [NSURLConnection connectionWithRequest:request delegate:self];
     self->_picData = [NSMutableData data];
+    self->_picDataExpectedLenght = 0;
+
     [self->_picConnection start];
-    [self->_circularProgressView setProgress:1.f];
+    [self->_circularProgressView setProgress:0.f];
     [self->_circularProgressView setHidden:NO];
     [self->_circularProgressView setNeedsDisplay];
     [self setNeedsDisplay];
@@ -188,24 +224,8 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    // center the image as it becomes smaller than the size of the screen
-    CGSize boundsSize = self.bounds.size;
-    CGRect frameToCenter = self->_fullImageView.frame;
-    
-    // center horizontally
-    if (frameToCenter.size.width < boundsSize.width)
-        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
-    else
-        frameToCenter.origin.x = 0;
-    
-    // center vertically
-    if (frameToCenter.size.height < boundsSize.height)
-        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
-    else
-        frameToCenter.origin.y = 0;
-    
-    self->_fullImageView.frame = frameToCenter;
+    [self centerSubView:self->_circularProgressView];
+    [self centerSubView:self->_fullImageView];
 }
 
 -(BOOL)isZoomed {
@@ -252,6 +272,7 @@
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     [self->_picData setLength:0];
+    self->_picDataExpectedLenght = response.expectedContentLength;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
@@ -259,6 +280,18 @@
 {
     [self->_picData appendData:data];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    __block SYGalleryFullPage *safeSelf = self;
+
+    CGFloat progress = 0.f;
+    if(self->_picDataExpectedLenght > 0)
+        progress = (CGFloat)[self->_picData length] / (CGFloat)self->_picDataExpectedLenght;
+    
+    NSLog(@"frame %@", NSStringFromCGRect(self->_circularProgressView.frame));
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [safeSelf->_circularProgressView setProgress:progress animated:YES];
+    });
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
