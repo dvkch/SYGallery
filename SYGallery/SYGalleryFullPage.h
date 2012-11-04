@@ -10,7 +10,10 @@
 #import "SYGalleryDelegates.h"
 @class DACircularProgressView;
 
-@interface SYGalleryFullPage : UIScrollView <SYGalleryView, NSURLConnectionDataDelegate, NSURLConnectionDelegate, UIScrollViewDelegate> {
+@interface SYGalleryFullPage : UIView
+<SYGalleryView, NSURLConnectionDataDelegate, NSURLConnectionDelegate, UIScrollViewDelegate>
+{
+    UIScrollView *_scrollView;
     UIImageView *_fullImageView;
     UITapGestureRecognizer *_singleTapGestureRecognizer;
     UITapGestureRecognizer *_doubleTapGestureRecognizer;

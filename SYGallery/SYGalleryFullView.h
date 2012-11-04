@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "SYGalleryDelegates.h"
+@class SYGalleryActionView;
 
 #define PAGE_MARGIN 20.f
 
 @interface SYGalleryFullView : UIScrollView <SYGalleryView, UIScrollViewDelegate> {
     UIScrollView *_scrollView;
     NSMutableArray *_galleryPages;
+    SYGalleryActionView *_actionListView;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
@@ -22,5 +24,14 @@
 -(void)setDataSource:(id<SYGalleryDataSource>)dataSource andFirstItemToShow:(NSUInteger)firstItem;
 -(void)reloadGalleryAndScrollToIndex:(NSUInteger)index;
 -(void)scrollToPage:(uint)pageIndex animated:(BOOL)animated;
+
+-(uint)currentIndexCalculated;
+
+-(void)addActionWithName:(NSString *)name
+               andTarget:(id)target
+             andSelector:(SEL)selector
+                  andTag:(NSInteger)tag;
+
+-(void)removeActionWithTag:(NSInteger)tag;
 
 @end

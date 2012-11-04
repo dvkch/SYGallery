@@ -35,11 +35,17 @@
 }
 
 -(void)resetCellUsingDefaults:(BOOL)useDefaults {
+    /*********************************************/
+    /*************  PROPERTIES INIT  *************/
+    /*********************************************/
     if(useDefaults)
         [self setDefaults];
     
     self.hasBeenLoaded = NO;
     
+    /*********************************************/
+    /************  CONTENTVIEW INIT  *************/
+    /*********************************************/
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
 
     if (!self->_mainView)
@@ -52,6 +58,9 @@
     [self->_mainView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
+    /*********************************************/
+    /***************  LABEL INIT  ****************/
+    /*********************************************/
     if (!self->_label)
         self->_label = [[UILabel alloc] init];
     [self->_label setFrame:subViewFrame];
@@ -60,6 +69,12 @@
     [self->_label setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
+    if([self->_label superview] == nil)
+        [self->_mainView addSubview:self->_label];
+    
+    /*********************************************/
+    /*************  THUMBVIEW INIT  **************/
+    /*********************************************/
     if(!self->_thumbImageView)
         self->_thumbImageView = [[UIImageView alloc] init];
     [self->_thumbImageView setFrame:subViewFrame];
@@ -69,6 +84,12 @@
     [self->_thumbImageView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
+    if([self->_thumbImageView superview] == nil)
+        [self->_mainView addSubview:self->_thumbImageView];
+    
+    /*********************************************/
+    /********  ACTIVITY INDICATOR INIT  **********/
+    /*********************************************/
     if(!self->_activityIndicatorView)
         self->_activityIndicatorView = [[UIActivityIndicatorView alloc]
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -79,9 +100,8 @@
     [self->_activityIndicatorView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 
-    [self->_mainView addSubview:self->_thumbImageView];
-    [self->_mainView addSubview:self->_label];
-    [self->_mainView addSubview:self->_activityIndicatorView];
+    if([self->_activityIndicatorView superview] == nil)
+        [self->_mainView addSubview:self->_activityIndicatorView];
 
     self.contentView = self->_mainView;
 }

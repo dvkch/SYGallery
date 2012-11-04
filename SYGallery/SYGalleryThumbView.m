@@ -40,18 +40,23 @@
 
 -(void)loadView {
     
+    /*********************************************/
+    /*************  PROPERTIES INIT  *************/
+    /*********************************************/
     self->_edit = NO;
     self->_cacheImages = NO;
     
     self->_cellBorderColor = [UIColor blackColor];
     self->_cellBorderWidth = 1.f;
     
-    self.clipsToBounds = YES;
-    self->_gridView = [[GMGridView alloc] initWithFrame:
-                       CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height)];
+    /*********************************************/
+    /**************  GRIDVIEW INIT  **************/
+    /*********************************************/
+    if(!self->_gridView)
+        self->_gridView = [[GMGridView alloc] initWithFrame:
+                           CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height)];
     self->_gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self->_gridView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:self->_gridView];
+    self->_gridView.backgroundColor = [UIColor clearColor];
     
     self->_gridView.style = GMGridViewStyleSwap;
     self->_gridView.itemSpacing = CELL_SPACING;
@@ -64,6 +69,14 @@
     self->_gridView.actionDelegate = self;
     self->_gridView.sortingDelegate = self;
     self->_gridView.dataSource = self;
+
+    if([self->_gridView superview] == nil)
+        [self addSubview:self->_gridView];
+    
+    /*********************************************/
+    /****************  SELF INIT  ****************/
+    /*********************************************/
+    self.clipsToBounds = YES;
 }
 
 -(void)setupCachedCellsArray {

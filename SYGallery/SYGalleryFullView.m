@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYGalleryFullView.h"
 #import "SYGalleryFullPage.h"
+#import "SYGalleryActionView.h"
 
 @interface SYGalleryFullView (Private)
 -(void)loadView;
@@ -50,6 +51,10 @@
     
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
     
+    /*********************************************/
+    /*************  SCROLLVIEW INIT  *************/
+    /*********************************************/
+
     if (!self->_scrollView)
         self->_scrollView = [[UIScrollView alloc] init];
     [self->_scrollView setFrame:subViewFrame];
@@ -67,6 +72,25 @@
     
     if([self->_scrollView superview] == nil)
         [self addSubview:self->_scrollView];
+    
+    
+    /*********************************************/
+    /*************  ACTIONLIST INIT  *************/
+    /*********************************************/
+    if(!self->_actionListView)
+        self->_actionListView = [[SYGalleryActionView alloc] init];
+    
+    [self->_actionListView setFrame:subViewFrame];
+    [self->_actionListView setOpeningDirection:SYVerticalDirectionUpward];
+    [self->_actionListView setPosition:SYPositionBottomLeft];
+    [self->_actionListView setInnerMargin:UIEdgeInsetsMake(10.f, 10.f, 10.f, 10.f)];
+    [self->_actionListView setAutoresizingMask:
+     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    
+    if([self->_actionListView superview] == nil)
+        [self addSubview:self->_actionListView];
+
+    
 }
 
 -(uint)numberOfPictures {
@@ -77,11 +101,6 @@
     return n;
 }
 
--(uint)currentIndexCalculated {
-    CGFloat pageWidth = self->_scrollView.frame.size.width;
-    return (uint)(floor((self->_scrollView.contentOffset.x - pageWidth / 2.f) / pageWidth) + 1);
-}
-
 -(CGRect)frameForPageIndex:(uint)index {
     
     CGFloat innerMargin = 0.f; //10.f;
@@ -90,6 +109,7 @@
                               0.f + innerMargin,
                               self->_scrollView.frame.size.width - 2.f * innerMargin,
                               self->_scrollView.frame.size.height - 2.f * innerMargin);
+    
     return frame;
 }
 
@@ -116,24 +136,21 @@
 }
 
 -(void)resetPageZoomsAtIndex:(uint)index {
+    
+    if(index >= [self numberOfPictures])
+        return;
+    
     SYGalleryFullPage *page = [self->_galleryPages objectAtIndex:index];
     if(![page isKindOfClass:[NSNull class]])
         [[self->_galleryPages objectAtIndex:index] resetZoomFactors];
 }
 
 #pragma mark - View methods
-/*
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    currentPageOffset = [hostingScrollView contentOffset].x / [hostingScrollView bounds].size.width;
+
+-(uint)currentIndexCalculated {
+    CGFloat pageWidth = self->_scrollView.frame.size.width;
+    return (uint)(floor((self->_scrollView.contentOffset.x - pageWidth / 2.f) / pageWidth) + 1);
 }
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
-{
-    //  Layout changed instantly at this time.
-    //  So we have to force to set offset instantly by setting animation to NO.
-    [hostingScrollView setContentOffset:CGPointMake([hostingScrollView bounds].size.width * currentPageOffset, 0.0f) animated:NO];
-}
-*/
 
 -(void)setFrame:(CGRect)frame {
     NSUInteger currentIndex = [self currentIndexCalculated];
@@ -177,7 +194,7 @@
 }
 
 -(void)loadPageAtIndex:(uint)pageIndex {
-
+        
     if (pageIndex >= [self numberOfPictures] || ! self.dataSource)
         return;
     
@@ -223,16 +240,28 @@
                                   animated:animated];
 }
 
+-(void)addActionWithName:(NSString *)name andTarget:(id)target andSelector:(SEL)selector andTag:(NSInteger)tag {
+    [self->_actionListView addActionWithName:name andTarget:target andSelector:selector andTag:tag];
+}
+
+-(void)removeActionWithTag:(NSInteger)tag {
+    [self->_actionListView removeActionWithTag:tag];
+}
+
 #pragma mark - UIScrollViewDelegate<NSObject>
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
     
+    [self->_actionListView setOpened:NO];
+
     NSUInteger currentIndex = [self currentIndexCalculated];
     
-    // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
-    if(currentIndex != 0)
+    if(currentIndex != 0) {
         [self loadPageAtIndex:currentIndex -1];
+//        [self resetPageZoomsAtIndex:currentIndex -1];
+    }
     [self loadPageAtIndex:currentIndex];
     [self loadPageAtIndex:currentIndex +1];
+//    [self resetPageZoomsAtIndex:currentIndex +1];
 
     // A possible optimization would be to unload the views+controllers which are no longer visible
 }

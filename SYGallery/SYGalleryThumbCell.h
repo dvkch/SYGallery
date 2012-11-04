@@ -8,12 +8,6 @@
 
 #import "GMGridViewCell.h"
 
-#define UIViewAutoresizingFlexibleMargins                 \
-UIViewAutoresizingFlexibleBottomMargin    | \
-UIViewAutoresizingFlexibleLeftMargin      | \
-UIViewAutoresizingFlexibleRightMargin     | \
-UIViewAutoresizingFlexibleTopMargin
-
 @interface SYGalleryThumbCell : GMGridViewCell <NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
 @private
     UIView *_mainView;

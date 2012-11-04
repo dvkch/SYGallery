@@ -14,7 +14,7 @@
 @interface SYGalleryFullPage (Private)
 -(void)loadView;
 
--(void)centerSubView:(UIView*)subview;
+-(void)centerSubView:(UIView*)subview inView:(UIView*)view;
 
 -(void)singleTapOnImageView:(UIGestureRecognizer*)gestureRecognizer;
 -(void)doubleTapOnImageView:(UIGestureRecognizer*)gestureRecognizer;
@@ -42,6 +42,35 @@
     
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
     
+    /*********************************************/
+    /*************  SCROLLVIEW INIT  *************/
+    /*********************************************/
+    if (!self->_scrollView)
+        self->_scrollView = [[UIScrollView alloc] init];
+    [self->_scrollView setFrame:subViewFrame];
+    [self->_scrollView setBackgroundColor:[UIColor clearColor]];
+    [self->_scrollView setClipsToBounds:YES];
+    [self->_scrollView setContentMode:UIViewContentModeCenter];
+    [self->_scrollView setUserInteractionEnabled:YES];
+    [self->_scrollView setAutoresizesSubviews:YES];
+    
+    [self->_scrollView setScrollEnabled:YES];
+    [self->_scrollView setShowsHorizontalScrollIndicator:NO];
+    [self->_scrollView setShowsVerticalScrollIndicator:NO];
+    [self->_scrollView setBounces:YES];
+    [self->_scrollView setBouncesZoom:YES];
+
+    [self->_scrollView setContentSize:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+    [self->_scrollView setDelegate:self];
+    [self->_scrollView setAutoresizingMask:
+     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleMargins];
+    
+    if([self->_scrollView superview] == nil)
+        [self addSubview:self->_scrollView];
+    
+    /*********************************************/
+    /**************  IMAGEVIEW INIT  *************/
+    /*********************************************/
     if (!self->_fullImageView)
         self->_fullImageView = [[UIImageView alloc] init];
     [self->_fullImageView setFrame:subViewFrame];
@@ -50,11 +79,14 @@
     [self->_fullImageView setContentMode:UIViewContentModeScaleAspectFit];
     [self->_fullImageView setUserInteractionEnabled:YES];
     [self->_fullImageView setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleMargins];
     
     if([self->_fullImageView superview] == nil)
-        [self addSubview:self->_fullImageView];
+        [self->_scrollView addSubview:self->_fullImageView];
     
+    /*********************************************/
+    /************  PROGRESSVIEW INIT  ************/
+    /*********************************************/
     CGFloat progressSize = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 80.f;
     if(!self->_circularProgressView)
         self->_circularProgressView = [[DACircularProgressView alloc]
@@ -67,6 +99,11 @@
     if([self->_circularProgressView superview] == nil)
         [self addSubview:self->_circularProgressView];
     
+    
+    /*********************************************/
+    /**************  SINGLETAP INIT  *************/
+    /*********************************************/
+    
     if (!self->_singleTapGestureRecognizer)
         self->_singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self action:@selector(singleTapOnImageView:)];
@@ -74,6 +111,9 @@
     if(self->_fullImageView)
         [self->_fullImageView addGestureRecognizer:self->_singleTapGestureRecognizer];
     
+    /*********************************************/
+    /**************  DOUBLETAP INIT  *************/
+    /*********************************************/
     if (!self->_doubleTapGestureRecognizer)
         self->_doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self action:@selector(doubleTapOnImageView:)];
@@ -82,21 +122,17 @@
         [self->_fullImageView addGestureRecognizer:self->_doubleTapGestureRecognizer];
     
 
+    /*********************************************/
+    /****************  SELF INIT  ****************/
+    /*********************************************/
     [self setBackgroundColor:[UIColor clearColor]];
     
     [self setAutoresizesSubviews:YES];
-    [self setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+    [self setAutoresizingMask:
+     UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleMargins];
     [self setUserInteractionEnabled:YES];
     [self setContentMode:UIViewContentModeCenter];
-    [self setScrollEnabled:YES];
-    [self setShowsHorizontalScrollIndicator:NO];
-    [self setShowsVerticalScrollIndicator:NO];
     [self setClipsToBounds:YES];
-    [self setBounces:YES];
-    [self setBouncesZoom:YES];
-
-    [self setContentSize:CGSizeMake(self.frame.size.width, self.frame.size.height)];
-    [self setDelegate:self];
 
     [self resetZoomFactors];
 }
@@ -111,12 +147,14 @@
     
     // MANDATORY !!
     // before setting the frame we need to have a 1:1 scale between image view and scrollview
-    [self setZoomScale:1.0f];
+    [self->_scrollView setZoomScale:1.0f];
     self->_fullImageView.frame = CGRectMake(0.f, 0.f, self->_fullImageView.image.size.width, self->_fullImageView.image.size.height);
     
-    [self setMaximumZoomScale:[self calculateZoomScaleActualSizeWithAdditionnalFactor:1.f]];
-    [self setMinimumZoomScale:[self calculateZoomScaleFit]];
-    [self setZoomScale:[self calculateZoomScaleFit]];
+    [self->_scrollView setMaximumZoomScale:[self calculateZoomScaleActualSizeWithAdditionnalFactor:1.f]];
+    [self->_scrollView setMinimumZoomScale:[self calculateZoomScaleFit]];
+    [self->_scrollView setZoomScale:[self calculateZoomScaleFit]];
+    
+    [self setNeedsLayout];
 }
 
 -(CGFloat)calculateZoomScaleFit {
@@ -155,10 +193,10 @@
     return 1.f * (factor == 0.f ? 1.f : factor);
 }
 
--(void)centerSubView:(UIView*)subview {
+-(void)centerSubView:(UIView*)subview inView:(UIView*)view {
     // http://stackoverflow.com/questions/1316451/center-content-of-uiscrollview-when-smaller
 
-    CGSize boundsSize = self.bounds.size;
+    CGSize boundsSize = view.bounds.size;
     CGRect frameToCenter = subview.frame;
     
     // center horizontally
@@ -190,6 +228,7 @@
         [safeSelf->_fullImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
         [safeSelf resetZoomFactors];
         [safeSelf setNeedsDisplay];
+        [safeSelf setNeedsLayout];
     });
 }
 
@@ -224,12 +263,13 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self centerSubView:self->_circularProgressView];
-    [self centerSubView:self->_fullImageView];
+    
+    [self centerSubView:self->_circularProgressView inView:self];
+    [self centerSubView:self->_fullImageView        inView:self->_scrollView];
 }
 
 -(BOOL)isZoomed {
-    return [self zoomScale] != [self minimumZoomScale];
+    return [self->_scrollView zoomScale] != [self->_scrollView minimumZoomScale];
 }
 
 #pragma mark - UIGestureRecognizer
@@ -242,13 +282,13 @@
 -(void)doubleTapOnImageView:(UIGestureRecognizer*)gestureRecognizer {
     
     if([self isZoomed])
-        [self setZoomScale:self.minimumZoomScale animated:YES];
+        [self->_scrollView setZoomScale:self->_scrollView.minimumZoomScale animated:YES];
     else
     {
         // define a rect to zoom to.
         CGPoint touchCenter = [gestureRecognizer locationInView:self->_fullImageView];
-        CGSize zoomRectSize = CGSizeMake(self.frame.size.width / self.maximumZoomScale,
-                                         self.frame.size.height / self.maximumZoomScale);
+        CGSize zoomRectSize = CGSizeMake(self.frame.size.width / self->_scrollView.maximumZoomScale,
+                                         self.frame.size.height / self->_scrollView.maximumZoomScale);
         CGPoint zoomPoint = touchCenter;// CGPointMake(touchCenter.x * self.zoomScale, touchCenter.y * self.zoomScale);
         
         CGFloat x = zoomPoint.x - zoomRectSize.width * .5f;
@@ -258,7 +298,7 @@
                                      zoomRectSize.width,
                                      zoomRectSize.height);
         
-        [self zoomToRect:zoomArea animated:YES];
+        [self->_scrollView zoomToRect:zoomArea animated:YES];
     }
 }
 
@@ -299,7 +339,8 @@
         [safeSelf->_fullImageView setImage:[UIImage imageWithData:self->_picData]];
         [safeSelf resetZoomFactors];
         [safeSelf setNeedsDisplay];
-        
+        [safeSelf setNeedsLayout];
+
         safeSelf->_picData = nil;
         safeSelf->_picConnection = nil;
     });

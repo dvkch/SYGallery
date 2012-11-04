@@ -14,6 +14,12 @@
 @protocol SYGalleryView
 @end
 
+#define UIViewAutoresizingFlexibleMargins                 \
+UIViewAutoresizingFlexibleBottomMargin    | \
+UIViewAutoresizingFlexibleLeftMargin      | \
+UIViewAutoresizingFlexibleRightMargin     | \
+UIViewAutoresizingFlexibleTopMargin
+
 typedef enum {
     SYGallerySourceTypeLocal,
     SYGallerySourceTypeDistant

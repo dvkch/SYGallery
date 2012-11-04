@@ -24,6 +24,7 @@
 		F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891EB163AF33E00C8E806 /* SYDataSource.m */; };
 		F847C53016387AC300245B53 /* no_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52C16387AC300245B53 /* no_picture.png */; };
 		F847C53116387AC300245B53 /* no_picture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52D16387AC300245B53 /* no_picture@2x.png */; };
+		F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F88EA4731645808F00D25742 /* SYGalleryActionView.m */; };
 		F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */; };
 		F8B96E111638116600EC9487 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E101638116600EC9487 /* UIKit.framework */; };
 		F8B96E131638116600EC9487 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E121638116600EC9487 /* Foundation.framework */; };
@@ -70,6 +71,8 @@
 		F847C52D16387AC300245B53 /* no_picture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_picture@2x.png"; sourceTree = "<group>"; };
 		F847C52E16387AC300245B53 /* no_picture_org.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = no_picture_org.pdf; sourceTree = "<group>"; };
 		F847C52F16387AC300245B53 /* no_picture_org.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_picture_org.png; sourceTree = "<group>"; };
+		F88EA4721645808F00D25742 /* SYGalleryActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryActionView.h; sourceTree = "<group>"; };
+		F88EA4731645808F00D25742 /* SYGalleryActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryActionView.m; sourceTree = "<group>"; };
 		F8A9CE5D16419C3B0097372D /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
 		F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		F8B96E0C1638116600EC9487 /* SYGalleryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SYGalleryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,6 +243,8 @@
 				F8B96E3C163813B100EC9487 /* SYGalleryThumbView.m */,
 				F8F2ADEF16383EFF00B96784 /* SYGalleryThumbCell.h */,
 				F8F2ADF016383EFF00B96784 /* SYGalleryThumbCell.m */,
+				F88EA4721645808F00D25742 /* SYGalleryActionView.h */,
+				F88EA4731645808F00D25742 /* SYGalleryActionView.m */,
 			);
 			name = SYGallery;
 			path = ../SYGallery;
@@ -377,6 +382,7 @@
 				F81891E9163AF23700C8E806 /* SYViewControllerFull.m in Sources */,
 				F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */,
 				F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */,
+				F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
