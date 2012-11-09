@@ -10,8 +10,8 @@
 #import "SYGalleryDelegates.h"
 #import "GMGridView.h"
 
-#define CELL_SIZE 75.f
-#define CELL_SPACING 4.f
+#define CELL_SIZE ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 75.f)
+#define CELL_SPACING ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 6.99f : 4.f)
 
 @interface SYGalleryThumbView : UIView <SYGalleryView,
 GMGridViewActionDelegate,
