@@ -89,7 +89,6 @@
     
     if([self->_actionListView superview] == nil)
         [self addSubview:self->_actionListView];
-
     
 }
 

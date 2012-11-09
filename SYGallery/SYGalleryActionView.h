@@ -48,7 +48,7 @@ typedef enum {
 @property (nonatomic) SYPosition position;
 @property (nonatomic) UIEdgeInsets innerMargin;
 
-@property (nonatomic) UIFont *font;
+@property (nonatomic) UIFont *actionButtonFonts;
 @property (nonatomic) UIColor *mainBackgroundColor;
 
 @property (nonatomic) BOOL opened;

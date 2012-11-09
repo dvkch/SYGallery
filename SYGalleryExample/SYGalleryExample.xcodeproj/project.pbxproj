@@ -22,6 +22,17 @@
 		F81891E6163ADA8000C8E806 /* SYGalleryFullPage.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891E5163ADA8000C8E806 /* SYGalleryFullPage.m */; };
 		F81891E9163AF23700C8E806 /* SYViewControllerFull.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891E8163AF23700C8E806 /* SYViewControllerFull.m */; };
 		F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891EB163AF33E00C8E806 /* SYDataSource.m */; };
+		F83955B2164D5CF000E6CE0A /* KKBlocksDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F839559D164D5CF000E6CE0A /* KKBlocksDelegate.m */; };
+		F83955B3164D5CF000E6CE0A /* KKGridView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F839559F164D5CF000E6CE0A /* KKGridView.bundle */; };
+		F83955B4164D5CF000E6CE0A /* KKGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955A1164D5CF000E6CE0A /* KKGridView.m */; };
+		F83955B5164D5CF000E6CE0A /* KKGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955A3164D5CF000E6CE0A /* KKGridViewCell.m */; };
+		F83955B6164D5CF000E6CE0A /* KKGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955A5164D5CF000E6CE0A /* KKGridViewController.m */; };
+		F83955B7164D5CF000E6CE0A /* KKGridViewIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955A7164D5CF000E6CE0A /* KKGridViewIndexView.m */; };
+		F83955B8164D5CF000E6CE0A /* KKGridViewSectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955A9164D5CF000E6CE0A /* KKGridViewSectionInfo.m */; };
+		F83955B9164D5CF000E6CE0A /* KKGridViewSectionLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955AB164D5CF000E6CE0A /* KKGridViewSectionLabel.m */; };
+		F83955BA164D5CF000E6CE0A /* KKGridViewUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955AD164D5CF000E6CE0A /* KKGridViewUpdate.m */; };
+		F83955BB164D5CF000E6CE0A /* KKGridViewUpdateStack.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955AF164D5CF000E6CE0A /* KKGridViewUpdateStack.m */; };
+		F83955BC164D5CF000E6CE0A /* KKIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = F83955B1164D5CF000E6CE0A /* KKIndexPath.m */; };
 		F847C53016387AC300245B53 /* no_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52C16387AC300245B53 /* no_picture.png */; };
 		F847C53116387AC300245B53 /* no_picture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52D16387AC300245B53 /* no_picture@2x.png */; };
 		F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F88EA4731645808F00D25742 /* SYGalleryActionView.m */; };
@@ -67,6 +78,29 @@
 		F81891E8163AF23700C8E806 /* SYViewControllerFull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYViewControllerFull.m; sourceTree = "<group>"; };
 		F81891EA163AF33E00C8E806 /* SYDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYDataSource.h; sourceTree = "<group>"; };
 		F81891EB163AF33E00C8E806 /* SYDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYDataSource.m; sourceTree = "<group>"; };
+		F839559B164D5CF000E6CE0A /* Definitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
+		F839559C164D5CF000E6CE0A /* KKBlocksDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKBlocksDelegate.h; sourceTree = "<group>"; };
+		F839559D164D5CF000E6CE0A /* KKBlocksDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKBlocksDelegate.m; sourceTree = "<group>"; };
+		F839559E164D5CF000E6CE0A /* KKGridView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KKGridView-Prefix.pch"; sourceTree = "<group>"; };
+		F839559F164D5CF000E6CE0A /* KKGridView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = KKGridView.bundle; sourceTree = "<group>"; };
+		F83955A0164D5CF000E6CE0A /* KKGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridView.h; sourceTree = "<group>"; };
+		F83955A1164D5CF000E6CE0A /* KKGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridView.m; sourceTree = "<group>"; };
+		F83955A2164D5CF000E6CE0A /* KKGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewCell.h; sourceTree = "<group>"; };
+		F83955A3164D5CF000E6CE0A /* KKGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewCell.m; sourceTree = "<group>"; };
+		F83955A4164D5CF000E6CE0A /* KKGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewController.h; sourceTree = "<group>"; };
+		F83955A5164D5CF000E6CE0A /* KKGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewController.m; sourceTree = "<group>"; };
+		F83955A6164D5CF000E6CE0A /* KKGridViewIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewIndexView.h; sourceTree = "<group>"; };
+		F83955A7164D5CF000E6CE0A /* KKGridViewIndexView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewIndexView.m; sourceTree = "<group>"; };
+		F83955A8164D5CF000E6CE0A /* KKGridViewSectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewSectionInfo.h; sourceTree = "<group>"; };
+		F83955A9164D5CF000E6CE0A /* KKGridViewSectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewSectionInfo.m; sourceTree = "<group>"; };
+		F83955AA164D5CF000E6CE0A /* KKGridViewSectionLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewSectionLabel.h; sourceTree = "<group>"; };
+		F83955AB164D5CF000E6CE0A /* KKGridViewSectionLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewSectionLabel.m; sourceTree = "<group>"; };
+		F83955AC164D5CF000E6CE0A /* KKGridViewUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewUpdate.h; sourceTree = "<group>"; };
+		F83955AD164D5CF000E6CE0A /* KKGridViewUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewUpdate.m; sourceTree = "<group>"; };
+		F83955AE164D5CF000E6CE0A /* KKGridViewUpdateStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKGridViewUpdateStack.h; sourceTree = "<group>"; };
+		F83955AF164D5CF000E6CE0A /* KKGridViewUpdateStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKGridViewUpdateStack.m; sourceTree = "<group>"; };
+		F83955B0164D5CF000E6CE0A /* KKIndexPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKIndexPath.h; sourceTree = "<group>"; };
+		F83955B1164D5CF000E6CE0A /* KKIndexPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKIndexPath.m; sourceTree = "<group>"; };
 		F847C52C16387AC300245B53 /* no_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_picture.png; sourceTree = "<group>"; };
 		F847C52D16387AC300245B53 /* no_picture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_picture@2x.png"; sourceTree = "<group>"; };
 		F847C52E16387AC300245B53 /* no_picture_org.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = no_picture_org.pdf; sourceTree = "<group>"; };
@@ -145,6 +179,37 @@
 				F81891CE163AD28E00C8E806 /* 6_s.jpg */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		F839559A164D5CF000E6CE0A /* KKGridView */ = {
+			isa = PBXGroup;
+			children = (
+				F839559B164D5CF000E6CE0A /* Definitions.h */,
+				F839559C164D5CF000E6CE0A /* KKBlocksDelegate.h */,
+				F839559D164D5CF000E6CE0A /* KKBlocksDelegate.m */,
+				F839559E164D5CF000E6CE0A /* KKGridView-Prefix.pch */,
+				F839559F164D5CF000E6CE0A /* KKGridView.bundle */,
+				F83955A0164D5CF000E6CE0A /* KKGridView.h */,
+				F83955A1164D5CF000E6CE0A /* KKGridView.m */,
+				F83955A2164D5CF000E6CE0A /* KKGridViewCell.h */,
+				F83955A3164D5CF000E6CE0A /* KKGridViewCell.m */,
+				F83955A4164D5CF000E6CE0A /* KKGridViewController.h */,
+				F83955A5164D5CF000E6CE0A /* KKGridViewController.m */,
+				F83955A6164D5CF000E6CE0A /* KKGridViewIndexView.h */,
+				F83955A7164D5CF000E6CE0A /* KKGridViewIndexView.m */,
+				F83955A8164D5CF000E6CE0A /* KKGridViewSectionInfo.h */,
+				F83955A9164D5CF000E6CE0A /* KKGridViewSectionInfo.m */,
+				F83955AA164D5CF000E6CE0A /* KKGridViewSectionLabel.h */,
+				F83955AB164D5CF000E6CE0A /* KKGridViewSectionLabel.m */,
+				F83955AC164D5CF000E6CE0A /* KKGridViewUpdate.h */,
+				F83955AD164D5CF000E6CE0A /* KKGridViewUpdate.m */,
+				F83955AE164D5CF000E6CE0A /* KKGridViewUpdateStack.h */,
+				F83955AF164D5CF000E6CE0A /* KKGridViewUpdateStack.m */,
+				F83955B0164D5CF000E6CE0A /* KKIndexPath.h */,
+				F83955B1164D5CF000E6CE0A /* KKIndexPath.m */,
+			);
+			name = KKGridView;
+			path = ../Lib/KKGridView/KKGridView;
 			sourceTree = "<group>";
 		};
 		F847C52B16387AC300245B53 /* Resources */ = {
@@ -253,6 +318,7 @@
 		F8B96E47163815F000EC9487 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				F839559A164D5CF000E6CE0A /* KKGridView */,
 				F8A9CE5C16419C3B0097372D /* DACircularProgress */,
 				F8B96E4B163817DA00EC9487 /* GMGridView */,
 			);
@@ -357,6 +423,7 @@
 				F81891D8163AD28E00C8E806 /* 5_s.jpg in Resources */,
 				F81891D9163AD28E00C8E806 /* 6.jpg in Resources */,
 				F81891DA163AD28E00C8E806 /* 6_s.jpg in Resources */,
+				F83955B3164D5CF000E6CE0A /* KKGridView.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,6 +450,16 @@
 				F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */,
 				F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */,
 				F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */,
+				F83955B2164D5CF000E6CE0A /* KKBlocksDelegate.m in Sources */,
+				F83955B4164D5CF000E6CE0A /* KKGridView.m in Sources */,
+				F83955B5164D5CF000E6CE0A /* KKGridViewCell.m in Sources */,
+				F83955B6164D5CF000E6CE0A /* KKGridViewController.m in Sources */,
+				F83955B7164D5CF000E6CE0A /* KKGridViewIndexView.m in Sources */,
+				F83955B8164D5CF000E6CE0A /* KKGridViewSectionInfo.m in Sources */,
+				F83955B9164D5CF000E6CE0A /* KKGridViewSectionLabel.m in Sources */,
+				F83955BA164D5CF000E6CE0A /* KKGridViewUpdate.m in Sources */,
+				F83955BB164D5CF000E6CE0A /* KKGridViewUpdateStack.m in Sources */,
+				F83955BC164D5CF000E6CE0A /* KKIndexPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

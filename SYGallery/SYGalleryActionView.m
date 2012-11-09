@@ -28,7 +28,7 @@
 @synthesize openingDirection = _openingDirection;
 @synthesize position = _position;
 @synthesize innerMargin = _innerMargin;
-@synthesize font = _font;
+@synthesize actionButtonFonts = _actionButtonFonts;
 @synthesize mainBackgroundColor = _mainBackgroundColor;
 @synthesize opened;
 
@@ -54,7 +54,7 @@
     /*********************************************/
     self->_buttons = [NSMutableArray array];
     self->_openingDirection = SYVerticalDirectionDownward;
-    self->_font = [UIFont systemFontOfSize:18.f];
+    self->_actionButtonFonts = [UIFont systemFontOfSize:18.f];
     self->_mainBackgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.5f];
     
     
@@ -67,8 +67,7 @@
     
     [self->_mainButton setTitle:@"+" forState:UIControlStateNormal];
     [self->_mainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self->_mainButton.titleLabel setFont:self->_font];
-    
+    [self->_mainButton.titleLabel setFont:self->_actionButtonFonts];
     [self->_mainButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
     [self->_mainButton setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
     [self->_mainButton addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -133,12 +132,20 @@
 }
 
 -(void)updateMainButtonFrame {
-    CGFloat size = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 50.f : 25.f;
+    
     CGFloat fX = 0.f;
     CGFloat fY = 0.f;
-    CGFloat fW = size;
-    CGFloat fH = size;
-    
+    CGFloat fWH = 0.f;
+
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [self->_mainButton.titleLabel setFont:[UIFont systemFontOfSize:24.f]];
+        fWH = 31.25f;
+    }
+    else {
+        [self->_mainButton.titleLabel setFont:[UIFont systemFontOfSize:18.f]];
+        fWH = 25.f;
+    }
+
     switch (self->_position) {
         case SYPositionTopLeft:
             fY = self->_innerMargin.top;
@@ -149,56 +156,56 @@
             break;
         case SYPositionTopMiddle:
             fY = self->_innerMargin.top;
-            fX = self->_innerMargin.left + (self.frame.size.width - self->_innerMargin.left - self->_innerMargin.right - size) /2.f;
+            fX = self->_innerMargin.left + (self.frame.size.width - self->_innerMargin.left - self->_innerMargin.right - fWH) /2.f;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
              UIViewAutoresizingFlexibleBottomMargin];
             break;
         case SYPositionTopRight:
             fY = self->_innerMargin.top;
-            fX = self.frame.size.width - self->_innerMargin.right - size;
+            fX = self.frame.size.width - self->_innerMargin.right - fWH;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleLeftMargin |
              UIViewAutoresizingFlexibleBottomMargin];
             break;
         case SYPositionCenterLeft:
-            fY = self->_innerMargin.top + (self.frame.size.height - self->_innerMargin.top - self->_innerMargin.bottom - size) /2.f;
+            fY = self->_innerMargin.top + (self.frame.size.height - self->_innerMargin.top - self->_innerMargin.bottom - fWH) /2.f;
             fX = self->_innerMargin.left;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleRightMargin |
              UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin ];
             break;
         case SYPositionCenterMiddle:
-            fY = self->_innerMargin.top + (self.frame.size.height - self->_innerMargin.top - self->_innerMargin.bottom - size) /2.f;
-            fX = self->_innerMargin.left + (self.frame.size.width - self->_innerMargin.left - self->_innerMargin.right - size) /2.f;
+            fY = self->_innerMargin.top + (self.frame.size.height - self->_innerMargin.top - self->_innerMargin.bottom - fWH) /2.f;
+            fX = self->_innerMargin.left + (self.frame.size.width - self->_innerMargin.left - self->_innerMargin.right - fWH) /2.f;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
              UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin ];
             break;
         case SYPositionCenterRight:
-            fY = self->_innerMargin.top + (self.frame.size.height - self->_innerMargin.top - self->_innerMargin.bottom - size) /2.f;
-            fX = self.frame.size.width - self->_innerMargin.right - size;
+            fY = self->_innerMargin.top + (self.frame.size.height - self->_innerMargin.top - self->_innerMargin.bottom - fWH) /2.f;
+            fX = self.frame.size.width - self->_innerMargin.right - fWH;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleLeftMargin |
              UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin ];
             break;
         case SYPositionBottomLeft:
-            fY = self.frame.size.height - self->_innerMargin.bottom - size;
+            fY = self.frame.size.height - self->_innerMargin.bottom - fWH;
             fX = self->_innerMargin.left;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleRightMargin |
              UIViewAutoresizingFlexibleTopMargin ];
             break;
         case SYPositionBottomMiddle:
-            fY = self.frame.size.height - self->_innerMargin.bottom - size;
-            fX = self->_innerMargin.left + (self.frame.size.width - self->_innerMargin.left - self->_innerMargin.right - size) /2.f;
+            fY = self.frame.size.height - self->_innerMargin.bottom - fWH;
+            fX = self->_innerMargin.left + (self.frame.size.width - self->_innerMargin.left - self->_innerMargin.right - fWH) /2.f;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
              UIViewAutoresizingFlexibleTopMargin ];
             break;
         case SYPositionBottomRight:
-            fY = self.frame.size.height - self->_innerMargin.bottom - size;
-            fX = self.frame.size.width - self->_innerMargin.right - size;
+            fY = self.frame.size.height - self->_innerMargin.bottom - fWH;
+            fX = self.frame.size.width - self->_innerMargin.right - fWH;
             [self->_mainButton setAutoresizingMask:
              UIViewAutoresizingFlexibleLeftMargin |
              UIViewAutoresizingFlexibleTopMargin ];
@@ -208,7 +215,7 @@
             break;
     }
     
-    [self->_mainButton setFrame:CGRectMake(fX, fY, fW, fH)];
+    [self->_mainButton setFrame:CGRectMake(fX, fY, fWH, fWH)];
     [self->_mainButton setNeedsDisplay];
     [self->_mainButton setNeedsLayout];
     [self setNeedsDisplay];
@@ -221,7 +228,8 @@
     CGFloat maxHeight = 0.f;
     for (UIButton *button in self->_buttons)
     {
-        CGSize textSize = [[button titleForState:UIControlStateNormal] sizeWithFont:self->_font];
+        [button.titleLabel setFont:self->_actionButtonFonts];
+        CGSize textSize = [[button titleForState:UIControlStateNormal] sizeWithFont:button.titleLabel.font];
         maxWidth = MAX(textSize.width, maxWidth);
         maxHeight = MAX(textSize.height, maxHeight);
     }
@@ -301,18 +309,35 @@
 
 -(void)setOpeningDirection:(SYVerticalDirection)openingDirection {
     self->_openingDirection = openingDirection;
+    
     [self updateButtonContainer];
 }
 
 -(void)setPosition:(SYPosition)position
 {
     self->_position = position;
+    
     [self updateMainButtonFrame];
     [self updateButtonContainer];
 }
 
+-(void)setFont:(UIFont *)font {
+    self->_actionButtonFonts = font;
+    
+    [self updateMainButtonFrame];
+    [self updateButtonContainer];
+}
+
+-(void)setMainBackgroundColor:(UIColor *)mainBackgroundColor {
+    self->_mainBackgroundColor = mainBackgroundColor;
+    
+    [self->_buttonsContainer setBackgroundColor:self->_mainBackgroundColor];
+    [self->_mainButton setBackgroundColor:self->_mainBackgroundColor];
+}
+
 -(void)setInnerMargin:(UIEdgeInsets)innerMargin {
     self->_innerMargin = innerMargin;
+    
     [self updateMainButtonFrame];
     [self updateButtonContainer];
 }
@@ -333,6 +358,7 @@
              andSelector:(SEL)selector
                   andTag:(NSInteger)tag
 {
+    
     UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [actionButton setTitle:name forState:UIControlStateNormal];
     [actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
