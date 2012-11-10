@@ -80,7 +80,7 @@
     [self->_thumbImageView setFrame:subViewFrame];
     [self->_thumbImageView setClipsToBounds:YES];
     [self->_thumbImageView setBackgroundColor:[UIColor clearColor]];
-    [self->_thumbImageView setContentMode:UIViewContentModeCenter];
+    [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self->_thumbImageView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     

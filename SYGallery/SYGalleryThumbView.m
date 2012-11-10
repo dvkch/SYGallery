@@ -68,7 +68,7 @@
     
     // so that cells cannot be moved
     self->_gridView.enableEditOnLongPress = NO;
-    self->_gridView.sortingDelegate = self;
+    self->_gridView.sortingDelegate = nil;
     
     self->_gridView.actionDelegate = self;
     self->_gridView.dataSource = self;
