@@ -1,3 +1,6 @@
 [submodule "Lib/DACircularProgres"]
 	path = Lib/DACircularProgres
 	url = git://github.com/danielamitay/DACircularProgress.git
+[submodule "Lib/GMGridView"]
+	path = Lib/GMGridView
+	url = git://github.com/dvkch/GMGridView.git

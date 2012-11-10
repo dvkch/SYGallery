@@ -66,8 +66,11 @@
     self->_gridView.showsHorizontalScrollIndicator = NO;
     self->_gridView.alwaysBounceVertical = YES;
     
-    self->_gridView.actionDelegate = self;
+    // so that cells cannot be moved
+    self->_gridView.enableEditOnLongPress = NO;
     self->_gridView.sortingDelegate = self;
+    
+    self->_gridView.actionDelegate = self;
     self->_gridView.dataSource = self;
 
     if([self->_gridView superview] == nil)
