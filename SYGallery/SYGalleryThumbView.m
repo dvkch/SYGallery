@@ -108,7 +108,7 @@
     [self reloadGallery];
 }
 
--(void)setActionDelegate:(id<SYGalleryActions>)actionDelegate {
+-(void)setActionDelegate:(id<SYGalleryThumbViewActions>)actionDelegate {
     self->_actionDelegate = actionDelegate;
     [self reloadGallery];
 }
@@ -200,7 +200,7 @@
                 break;
         }
     }
-
+    
     return cell;
 }
 

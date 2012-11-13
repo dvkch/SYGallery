@@ -174,6 +174,11 @@
     [self reloadGalleryAndScrollToIndex:firstItem];
 }
 
+-(void)setActionDelegate:(id<SYGalleryFullViewActions>)actionDelegate {
+    self->_actionDelegate = actionDelegate;
+    [self.actionDelegate gallery:self showedUpPictureAtIndex:[self currentIndexCalculated]];
+}
+
 -(void)reloadGalleryAndScrollToIndex:(NSUInteger)index {
     uint picCount = [self numberOfPictures];
     
@@ -190,6 +195,8 @@
     [self resetPagesZooms];
 
     [self scrollToPage:indexToLoad animated:NO];
+    if(self.actionDelegate)
+        [self.actionDelegate gallery:self showedUpPictureAtIndex:indexToLoad];
 }
 
 -(void)loadPageAtIndex:(uint)pageIndex {
@@ -256,13 +263,12 @@
     
     if(currentIndex != 0) {
         [self loadPageAtIndex:currentIndex -1];
-//        [self resetPageZoomsAtIndex:currentIndex -1];
     }
     [self loadPageAtIndex:currentIndex];
     [self loadPageAtIndex:currentIndex +1];
-//    [self resetPageZoomsAtIndex:currentIndex +1];
-
-    // A possible optimization would be to unload the views+controllers which are no longer visible
+    
+    if(self.actionDelegate)
+        [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];
 }
 
 /*

@@ -27,6 +27,9 @@
 @implementation SYGalleryFullPage
 
 @synthesize pageNumber = _pageNumber;
+@synthesize hasBeenLoaded = _hasBeenLoaded;
+@synthesize isZoomed = _isZoomed;
+@synthesize actionDelegate = _actionDelegate;
 
 #pragma mark - Initialization
 
@@ -129,7 +132,7 @@
     
     [self setAutoresizesSubviews:YES];
     [self setAutoresizingMask:
-     UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleMargins];
+     UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [self setUserInteractionEnabled:YES];
     [self setContentMode:UIViewContentModeCenter];
     [self setClipsToBounds:YES];

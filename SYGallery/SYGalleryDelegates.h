@@ -42,8 +42,12 @@ typedef enum {
 - (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index;
 @end
 
-@protocol SYGalleryActions <NSObject>
+@protocol SYGalleryThumbViewActions <NSObject>
 - (void)gallery:(id<SYGalleryView>)gallery didTapOnItemAtIndex:(NSUInteger)index;
 - (void)gallery:(id<SYGalleryView>)gallery deletActionForItemAtIndex:(NSUInteger)index;
 - (void)gallery:(id<SYGalleryView>)gallery changedEditStateTo:(BOOL)edit;
+@end
+
+@protocol SYGalleryFullViewActions <NSObject>
+- (void)gallery:(id<SYGalleryView>)gallery showedUpPictureAtIndex:(NSUInteger)index;
 @end

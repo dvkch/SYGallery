@@ -11,7 +11,7 @@
 @class SYGalleryThumbView;
 @class SYGalleryFullView;
 
-@interface SYViewControllerThumbs : UIViewController <SYGalleryActions>
+@interface SYViewControllerThumbs : UIViewController <SYGalleryThumbViewActions>
 
 @property (weak, nonatomic) IBOutlet SYGalleryThumbView *thumbsView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;

@@ -26,7 +26,7 @@ GMGridViewSortingDelegate>
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
-@property (weak, nonatomic) id<SYGalleryActions> actionDelegate;
+@property (weak, nonatomic) id<SYGalleryThumbViewActions> actionDelegate;
 @property (nonatomic) BOOL cacheImages;
 @property (nonatomic) BOOL edit;
 

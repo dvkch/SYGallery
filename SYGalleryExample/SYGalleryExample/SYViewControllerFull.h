@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYGalleryDelegates.h"
 @class SYGalleryFullView;
 
-@interface SYViewControllerFull : UIViewController
+@interface SYViewControllerFull : UIViewController <SYGalleryFullViewActions>
 
 @property (weak, nonatomic) IBOutlet SYGalleryFullView *fullPicView;
 @property (nonatomic) NSUInteger firstIndex;

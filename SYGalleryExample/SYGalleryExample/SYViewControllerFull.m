@@ -18,6 +18,12 @@
 
 @synthesize firstIndex = _firstIndex;
 
+#pragma mark - SYGalleryFullpageActions
+
+- (void)gallery:(id<SYGalleryView>)gallery showedUpPictureAtIndex:(NSUInteger)index {
+    [self setTitle:[NSString stringWithFormat:@"%d / %d", index +1, [[SYDataSource sharedDataSource] numberOfItemsInGallery:self->_fullPicView]]];
+}
+
 AUTOROTATE_ALL_ORIENTATIONS
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -31,6 +37,7 @@ AUTOROTATE_ALL_ORIENTATIONS
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.fullPicView setDataSource:[SYDataSource sharedDataSource] andFirstItemToShow:[self firstIndex]];
+    [self.fullPicView setActionDelegate:self];
     [self.fullPicView addActionWithName:@"Show details" andTarget:self andSelector:@selector(imageAction1) andTag:0];
 }
 

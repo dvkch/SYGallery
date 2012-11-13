@@ -28,6 +28,7 @@
 @property (atomic) uint pageNumber;
 @property (atomic) BOOL hasBeenLoaded;
 @property (readonly) BOOL isZoomed;
+@property (atomic) id<SYGalleryFullViewActions> actionDelegate;
 
 -(id)initWithFrame:(CGRect)frame andPageNumber:(uint)pageNumber;
 
