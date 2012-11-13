@@ -24,13 +24,12 @@
 
 @implementation SYGalleryActionView
 
-#warning ADD SET METHODS
 @synthesize openingDirection = _openingDirection;
 @synthesize position = _position;
 @synthesize innerMargin = _innerMargin;
 @synthesize actionButtonFonts = _actionButtonFonts;
 @synthesize mainBackgroundColor = _mainBackgroundColor;
-@synthesize opened;
+@synthesize opened = _opened;
 
 
 #pragma mark - Initialization
@@ -342,8 +341,8 @@
     [self updateButtonContainer];
 }
 
--(void)setOpened:(BOOL)_opened {
-    if(_opened)
+-(void)setOpened:(BOOL)opened {
+    if(opened)
         [self openActionList];
     else
         [self closeActionList];
