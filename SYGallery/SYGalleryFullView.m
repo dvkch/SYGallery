@@ -195,7 +195,8 @@
     [self resetPagesZooms];
 
     [self scrollToPage:indexToLoad animated:NO];
-    if(self.actionDelegate)
+    
+    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
         [self.actionDelegate gallery:self showedUpPictureAtIndex:indexToLoad];
 }
 
@@ -267,7 +268,7 @@
     [self loadPageAtIndex:currentIndex];
     [self loadPageAtIndex:currentIndex +1];
     
-    if(self.actionDelegate)
+    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
         [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];
 }
 

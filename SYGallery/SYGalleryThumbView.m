@@ -219,8 +219,11 @@
                                    0 :
                                    (uint)position);
     
-    if(self.actionDelegate && position >= 0)
-       [self.actionDelegate gallery:self didTapOnItemAtIndex:(uint)position];
+    if(self.actionDelegate &&
+       [self.actionDelegate respondsToSelector:@selector(gallery:didTapOnItemAtIndex:)] &&
+       position >= 0)
+        
+        [self.actionDelegate gallery:self didTapOnItemAtIndex:(uint)position];
 }
 
 - (void)GMGridViewDidTapOnEmptySpace:(GMGridView *)gridView {
@@ -228,7 +231,10 @@
 }
 
 - (void)GMGridView:(GMGridView *)gridView processDeleteActionForItemAtIndex:(NSInteger)index {
-    if(self.actionDelegate && index >= 0)
+    if(self.actionDelegate &&
+       [self.actionDelegate respondsToSelector:@selector(gallery:deletActionForItemAtIndex:)] &&
+       index >= 0)
+        
         [self.actionDelegate gallery:self deletActionForItemAtIndex:(uint)index];
     
     if(self.dataSource && index >= 0)
@@ -236,7 +242,9 @@
 }
 
 - (void)GMGridView:(GMGridView *)gridView changedEdit:(BOOL)edit {
-    if(self.actionDelegate)
+    if(self.actionDelegate
+       && [self.actionDelegate respondsToSelector:@selector(gallery:changedEditStateTo:)])
+        
         [self.actionDelegate gallery:self changedEditStateTo:edit];
 }
 
