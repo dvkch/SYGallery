@@ -13,6 +13,7 @@
 @private
     NSMutableArray *_localPathsThumbs;
     NSMutableArray *_localPathsFulls;
+    
     NSMutableArray *_distantPathsThumbs;
     NSMutableArray *_distantPathsFulls;
 }

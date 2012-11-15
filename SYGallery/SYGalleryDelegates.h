@@ -37,9 +37,12 @@ typedef enum {
 
 - (NSString*)gallery:(id<SYGalleryView>)gallery absolutePathAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 - (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
-
+@optional
 - (BOOL)gallery:(id<SYGalleryView>)gallery canDeleteAtIndex:(NSUInteger)index;
 - (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index;
+
+- (BOOL)gallery:(id<SYGalleryView>)gallery shouldDisplayBadgeAtIndex:(NSUInteger)index;
+- (NSUInteger)gallery:(id<SYGalleryView>)gallery badgeValueAtIndex:(NSUInteger)index;
 @end
 
 @protocol SYGalleryThumbViewActions <NSObject>

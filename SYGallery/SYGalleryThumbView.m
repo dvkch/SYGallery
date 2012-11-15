@@ -139,7 +139,7 @@
     self->_cellBorderWidth = width;
     
     for (SYGalleryThumbCell *cell in self->_cachedCells) {
-        [cell updateCellBorderWidth:width andColor:color];
+        [cell setBorderWidth:width andColor:color];
         [cell setNeedsDisplay];
     }
 }
@@ -180,7 +180,7 @@
     if(self->_cacheImages)
         [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
     
-    [cell updateCellBorderWidth:self->_cellBorderWidth andColor:self->_cellBorderColor];
+    [cell setBorderWidth:self->_cellBorderWidth andColor:self->_cellBorderColor];
     
     SYGallerySourceType sourceType = [self.dataSource gallery:self
                                             sourceTypeAtIndex:(uint)index];
@@ -201,12 +201,26 @@
         }
     }
     
+    
+    BOOL showBadge = NO;
+    NSUInteger badgeValue = 0;
+    if([self.dataSource respondsToSelector:@selector(gallery:shouldDisplayBadgeAtIndex:)])
+        showBadge = [self.dataSource gallery:self shouldDisplayBadgeAtIndex:(uint)index];
+    
+    if([self.dataSource respondsToSelector:@selector(gallery:badgeValueAtIndex:)])
+        badgeValue = [self.dataSource gallery:self badgeValueAtIndex:(uint)index];
+    
+    [cell setBadgeHidden:!showBadge];
+    [cell setBadgeValue:badgeValue];
+    
     return cell;
 }
 
 - (BOOL)GMGridView:(GMGridView *)gridView canDeleteItemAtIndex:(NSInteger)index {
 
-    if(self.dataSource && index >= 0)
+    if(self.dataSource &&
+       [self.dataSource respondsToSelector:@selector(gallery:canDeleteAtIndex:)] &&
+       index >= 0)
         return [self.dataSource gallery:self canDeleteAtIndex:(uint)index];
     
     return NO;
@@ -237,7 +251,9 @@
         
         [self.actionDelegate gallery:self deletActionForItemAtIndex:(uint)index];
     
-    if(self.dataSource && index >= 0)
+    if(self.dataSource &&
+       [self.dataSource respondsToSelector:@selector(gallery:deleteItemInAtIndex:)] &&
+       index >= 0)
         [self.dataSource gallery:self deleteItemInAtIndex:(uint)index];
 }
 

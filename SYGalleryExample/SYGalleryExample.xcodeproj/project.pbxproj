@@ -38,6 +38,7 @@
 		F8B96E2A1638116600EC9487 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B96E281638116600EC9487 /* MainStoryboard.storyboard */; };
 		F8B96E301638116600EC9487 /* SYViewControllerThumbs.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B96E2F1638116600EC9487 /* SYViewControllerThumbs.m */; };
 		F8B96E3D163813B100EC9487 /* SYGalleryThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B96E3C163813B100EC9487 /* SYGalleryThumbView.m */; };
+		F8CEF7C816553FDE0043828E /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CEF7C716553FDE0043828E /* MKNumberBadgeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F8F2ADEE16383C9000B96784 /* SYGalleryFullView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F2ADED16383C9000B96784 /* SYGalleryFullView.m */; };
 		F8F2ADF116383EFF00B96784 /* SYGalleryThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F2ADF016383EFF00B96784 /* SYGalleryThumbCell.m */; };
 		F8F2ADF216384D8800B96784 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B96E55163817F800EC9487 /* UIGestureRecognizer+GMGridViewAdditions.m */; };
@@ -105,6 +106,8 @@
 		F8B96E55163817F800EC9487 /* UIGestureRecognizer+GMGridViewAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIGestureRecognizer+GMGridViewAdditions.m"; path = "../Lib/GMGridView/GMGridView/UIGestureRecognizer+GMGridViewAdditions.m"; sourceTree = "<group>"; };
 		F8B96E56163817F800EC9487 /* UIView+GMGridViewAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIView+GMGridViewAdditions.h"; path = "../Lib/GMGridView/GMGridView/UIView+GMGridViewAdditions.h"; sourceTree = "<group>"; };
 		F8B96E57163817F800EC9487 /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIView+GMGridViewAdditions.m"; path = "../Lib/GMGridView/GMGridView/UIView+GMGridViewAdditions.m"; sourceTree = "<group>"; };
+		F8CEF7C616553FDE0043828E /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
+		F8CEF7C716553FDE0043828E /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		F8F2ADEA16383BD200B96784 /* SYGalleryDelegates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYGalleryDelegates.h; sourceTree = "<group>"; };
 		F8F2ADEC16383C9000B96784 /* SYGalleryFullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryFullView.h; sourceTree = "<group>"; };
 		F8F2ADED16383C9000B96784 /* SYGalleryFullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryFullView.m; sourceTree = "<group>"; };
@@ -253,6 +256,7 @@
 		F8B96E47163815F000EC9487 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				F8CEF7C516553FDE0043828E /* MKNumberBadgeView */,
 				F8A9CE5C16419C3B0097372D /* DACircularProgress */,
 				F8B96E4B163817DA00EC9487 /* GMGridView */,
 			);
@@ -284,6 +288,16 @@
 				F8B96E57163817F800EC9487 /* UIView+GMGridViewAdditions.m */,
 			);
 			name = Additions;
+			sourceTree = "<group>";
+		};
+		F8CEF7C516553FDE0043828E /* MKNumberBadgeView */ = {
+			isa = PBXGroup;
+			children = (
+				F8CEF7C616553FDE0043828E /* MKNumberBadgeView.h */,
+				F8CEF7C716553FDE0043828E /* MKNumberBadgeView.m */,
+			);
+			name = MKNumberBadgeView;
+			path = ../Lib/iPhoneMK/Views/MKNumberBadgeView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,6 +397,7 @@
 				F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */,
 				F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */,
 				F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */,
+				F8CEF7C816553FDE0043828E /* MKNumberBadgeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

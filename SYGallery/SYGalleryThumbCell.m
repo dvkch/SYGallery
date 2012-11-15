@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYGalleryThumbCell.h"
 #import "GMGridViewCell.h"
+#import "MKNumberBadgeView.h"
 
 
 @interface SYGalleryThumbCell (Private)
@@ -30,6 +31,8 @@
 #pragma mark - Private methods
 
 -(void)setDefaults {
+    self->_badgeHidden = YES;
+    self->_badgeValue = 0;
     self->_cellBorderColor = [UIColor blackColor];
     self->_cellBorderWidth = 1.f;
 }
@@ -42,11 +45,23 @@
         [self setDefaults];
     
     self.hasBeenLoaded = NO;
+    CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
+    
     
     /*********************************************/
     /************  CONTENTVIEW INIT  *************/
     /*********************************************/
-    CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
+    if(!self.contentView)
+        self.contentView = [[UIView alloc] initWithFrame:subViewFrame];
+    [self.contentView setBackgroundColor:[UIColor clearColor]];
+    [self.contentView setClipsToBounds:NO];
+    [self.contentView setAutoresizingMask:
+     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    
+    
+    /*********************************************/
+    /**************  MAINVIEW INIT  **************/
+    /*********************************************/
 
     if (!self->_mainView)
         self->_mainView = [[UIView alloc] init];
@@ -57,6 +72,10 @@
     [self->_mainView.layer setBorderWidth:self->_cellBorderWidth];
     [self->_mainView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    
+    if([self->_mainView superview] == nil)
+        [self.contentView addSubview:self->_mainView];
+    
     
     /*********************************************/
     /***************  LABEL INIT  ****************/
@@ -71,6 +90,7 @@
     
     if([self->_label superview] == nil)
         [self->_mainView addSubview:self->_label];
+    
     
     /*********************************************/
     /*************  THUMBVIEW INIT  **************/
@@ -87,6 +107,28 @@
     if([self->_thumbImageView superview] == nil)
         [self->_mainView addSubview:self->_thumbImageView];
     
+    
+    /*********************************************/
+    /*************  BADGEVIEW INIT  **************/
+    /*********************************************/
+    // MKNumberBadgeView won't initialize properly if not using initWithFrame or initWithCoder
+    if(!self->_badgeView)
+        self->_badgeView = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(0.f, 0.f, 0.f, 0.f)];
+    CGFloat totalHeight = self->_badgeView.badgeSize.height + self->_badgeView.strokeWidth * 2.f;
+    CGRect badgeFrame = CGRectMake(0.f, -3.f, self.frame.size.width + 2.f, totalHeight);
+    [self->_badgeView setFrame:badgeFrame];
+    [self->_badgeView setHidden:self->_badgeHidden];
+    [self->_badgeView setShadow:NO];
+    [self->_badgeView setValue:self->_badgeValue];
+    [self->_badgeView setHideWhenZero:NO];
+    [self->_badgeView setAlignment:UITextAlignmentRight];
+    [self->_badgeView setAutoresizingMask:
+     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+    
+    if([self->_badgeView superview] == nil)
+        [self.contentView addSubview:self->_badgeView];
+    
+    
     /*********************************************/
     /********  ACTIVITY INDICATOR INIT  **********/
     /*********************************************/
@@ -102,8 +144,6 @@
 
     if([self->_activityIndicatorView superview] == nil)
         [self->_mainView addSubview:self->_activityIndicatorView];
-
-    self.contentView = self->_mainView;
 }
 
 #pragma mark - View methods
@@ -164,13 +204,35 @@
     self->_label.textAlignment = NSTextAlignmentCenter;
 }
 
--(void)updateCellBorderWidth:(CGFloat)width andColor:(UIColor*)color {
+
+-(void)setBorderWidth:(CGFloat)width andColor:(UIColor *)color
+{
     self->_cellBorderColor = color;
     self->_cellBorderWidth = width;
     
     if (self->_mainView) {
         [self->_mainView.layer setBorderColor:self->_cellBorderColor.CGColor];
         [self->_mainView.layer setBorderWidth:self->_cellBorderWidth];
+    }
+}
+
+-(void)setBadgeValue:(NSUInteger)value
+{
+    self->_badgeValue = value;
+    if (!self->_badgeHidden)
+        [self->_badgeView setValue:self->_badgeValue];
+}
+
+-(void)setBadgeHidden:(BOOL)badgeHidden
+{
+    self->_badgeHidden = badgeHidden;
+    if(badgeHidden) {
+        [self->_badgeView setHideWhenZero:YES];
+        [self->_badgeView setValue:0];
+    }
+    else {
+        [self->_badgeView setValue:self->_badgeValue];
+        [self->_badgeView setHideWhenZero:NO];
     }
 }
 

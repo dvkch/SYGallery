@@ -148,6 +148,7 @@
                                 @"http://farm8.staticflickr.com/7168/6408044361_fc0fbd5ecd_b.jpg",
                                 @"http://farm7.staticflickr.com/6226/6408045667_1f447b1367_b.jpg",
                                 nil];
+    
     return self;
 }
 
@@ -209,6 +210,15 @@
         [self->_localPathsThumbs removeObjectAtIndex:index];
     }
 
+}
+
+-(BOOL)gallery:(id<SYGalleryView>)gallery shouldDisplayBadgeAtIndex:(NSUInteger)index {
+    return (index % 11) != 0;
+}
+
+-(NSUInteger)gallery:(id<SYGalleryView>)gallery badgeValueAtIndex:(NSUInteger)index {
+    int nb = index % 11 - 1;
+    return (nb == -1 ? 0 : (uint)nb);
 }
 
 @end
