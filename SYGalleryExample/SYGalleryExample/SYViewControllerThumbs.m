@@ -51,8 +51,10 @@ AUTOROTATE_ALL_ORIENTATIONS
 }
 
 - (void)viewDidUnload {
-    [self setSegmentedControl:nil];
     [self setThumbsView:nil];
+    [self setButtonLocalPics:nil];
+    [self setButtonDistantPics:nil];
+    [self setButtonText:nil];
     [super viewDidUnload];
 }
 
@@ -62,8 +64,27 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.thumbsView setEdit:!self.thumbsView.edit];
 }
 
-- (IBAction)segmentedControlClick:(id)sender {
-    [[SYDataSource sharedDataSource] setUseLocalPathsNotDistantUrl:(self.segmentedControl.selectedSegmentIndex == 0)];
+- (IBAction)buttonLocalPicsClick:(id)sender {
+    [[SYDataSource sharedDataSource] setSourceType:SYGallerySourceTypeImageLocal];
+    [self.buttonLocalPics setTintColor:[UIColor blackColor]];
+    [self.buttonDistantPics setTintColor:nil];
+    [self.buttonText setTintColor:nil];
+    [self.thumbsView reloadGallery];
+}
+
+- (IBAction)buttonDistPicsClick:(id)sender {
+    [[SYDataSource sharedDataSource] setSourceType:SYGallerySourceTypeImageDistant];
+    [self.buttonLocalPics setTintColor:nil];
+    [self.buttonDistantPics setTintColor:[UIColor blackColor]];
+    [self.buttonText setTintColor:nil];
+    [self.thumbsView reloadGallery];
+}
+
+- (IBAction)buttonTextClick:(id)sender {
+    [[SYDataSource sharedDataSource] setSourceType:SYGallerySourceTypeText];
+    [self.buttonLocalPics setTintColor:nil];
+    [self.buttonDistantPics setTintColor:nil];
+    [self.buttonText setTintColor:[UIColor blackColor]];
     [self.thumbsView reloadGallery];
 }
 
@@ -72,15 +93,6 @@ AUTOROTATE_ALL_ORIENTATIONS
 - (void)gallery:(id<SYGalleryView>)gallery didTapOnItemAtIndex:(NSUInteger)index
 {
     [self performSegueWithIdentifier:@"segueToFullSizeItem" sender:self];
-    
-    /*
-    [[[UIAlertView alloc] initWithTitle:@"Tapped"
-                                message:[NSString stringWithFormat:@"Tapped on item %d", (int)index]
-                               delegate:nil
-                      cancelButtonTitle:nil
-                      otherButtonTitles:@"OK", nil] show];
-    */
-    
     NSLog(@"Tapped item at index %d", (int)index);
 }
 

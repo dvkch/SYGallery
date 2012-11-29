@@ -14,7 +14,7 @@
 @private
     UIView *_mainView;
     UIImageView *_thumbImageView;
-    UILabel *_label;
+    UILabel *_textLabel;
     MKNumberBadgeView *_badgeView;
     
     UIColor* _cellBorderColor;
@@ -31,12 +31,13 @@
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath;
 -(void)updateCellForUrl:(NSString*)url;
 -(void)updateCellForMissingImage;
--(void)updateCellForText:(NSString *)text andFont:(UIFont*)font;
+-(void)updateCellForText:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont*)textFont;
 
 -(void)setBorderWidth:(CGFloat)width andColor:(UIColor*)color;
 -(void)setBadgeValue:(NSUInteger)value;
 -(void)setBadgeHidden:(BOOL)badgeHidden;
 
 @property (atomic) BOOL hasBeenLoaded;
+@property (atomic) CGFloat cellSize;
 
 @end

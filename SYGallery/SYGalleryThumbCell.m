@@ -7,10 +7,10 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import "SYGalleryDelegates.h"
 #import "SYGalleryThumbCell.h"
 #import "GMGridViewCell.h"
 #import "MKNumberBadgeView.h"
-
 
 @interface SYGalleryThumbCell (Private)
 -(void)setDefaults;
@@ -20,6 +20,7 @@
 @implementation SYGalleryThumbCell : GMGridViewCell
 
 @synthesize hasBeenLoaded = _hasBeenLoaded;
+@synthesize cellSize = _cellSize;
 
 #pragma mark - Initialization
 - (id)initWithFrame:(CGRect)frame
@@ -78,18 +79,20 @@
     
     
     /*********************************************/
-    /***************  LABEL INIT  ****************/
+    /*************  TEXTLABEL INIT  **************/
     /*********************************************/
-    if (!self->_label)
-        self->_label = [[UILabel alloc] init];
-    [self->_label setFrame:subViewFrame];
-    [self->_label setBackgroundColor:[UIColor clearColor]];
-    [self->_label setClipsToBounds:YES];
-    [self->_label setAutoresizingMask:
+    if (!self->_textLabel)
+        self->_textLabel = [[UILabel alloc] init];
+    [self->_textLabel setFrame:subViewFrame];
+    [self->_textLabel setBackgroundColor:[UIColor clearColor]];
+    [self->_textLabel setClipsToBounds:YES];
+    [self->_textLabel setLineBreakMode:UILineBreakModeWordWrap];
+    [self->_textLabel setNumberOfLines:0];
+    [self->_textLabel setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
-    if([self->_label superview] == nil)
-        [self->_mainView addSubview:self->_label];
+    if([self->_textLabel superview] == nil)
+        [self->_mainView addSubview:self->_textLabel];
     
     
     /*********************************************/
@@ -191,19 +194,32 @@
     [self->_thumbImageView setImage:[UIImage imageNamed:@"no_picture.png"]];
 }
 
--(void)updateCellForText:(NSString *)text andFont:(UIFont*)font {
+-(void)updateCellForText:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont *)textFont {
     [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;
     
-    CGFloat fontSize = self.frame.size.width * 0.4f;
-    if(fontSize < 10.f)
-        fontSize = 10.f;
-    self->_label.font = font;
-    self->_label.text = text;
-    self->_label.textColor = [UIColor whiteColor];
-    self->_label.textAlignment = NSTextAlignmentCenter;
+    self->_textLabel.text = text;
+    self->_textLabel.textColor = textColor ? textColor : [UIColor whiteColor];
+    self->_textLabel.textAlignment = NSTextAlignmentCenter;
+    
+    if(textFont) {
+        [self->_textLabel setFont:textFont];
+    }
+    else {
+        CGFloat calcFontSize = 1.f;
+        CGFloat maxWidth = self.cellSize - 4.f;
+        CGFloat maxHeight = self.cellSize - 4.f;
+        CGSize calcSize = CGSizeMake(0.f, 0.f);
+        while(calcSize.width < maxWidth && calcSize.height < maxHeight) {
+            calcFontSize = calcFontSize + .5f;
+            calcSize = [text sizeWithFont:[UIFont systemFontOfSize:calcFontSize]
+                        constrainedToSize:CGSizeMake(maxWidth, maxHeight)
+                            lineBreakMode:UILineBreakModeWordWrap];
+        }
+        calcFontSize = calcFontSize - .5f;
+        [self->_textLabel setFont:[UIFont systemFontOfSize:calcFontSize]];
+    }
 }
-
 
 -(void)setBorderWidth:(CGFloat)width andColor:(UIColor *)color
 {

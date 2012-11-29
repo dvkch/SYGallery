@@ -88,6 +88,23 @@
         [self->_scrollView addSubview:self->_fullImageView];
     
     /*********************************************/
+    /**************  TEXTVIEW INIT  **************/
+    /*********************************************/
+    if (!self->_fullTextView)
+        self->_fullTextView = [[UITextView alloc] init];
+    [self->_fullTextView setFrame:subViewFrame];
+    [self->_fullTextView setBackgroundColor:[UIColor clearColor]];
+    [self->_fullTextView setClipsToBounds:YES];
+    [self->_fullTextView setTextAlignment:NSTextAlignmentCenter];
+    [self->_fullTextView setUserInteractionEnabled:YES];
+    [self->_fullTextView setEditable:NO];
+    [self->_fullTextView setAutoresizingMask:
+     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleMargins];
+    
+    if([self->_fullTextView superview] == nil)
+        [self->_scrollView addSubview:self->_fullTextView];
+    
+    /*********************************************/
     /************  PROGRESSVIEW INIT  ************/
     /*********************************************/
     CGFloat progressSize = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 80.f;
@@ -113,6 +130,8 @@
     self->_singleTapGestureRecognizer.numberOfTapsRequired = 1;
     if(self->_fullImageView)
         [self->_fullImageView addGestureRecognizer:self->_singleTapGestureRecognizer];
+    if(self->_fullTextView)
+        [self->_fullTextView addGestureRecognizer:self->_singleTapGestureRecognizer];
     
     /*********************************************/
     /**************  DOUBLETAP INIT  *************/
@@ -123,6 +142,8 @@
     self->_doubleTapGestureRecognizer.numberOfTapsRequired = 2;
     if(self->_fullImageView)
         [self->_fullImageView addGestureRecognizer:self->_doubleTapGestureRecognizer];
+    if(self->_fullTextView)
+        [self->_fullTextView addGestureRecognizer:self->_doubleTapGestureRecognizer];
     
 
     /*********************************************/
@@ -142,6 +163,14 @@
 
 - (void)resetZoomFactors
 {
+    if(self->_sourceType == SYGallerySourceTypeText) {
+        [self->_scrollView setZoomScale:1.f];
+        [self->_scrollView setMinimumZoomScale:1.f];
+        [self->_scrollView setMaximumZoomScale:1.f];
+        [self setNeedsLayout];
+        return;
+    }
+    
     if(!self->_fullImageView ||
        !self->_fullImageView.image ||
        !self->_fullImageView.image.size.height ||
@@ -219,10 +248,14 @@
 
 #pragma mark - View methods
 
--(void)updateImageWithAbsolutePath:(NSString*)absolutePath {
+-(void)updateImageWithAbsolutePath:(NSString*)absolutePath
+{
+    self->_sourceType = SYGallerySourceTypeImageLocal;
     self.hasBeenLoaded = YES;
     
     [self->_circularProgressView setHidden:YES];
+    [self->_fullTextView setHidden:YES];
+    [self->_fullImageView setHidden:NO];
     
     __block SYGalleryFullPage *safeSelf = self;
     int64_t delayInMilliSeconds = 10.0;
@@ -235,11 +268,16 @@
     });
 }
 
--(void)updateImageWithUrl:(NSString*)url {
+-(void)updateImageWithUrl:(NSString*)url
+{
+    self->_sourceType = SYGallerySourceTypeImageDistant;
     self.hasBeenLoaded = YES;
     
     // cannot use a block version of NSURLConnection because if we load another picture
     // while the first hasn't been loaded it may result in a bizarre behavior
+    
+    [self->_fullTextView setHidden:YES];
+    [self->_fullImageView setHidden:NO];
     
     if(self->_picConnection)
         [self->_picConnection cancel];
@@ -258,6 +296,30 @@
     [self setNeedsDisplay];
 }
 
+-(void)updateTextWithString:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont *)textFont
+{
+    self->_sourceType = SYGallerySourceTypeText;
+    self.hasBeenLoaded = YES;
+    
+    [self->_circularProgressView setHidden:YES];
+    [self->_fullTextView setHidden:NO];
+    [self->_fullImageView setHidden:YES];
+    
+    __block SYGalleryFullPage *safeSelf = self;
+    int64_t delayInMilliSeconds = 10.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [safeSelf->_fullTextView setTextColor:(textColor ? textColor : [UIColor whiteColor])];
+        if(textFont)
+            [safeSelf->_fullTextView setFont:textFont];
+        [safeSelf->_fullTextView setText:text];
+        [safeSelf->_fullTextView sizeToFit];
+        [safeSelf resetZoomFactors];
+        [safeSelf setNeedsDisplay];
+        [safeSelf setNeedsLayout];
+    });
+}
+
 - (void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];
@@ -269,6 +331,7 @@
     
     [self centerSubView:self->_circularProgressView inView:self];
     [self centerSubView:self->_fullImageView        inView:self->_scrollView];
+    [self centerSubView:self->_fullTextView         inView:self->_scrollView];
 }
 
 -(BOOL)isZoomed {
@@ -283,6 +346,10 @@
 }
 
 -(void)doubleTapOnImageView:(UIGestureRecognizer*)gestureRecognizer {
+    
+    if(self->_sourceType == SYGallerySourceTypeText) {
+        return;
+    }
     
     if([self isZoomed])
         [self->_scrollView setZoomScale:self->_scrollView.minimumZoomScale animated:YES];
@@ -308,7 +375,11 @@
 #pragma mark - UIScrollViewDelegate methods
 
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return self->_fullImageView;
+    
+    if(self->_sourceType == SYGallerySourceTypeText)
+        return self->_fullTextView;
+    else
+        return self->_fullImageView;
 }
 
 #pragma mark - NSURLConnection delegate methods

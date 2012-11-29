@@ -13,8 +13,12 @@
 @interface SYGalleryFullPage : UIView
 <SYGalleryView, NSURLConnectionDataDelegate, NSURLConnectionDelegate, UIScrollViewDelegate>
 {
+    SYGallerySourceType _sourceType;
+    
     UIScrollView *_scrollView;
     UIImageView *_fullImageView;
+    UITextView *_fullTextView;
+    
     UITapGestureRecognizer *_singleTapGestureRecognizer;
     UITapGestureRecognizer *_doubleTapGestureRecognizer;
     DACircularProgressView *_circularProgressView;
@@ -34,6 +38,8 @@
 
 -(void)updateImageWithAbsolutePath:(NSString*)absolutePath;
 -(void)updateImageWithUrl:(NSString*)url;
+-(void)updateTextWithString:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont*)textFont;
+
 -(void)resetZoomFactors;
 
 @end

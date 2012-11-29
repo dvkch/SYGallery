@@ -16,10 +16,13 @@
     
     NSMutableArray *_distantPathsThumbs;
     NSMutableArray *_distantPathsFulls;
+    
+    NSMutableArray *_textsFulls;
+    NSMutableArray *_textsThumbs;
 }
 
-+(id)sharedDataSource;
++(SYDataSource*)sharedDataSource;
 
-@property (atomic) BOOL useLocalPathsNotDistantUrl;
+@property (atomic) SYGallerySourceType sourceType;
 
 @end

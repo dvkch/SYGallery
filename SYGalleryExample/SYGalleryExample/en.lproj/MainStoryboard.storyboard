@@ -17,17 +17,32 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <segmentedControl contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="KVx-vr-oPA">
-                                <rect key="frame" x="10" y="451" width="300" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="LME-6D-z8s">
+                                <rect key="frame" x="0.0" y="460" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <segments>
-                                    <segment title="Local"/>
-                                    <segment title="Distant"/>
-                                </segments>
-                                <connections>
-                                    <action selector="segmentedControlClick:" destination="2" eventType="valueChanged" id="LMC-CK-QyV"/>
-                                </connections>
-                            </segmentedControl>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="2if-xu-ZxI"/>
+                                    <barButtonItem title="Local pictures" id="VUY-wX-4JF">
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="buttonLocalPicsClick:" destination="2" id="QWa-jY-KzP"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="I5N-mU-emM"/>
+                                    <barButtonItem title="Distant pictures" id="Xeq-r1-STl">
+                                        <connections>
+                                            <action selector="buttonDistPicsClick:" destination="2" id="hdY-5L-CM0"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZSe-ix-X0X"/>
+                                    <barButtonItem title="Text" id="wXq-Ov-CrQ">
+                                        <connections>
+                                            <action selector="buttonTextClick:" destination="2" id="7CA-eu-Iyl"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="OwW-WG-FYT"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -44,7 +59,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="segmentedControl" destination="KVx-vr-oPA" id="G74-Me-Lcs"/>
+                        <outlet property="buttonDistantPics" destination="Xeq-r1-STl" id="CIF-rT-eUN"/>
+                        <outlet property="buttonLocalPics" destination="VUY-wX-4JF" id="526-ad-5vW"/>
+                        <outlet property="buttonText" destination="wXq-Ov-CrQ" id="y1X-Yy-abI"/>
                         <outlet property="thumbsView" destination="Mkw-g6-hBF" id="oFQ-9V-zYA"/>
                         <segue destination="J6x-Sg-hEr" kind="push" identifier="segueToFullSizeItem" id="bpb-q1-5F6"/>
                     </connections>
@@ -110,9 +127,12 @@
         <class className="SYViewControllerThumbs" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SYViewControllerThumbs.h"/>
             <relationships>
+                <relationship kind="action" name="buttonDistPicsClick:"/>
+                <relationship kind="action" name="buttonLocalPicsClick:"/>
+                <relationship kind="action" name="buttonTextClick:"/>
                 <relationship kind="action" name="editButtonClick:"/>
-                <relationship kind="action" name="segmentedControlClick:"/>
-                <relationship kind="outlet" name="segmentedControl" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="buttonDistantPics" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="buttonLocalPics" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="thumbsView" candidateClass="SYGalleryThumbView"/>
             </relationships>
         </class>

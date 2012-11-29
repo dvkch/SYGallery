@@ -14,6 +14,8 @@
 @interface SYViewControllerThumbs : UIViewController <SYGalleryThumbViewActions>
 
 @property (weak, nonatomic) IBOutlet SYGalleryThumbView *thumbsView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonLocalPics;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonDistantPics;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonText;
 
 @end

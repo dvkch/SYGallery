@@ -42,9 +42,10 @@ AUTOROTATE_ALL_ORIENTATIONS
 }
 
 -(void)imageAction1 {
-    if([[SYDataSource sharedDataSource] gallery:self.fullPicView
-                              sourceTypeAtIndex:[self.fullPicView currentIndexCalculated]]
-       == SYGallerySourceTypeLocal)
+    SYGallerySourceType sourceType = [[SYDataSource sharedDataSource] gallery:self.fullPicView
+                                                            sourceTypeAtIndex:[self.fullPicView currentIndexCalculated]];
+    
+    if(sourceType == SYGallerySourceTypeImageLocal)
     {
         NSString *filePath = [[SYDataSource sharedDataSource] gallery:self.fullPicView
                                                   absolutePathAtIndex:[self.fullPicView currentIndexCalculated]
@@ -62,7 +63,7 @@ AUTOROTATE_ALL_ORIENTATIONS
                           cancelButtonTitle:nil
                           otherButtonTitles:@"OK", nil] show];
     }
-    else
+    else if(sourceType == SYGallerySourceTypeImageDistant)
     {
         NSString *fileURL = [[SYDataSource sharedDataSource] gallery:self.fullPicView
                                                           urlAtIndex:[self.fullPicView currentIndexCalculated]
@@ -72,6 +73,14 @@ AUTOROTATE_ALL_ORIENTATIONS
         
         [[[UIAlertView alloc] initWithTitle:@"Details"
                                     message:details
+                                   delegate:nil
+                          cancelButtonTitle:nil
+                          otherButtonTitles:@"OK", nil] show];
+    }
+    else if(sourceType == SYGallerySourceTypeText)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Details"
+                                    message:@"Displaying text"
                                    delegate:nil
                           cancelButtonTitle:nil
                           otherButtonTitles:@"OK", nil] show];

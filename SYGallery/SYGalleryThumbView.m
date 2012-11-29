@@ -59,8 +59,9 @@
     self->_gridView.backgroundColor = [UIColor clearColor];
     
     self->_gridView.style = GMGridViewStyleSwap;
-    self->_gridView.itemSpacing = CELL_SPACING;
-    self->_gridView.minEdgeInsets = UIEdgeInsetsMake(CELL_SPACING, CELL_SPACING, CELL_SPACING, CELL_SPACING);
+    self->_gridView.itemSpacing = DEFAULT_CELL_SPACING;
+    self->_gridView.minEdgeInsets = UIEdgeInsetsMake(DEFAULT_CELL_SPACING, DEFAULT_CELL_SPACING,
+                                                     DEFAULT_CELL_SPACING, DEFAULT_CELL_SPACING);
     self->_gridView.centerGrid = NO;
     self->_gridView.showsVerticalScrollIndicator = YES;
     self->_gridView.showsHorizontalScrollIndicator = NO;
@@ -100,6 +101,14 @@
 
 -(void)reloadGallery {
     [self setupCachedCellsArray];
+    
+    CGFloat cellSpacing = DEFAULT_CELL_SPACING;
+    if([self.dataSource respondsToSelector:@selector(galleryThumbCellSpacing:)])
+        cellSpacing = [self.dataSource galleryThumbCellSpacing:self];
+    
+    self->_gridView.itemSpacing = cellSpacing;
+    self->_gridView.minEdgeInsets = UIEdgeInsetsMake(cellSpacing, cellSpacing, cellSpacing, cellSpacing);
+    
     [self->_gridView reloadData];
 }
 
@@ -155,13 +164,22 @@
 }
 
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return CGSizeMake(CELL_SIZE, CELL_SIZE);
+    
+    CGFloat cellSize = DEFAULT_CELL_SIZE;
+    if([self.dataSource respondsToSelector:@selector(galleryThumbCellSize:)])
+        cellSize = [self.dataSource galleryThumbCellSize:self];
+
+    return CGSizeMake(DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     
+    CGFloat cellSize = DEFAULT_CELL_SIZE;
+    if([self.dataSource respondsToSelector:@selector(galleryThumbCellSize:)])
+        cellSize = [self.dataSource galleryThumbCellSize:self];
+    
     if(index < 0)
-        return  [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
+        return  [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, cellSize, cellSize)];
 
     SYGalleryThumbCell *cell = nil;
     NSString *cellIdentifier = @"photoCell";
@@ -174,29 +192,44 @@
     
     // cell couldn't be loaded from cached nor queued reusable cells
     if(!cell)
-        cell = [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, CELL_SIZE, CELL_SIZE)];
+        cell = [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, cellSize, cellSize)];
     
     // caching cell if necessary
     if(self->_cacheImages)
         [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
     
+    [cell setCellSize:cellSize];
     [cell setBorderWidth:self->_cellBorderWidth andColor:self->_cellBorderColor];
     
     SYGallerySourceType sourceType = [self.dataSource gallery:self
                                             sourceTypeAtIndex:(uint)index];
     
+    UIColor *textColor = nil;
+    if([self.dataSource respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
+        textColor = [self.dataSource gallery:self textColorAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
+    UIFont *textFont = nil;
+    if([self.dataSource respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
+        textFont = [self.dataSource gallery:self textFontAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
+    
     if(!self->_cacheImages || !cell.hasBeenLoaded) {
         
         switch (sourceType) {
-            case SYGallerySourceTypeDistant:
+            case SYGallerySourceTypeImageDistant:
                 [cell updateCellForUrl:[self.dataSource gallery:self
                                                      urlAtIndex:(uint)index
                                                         andSize:SYGalleryPhotoSizeThumb]];
                 break;
-            case SYGallerySourceTypeLocal:
+            case SYGallerySourceTypeImageLocal:
                 [cell updateCellForAbsolutePath:[self.dataSource gallery:self
                                                      absolutePathAtIndex:(uint)index
                                                                  andSize:SYGalleryPhotoSizeThumb]];
+                break;
+            case SYGallerySourceTypeText:
+                [cell updateCellForText:[self.dataSource gallery:self
+                                                     textAtIndex:(uint)index
+                                                         andSize:SYGalleryPhotoSizeThumb]
+                           andTextColor:textColor
+                            andTextFont:textFont];
                 break;
         }
     }

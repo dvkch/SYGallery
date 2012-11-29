@@ -220,14 +220,34 @@
     SYGallerySourceType sourceType = [self.dataSource gallery:self
                                             sourceTypeAtIndex:(uint)pageIndex];
     
-    if(sourceType == SYGallerySourceTypeDistant)
-        [pageView updateImageWithUrl:[self.dataSource gallery:self
-                                                   urlAtIndex:(uint)pageIndex
-                                                      andSize:SYGalleryPhotoSizeFull]];
-    else
-        [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
-                                                   absolutePathAtIndex:(uint)pageIndex
-                                                               andSize:SYGalleryPhotoSizeFull]];
+    UIColor *textColor = nil;
+    if([self.dataSource respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
+        textColor = [self.dataSource gallery:self textColorAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
+    UIFont *textFont = nil;
+    if([self.dataSource respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
+        textFont = [self.dataSource gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
+    
+    switch (sourceType) {
+        case SYGallerySourceTypeImageDistant:
+            [pageView updateImageWithUrl:[self.dataSource gallery:self
+                                                       urlAtIndex:(uint)pageIndex
+                                                          andSize:SYGalleryPhotoSizeFull]];
+            break;
+        case SYGallerySourceTypeImageLocal:
+            [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
+                                                       absolutePathAtIndex:(uint)pageIndex
+                                                                   andSize:SYGalleryPhotoSizeFull]];
+            break;
+        case SYGallerySourceTypeText:
+            [pageView updateTextWithString:[self.dataSource gallery:self
+                                                        textAtIndex:(uint)pageIndex
+                                                            andSize:SYGalleryPhotoSizeFull]
+                              andTextColor:textColor
+                               andTextFont:textFont];
+            
+        default:
+            break;
+    }
     
     [self->_scrollView addSubview:pageView];
 }
