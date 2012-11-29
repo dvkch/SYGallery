@@ -169,7 +169,7 @@
     if([self.dataSource respondsToSelector:@selector(galleryThumbCellSize:)])
         cellSize = [self.dataSource galleryThumbCellSize:self];
 
-    return CGSizeMake(DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
+    return CGSizeMake(cellSize, cellSize);
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
