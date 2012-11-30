@@ -46,9 +46,6 @@
     self->_edit = NO;
     self->_cacheImages = NO;
     
-    self->_cellBorderColor = [UIColor blackColor];
-    self->_cellBorderWidth = 1.f;
-    
     /*********************************************/
     /**************  GRIDVIEW INIT  **************/
     /*********************************************/
@@ -103,8 +100,8 @@
     [self setupCachedCellsArray];
     
     CGFloat cellSpacing = DEFAULT_CELL_SPACING;
-    if([self.dataSource respondsToSelector:@selector(galleryThumbCellSpacing:)])
-        cellSpacing = [self.dataSource galleryThumbCellSpacing:self];
+    if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSpacing:)])
+        cellSpacing = [self.appearanceDelegate galleryThumbCellSpacing:self];
     
     self->_gridView.itemSpacing = cellSpacing;
     self->_gridView.minEdgeInsets = UIEdgeInsetsMake(cellSpacing, cellSpacing, cellSpacing, cellSpacing);
@@ -143,16 +140,6 @@
     [self->_gridView setBackgroundColor:backgroundColor];
 }
 
--(void)setCellBorderWidth:(CGFloat)width andColor:(UIColor*)color {
-    self->_cellBorderColor = color;
-    self->_cellBorderWidth = width;
-    
-    for (SYGalleryThumbCell *cell in self->_cachedCells) {
-        [cell setBorderWidth:width andColor:color];
-        [cell setNeedsDisplay];
-    }
-}
-
 #pragma mark - GMGridViewDataSource
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
     int numberOfItems = 0;
@@ -166,17 +153,17 @@
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
     
     CGFloat cellSize = DEFAULT_CELL_SIZE;
-    if([self.dataSource respondsToSelector:@selector(galleryThumbCellSize:)])
-        cellSize = [self.dataSource galleryThumbCellSize:self];
-
+    if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSize:)])
+        cellSize = [self.appearanceDelegate galleryThumbCellSize:self];
+    
     return CGSizeMake(cellSize, cellSize);
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     
     CGFloat cellSize = DEFAULT_CELL_SIZE;
-    if([self.dataSource respondsToSelector:@selector(galleryThumbCellSize:)])
-        cellSize = [self.dataSource galleryThumbCellSize:self];
+    if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSize:)])
+        cellSize = [self.appearanceDelegate galleryThumbCellSize:self];
     
     if(index < 0)
         return  [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, cellSize, cellSize)];
@@ -199,17 +186,32 @@
         [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
     
     [cell setCellSize:cellSize];
-    [cell setBorderWidth:self->_cellBorderWidth andColor:self->_cellBorderColor];
+    
+    UIColor *borderColor = DEFAULT_CELL_BORDER_COLOR;
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:thumbBorderColorAtIndex:)])
+        borderColor = [self.appearanceDelegate gallery:self thumbBorderColorAtIndex:(uint)index];
+    
+    CGFloat borderSize = DEFAULT_CELL_BORDER_SIZE;
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:thumbBorderSizeAtIndex:)])
+        borderSize = [self.appearanceDelegate gallery:self thumbBorderSizeAtIndex:(uint)index];
+    
+    UIColor *backColor = DEFAULT_CELL_BACKGROUND_COLOR;
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:thumbBackgroundColor:)])
+        backColor = [self.appearanceDelegate gallery:self thumbBackgroundColor:(uint)index];
+    
+    [cell setBorderWidth:borderSize andColor:borderColor];
+    [cell setBackgroundColor:backColor];
     
     SYGallerySourceType sourceType = [self.dataSource gallery:self
                                             sourceTypeAtIndex:(uint)index];
     
     UIColor *textColor = nil;
-    if([self.dataSource respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
-        textColor = [self.dataSource gallery:self textColorAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
+        textColor = [self.appearanceDelegate gallery:self textColorAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
+    
     UIFont *textFont = nil;
-    if([self.dataSource respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
-        textFont = [self.dataSource gallery:self textFontAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
+        textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
     
     if(!self->_cacheImages || !cell.hasBeenLoaded) {
         

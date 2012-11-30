@@ -20,6 +20,7 @@
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
 @property (weak, nonatomic) id<SYGalleryFullViewActions> actionDelegate;
+@property (weak, nonatomic) id<SYGalleryAppearence> appearanceDelegate;
 
 -(void)setDataSource:(id<SYGalleryDataSource>)dataSource andFirstItemToShow:(NSUInteger)firstItem;
 -(void)reloadGalleryAndScrollToIndex:(NSUInteger)index;

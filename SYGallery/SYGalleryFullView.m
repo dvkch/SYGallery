@@ -221,11 +221,11 @@
                                             sourceTypeAtIndex:(uint)pageIndex];
     
     UIColor *textColor = nil;
-    if([self.dataSource respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
-        textColor = [self.dataSource gallery:self textColorAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
+        textColor = [self.appearanceDelegate gallery:self textColorAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
     UIFont *textFont = nil;
-    if([self.dataSource respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
-        textFont = [self.dataSource gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
+        textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
     
     switch (sourceType) {
         case SYGallerySourceTypeImageDistant:

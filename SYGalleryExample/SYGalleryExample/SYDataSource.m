@@ -218,22 +218,6 @@
         return [self->_textsFulls objectAtIndex:index];
 }
 
--(UIColor *)gallery:(id<SYGalleryView>)gallery textColorAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
-{
-    if(size == SYGalleryPhotoSizeThumb)
-        return [UIColor blackColor];
-    else
-        return [UIColor whiteColor];
-}
-
--(UIFont *)gallery:(id<SYGalleryView>)gallery textFontAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
-{
-    if(size == SYGalleryPhotoSizeThumb)
-        return nil; // will select proper font size to fit in view
-    else
-        return (index == 0 ? [UIFont systemFontOfSize:50.f] : [UIFont systemFontOfSize:10.f]);
-}
-
 - (BOOL)gallery:(id<SYGalleryView>)gallery canDeleteAtIndex:(NSUInteger)index
 {
     // even indexes only

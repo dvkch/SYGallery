@@ -17,19 +17,17 @@ GMGridViewSortingDelegate>
 {
     GMGridView *_gridView;
     NSMutableArray *_cachedCells;
-    
-    UIColor *_cellBorderColor;
-    CGFloat _cellBorderWidth;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
 @property (weak, nonatomic) id<SYGalleryThumbViewActions> actionDelegate;
+@property (weak, nonatomic) id<SYGalleryAppearence> appearanceDelegate;
+
 @property (nonatomic) BOOL cacheImages;
 @property (nonatomic) BOOL edit;
 
 @property (readonly) NSUInteger lastClickedItemIndex;
 
 -(void)reloadGallery;
--(void)setCellBorderWidth:(CGFloat)width andColor:(UIColor*)color;
 
 @end

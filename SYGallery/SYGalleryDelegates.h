@@ -14,10 +14,14 @@
 #define DEFAULT_CELL_SIZE ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 75.f)
 #define DEFAULT_CELL_SPACING ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 6.99f : 4.f)
 
+#define DEFAULT_CELL_BORDER_SIZE 1.f
+#define DEFAULT_CELL_BORDER_COLOR [UIColor blackColor]
+#define DEFAULT_CELL_BACKGROUND_COLOR [UIColor colorWithWhite:1.f alpha:.4f]
+
 @protocol SYGalleryView
 @end
 
-#define UIViewAutoresizingFlexibleMargins                 \
+#define UIViewAutoresizingFlexibleMargins   \
 UIViewAutoresizingFlexibleBottomMargin    | \
 UIViewAutoresizingFlexibleLeftMargin      | \
 UIViewAutoresizingFlexibleRightMargin     | \
@@ -46,13 +50,21 @@ typedef enum {
 - (BOOL)gallery:(id<SYGalleryView>)gallery canDeleteAtIndex:(NSUInteger)index;
 - (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index;
 
+- (BOOL)gallery:(id<SYGalleryView>)gallery shouldDisplayBadgeAtIndex:(NSUInteger)index;
+- (NSUInteger)gallery:(id<SYGalleryView>)gallery badgeValueAtIndex:(NSUInteger)index;
+@end
+
+@protocol SYGalleryAppearence <NSObject>
+@optional
 - (CGFloat)galleryThumbCellSize:(id<SYGalleryView>)gallery;
 - (CGFloat)galleryThumbCellSpacing:(id<SYGalleryView>)gallery;
 
-- (BOOL)gallery:(id<SYGalleryView>)gallery shouldDisplayBadgeAtIndex:(NSUInteger)index;
-- (NSUInteger)gallery:(id<SYGalleryView>)gallery badgeValueAtIndex:(NSUInteger)index;
 - (UIColor*)gallery:(id<SYGalleryView>)gallery textColorAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 - (UIFont*)gallery:(id<SYGalleryView>)gallery textFontAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
+
+- (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBorderColorAtIndex:(NSUInteger)index;
+- (CGFloat)gallery:(id<SYGalleryView>)gallery thumbBorderSizeAtIndex:(NSUInteger)index;
+- (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBackgroundColor:(NSUInteger)index;
 @end
 
 @protocol SYGalleryThumbViewActions <NSObject>

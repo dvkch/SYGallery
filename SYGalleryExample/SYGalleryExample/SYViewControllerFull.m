@@ -8,7 +8,9 @@
 
 #import "SYViewControllerFull.h"
 #import "SYGalleryFullView.h"
+
 #import "SYDataSource.h"
+#import "SYGalleryAppearance.h"
 
 @interface SYViewControllerFull ()
 -(void)imageAction1;
@@ -38,7 +40,9 @@ AUTOROTATE_ALL_ORIENTATIONS
 	// Do any additional setup after loading the view.
     [self.fullPicView setDataSource:[SYDataSource sharedDataSource] andFirstItemToShow:[self firstIndex]];
     [self.fullPicView setActionDelegate:self];
+    [self.fullPicView setAppearanceDelegate:[SYGalleryAppearance sharedAppearance]];
     [self.fullPicView addActionWithName:@"Show details" andTarget:self andSelector:@selector(imageAction1) andTag:0];
+    [self.fullPicView reloadGalleryAndScrollToIndex:0];
 }
 
 -(void)imageAction1 {

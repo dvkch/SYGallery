@@ -17,9 +17,6 @@
     UILabel *_textLabel;
     MKNumberBadgeView *_badgeView;
     
-    UIColor* _cellBorderColor;
-    CGFloat _cellBorderWidth;
-    
     NSUInteger _badgeValue;
     BOOL _badgeHidden;
     
@@ -36,6 +33,9 @@
 -(void)setBorderWidth:(CGFloat)width andColor:(UIColor*)color;
 -(void)setBadgeValue:(NSUInteger)value;
 -(void)setBadgeHidden:(BOOL)badgeHidden;
+
+-(void)setBackgroundColor:(UIColor *)backgroundColor;
+-(UIColor*)backgroundColor;
 
 @property (atomic) BOOL hasBeenLoaded;
 @property (atomic) CGFloat cellSize;

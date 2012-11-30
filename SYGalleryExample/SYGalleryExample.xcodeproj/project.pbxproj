@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F810E4111668E2CC00089EB2 /* SYGalleryAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = F810E4101668E2CC00089EB2 /* SYGalleryAppearance.m */; };
 		F81891CF163AD28E00C8E806 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891C3163AD28E00C8E806 /* 1.jpg */; };
 		F81891D0163AD28E00C8E806 /* 1_s.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891C4163AD28E00C8E806 /* 1_s.jpg */; };
 		F81891D1163AD28E00C8E806 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891C5163AD28E00C8E806 /* 2.jpg */; };
@@ -50,6 +51,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F810E40F1668E2CC00089EB2 /* SYGalleryAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryAppearance.h; sourceTree = "<group>"; };
+		F810E4101668E2CC00089EB2 /* SYGalleryAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryAppearance.m; sourceTree = "<group>"; };
 		F81891C3163AD28E00C8E806 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		F81891C4163AD28E00C8E806 /* 1_s.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1_s.jpg; sourceTree = "<group>"; };
 		F81891C5163AD28E00C8E806 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
@@ -214,6 +217,8 @@
 				F81891C2163AD28E00C8E806 /* Images */,
 				F81891EA163AF33E00C8E806 /* SYDataSource.h */,
 				F81891EB163AF33E00C8E806 /* SYDataSource.m */,
+				F810E40F1668E2CC00089EB2 /* SYGalleryAppearance.h */,
+				F810E4101668E2CC00089EB2 /* SYGalleryAppearance.m */,
 			);
 			path = SYGalleryExample;
 			sourceTree = "<group>";
@@ -398,6 +403,7 @@
 				F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */,
 				F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */,
 				F8CEF7C816553FDE0043828E /* MKNumberBadgeView.m in Sources */,
+				F810E4111668E2CC00089EB2 /* SYGalleryAppearance.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

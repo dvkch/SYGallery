@@ -19,6 +19,8 @@
 #import "SYGalleryFullView.h"
 
 #import "SYDataSource.h"
+#import "SYGalleryAppearance.h"
+
 
 @implementation SYViewControllerThumbs
 
@@ -34,6 +36,7 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.thumbsView setDataSource:[SYDataSource sharedDataSource]];
     [self.thumbsView setActionDelegate:self];
     [self.thumbsView setCacheImages:YES];
+    [self.thumbsView setAppearanceDelegate:[SYGalleryAppearance sharedAppearance]];
     [self.thumbsView reloadGallery];
 }
 

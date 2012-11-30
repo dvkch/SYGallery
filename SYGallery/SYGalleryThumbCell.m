@@ -34,8 +34,6 @@
 -(void)setDefaults {
     self->_badgeHidden = YES;
     self->_badgeValue = 0;
-    self->_cellBorderColor = [UIColor blackColor];
-    self->_cellBorderWidth = 1.f;
 }
 
 -(void)resetCellUsingDefaults:(BOOL)useDefaults {
@@ -63,16 +61,13 @@
     /*********************************************/
     /**************  MAINVIEW INIT  **************/
     /*********************************************/
-
     if (!self->_mainView)
         self->_mainView = [[UIView alloc] init];
     [self->_mainView setFrame:subViewFrame];
-    [self->_mainView setBackgroundColor:[UIColor colorWithRed:1.f green:1.f blue:1.f alpha:0.8f]];
     [self->_mainView setClipsToBounds:YES];
-    [self->_mainView.layer setBorderColor:self->_cellBorderColor.CGColor];
-    [self->_mainView.layer setBorderWidth:self->_cellBorderWidth];
     [self->_mainView setAutoresizingMask:
      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    // background color set via appearance delegate of SYGalleryThumbView
     
     if([self->_mainView superview] == nil)
         [self.contentView addSubview:self->_mainView];
@@ -223,12 +218,12 @@
 
 -(void)setBorderWidth:(CGFloat)width andColor:(UIColor *)color
 {
-    self->_cellBorderColor = color;
-    self->_cellBorderWidth = width;
+    if(color == nil)
+        color = [UIColor clearColor];
     
     if (self->_mainView) {
-        [self->_mainView.layer setBorderColor:self->_cellBorderColor.CGColor];
-        [self->_mainView.layer setBorderWidth:self->_cellBorderWidth];
+        [self->_mainView.layer setBorderColor:color.CGColor];
+        [self->_mainView.layer setBorderWidth:width];
     }
 }
 
@@ -250,6 +245,14 @@
         [self->_badgeView setValue:self->_badgeValue];
         [self->_badgeView setHideWhenZero:NO];
     }
+}
+
+-(void)setBackgroundColor:(UIColor *)backgroundColor {
+    [self->_mainView setBackgroundColor:backgroundColor];
+}
+
+-(UIColor*)backgroundColor {
+    return self->_mainView.backgroundColor;
 }
 
 #pragma mark - NSURLConnection delegate methods
