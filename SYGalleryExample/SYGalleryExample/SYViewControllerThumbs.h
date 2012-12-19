@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonLocalPics;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonDistantPics;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonText;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *buttonData;
 
 @end

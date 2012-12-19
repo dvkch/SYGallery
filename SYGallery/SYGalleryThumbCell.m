@@ -162,6 +162,23 @@
     });
 }
 
+-(void)updateCellForData:(NSData *)data {
+    [self resetCellUsingDefaults:NO];
+    self.hasBeenLoaded = YES;
+    
+    [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self->_activityIndicatorView startAnimating];
+    
+    __block SYGalleryThumbCell *safeSelf = self;
+    int64_t delayInMilliSeconds = 10.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [safeSelf->_thumbImageView setImage:[UIImage imageWithData:data]];
+        [safeSelf->_activityIndicatorView stopAnimating];
+        [safeSelf setNeedsDisplay];
+    });
+}
+
 -(void)updateCellForUrl:(NSString*)url {
     [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;

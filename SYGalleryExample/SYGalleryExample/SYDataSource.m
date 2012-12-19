@@ -172,6 +172,7 @@
     uint numberOfItems = 0;
     switch (self.sourceType) {
         case SYGallerySourceTypeImageLocal:
+        case SYGallerySourceTypeImageData:
             numberOfItems = [self->_localPathsFulls count];
             break;
         case SYGallerySourceTypeImageDistant:
@@ -202,6 +203,18 @@
     return resourcePath;
 }
 
+-(NSData *)gallery:(id<SYGalleryView>)gallery dataAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+{
+    NSString *resourceName = nil;
+    if(size == SYGalleryPhotoSizeThumb)
+        resourceName = [self->_localPathsThumbs objectAtIndex:index];
+    else
+        resourceName = [self->_localPathsFulls objectAtIndex:index];
+    
+    NSString *resourcePath = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"jpg"];
+    return [NSData dataWithContentsOfFile:resourcePath];
+}
+
 - (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
 {
     if(size == SYGalleryPhotoSizeThumb)
@@ -227,6 +240,10 @@
 - (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index {
     
     switch ([self gallery:nil sourceTypeAtIndex:index]) {
+        case SYGallerySourceTypeImageData:
+            [self->_localPathsFulls removeObjectAtIndex:index];
+            [self->_localPathsThumbs removeObjectAtIndex:index];
+            break;
         case SYGallerySourceTypeImageLocal:
             [self->_localPathsFulls removeObjectAtIndex:index];
             [self->_localPathsThumbs removeObjectAtIndex:index];

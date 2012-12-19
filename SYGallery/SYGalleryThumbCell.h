@@ -25,6 +25,7 @@
     NSMutableData *_thumbLoadData;
 }
 
+-(void)updateCellForData:(NSData*)data;
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath;
 -(void)updateCellForUrl:(NSString*)url;
 -(void)updateCellForMissingImage;

@@ -216,6 +216,11 @@
     if(!self->_cacheImages || !cell.hasBeenLoaded) {
         
         switch (sourceType) {
+            case SYGallerySourceTypeImageData:
+                [cell updateCellForData:[self.dataSource gallery:self
+                                                     dataAtIndex:(uint)index
+                                                         andSize:SYGalleryPhotoSizeThumb]];
+                break;
             case SYGallerySourceTypeImageDistant:
                 [cell updateCellForUrl:[self.dataSource gallery:self
                                                      urlAtIndex:(uint)index

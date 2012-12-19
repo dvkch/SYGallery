@@ -228,6 +228,11 @@
         textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
     
     switch (sourceType) {
+        case SYGallerySourceTypeImageData:
+            [pageView updateImageWithData:[self.dataSource gallery:self
+                                                       dataAtIndex:(uint)pageIndex
+                                                           andSize:SYGalleryPhotoSizeFull]];
+            break;
         case SYGallerySourceTypeImageDistant:
             [pageView updateImageWithUrl:[self.dataSource gallery:self
                                                        urlAtIndex:(uint)pageIndex

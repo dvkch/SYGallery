@@ -58,6 +58,7 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self setButtonLocalPics:nil];
     [self setButtonDistantPics:nil];
     [self setButtonText:nil];
+    [self setButtonData:nil];
     [super viewDidUnload];
 }
 
@@ -72,6 +73,7 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonLocalPics setTintColor:[UIColor blackColor]];
     [self.buttonDistantPics setTintColor:nil];
     [self.buttonText setTintColor:nil];
+    [self.buttonData setTintColor:nil];
     [self.thumbsView reloadGallery];
 }
 
@@ -80,6 +82,16 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonLocalPics setTintColor:nil];
     [self.buttonDistantPics setTintColor:[UIColor blackColor]];
     [self.buttonText setTintColor:nil];
+    [self.buttonData setTintColor:nil];
+    [self.thumbsView reloadGallery];
+}
+
+- (IBAction)buttonDataClick:(id)sender {
+    [[SYDataSource sharedDataSource] setSourceType:SYGallerySourceTypeImageData];
+    [self.buttonLocalPics setTintColor:nil];
+    [self.buttonDistantPics setTintColor:nil];
+    [self.buttonText setTintColor:nil];
+    [self.buttonData setTintColor:[UIColor blackColor]];
     [self.thumbsView reloadGallery];
 }
 
@@ -88,6 +100,7 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonLocalPics setTintColor:nil];
     [self.buttonDistantPics setTintColor:nil];
     [self.buttonText setTintColor:[UIColor blackColor]];
+    [self.buttonData setTintColor:nil];
     [self.thumbsView reloadGallery];
 }
 

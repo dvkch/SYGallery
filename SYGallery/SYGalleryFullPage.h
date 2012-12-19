@@ -36,6 +36,7 @@
 
 -(id)initWithFrame:(CGRect)frame andPageNumber:(uint)pageNumber;
 
+-(void)updateImageWithData:(NSData*)data;
 -(void)updateImageWithAbsolutePath:(NSString*)absolutePath;
 -(void)updateImageWithUrl:(NSString*)url;
 -(void)updateTextWithString:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont*)textFont;

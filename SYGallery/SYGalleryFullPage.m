@@ -248,6 +248,26 @@
 
 #pragma mark - View methods
 
+-(void)updateImageWithData:(NSData*)data
+{
+    self->_sourceType = SYGallerySourceTypeImageData;
+    self.hasBeenLoaded = YES;
+    
+    [self->_circularProgressView setHidden:YES];
+    [self->_fullTextView setHidden:YES];
+    [self->_fullImageView setHidden:NO];
+    
+    __block SYGalleryFullPage *safeSelf = self;
+    int64_t delayInMilliSeconds = 10.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [safeSelf->_fullImageView setImage:[UIImage imageWithData:data]];
+        [safeSelf resetZoomFactors];
+        [safeSelf setNeedsDisplay];
+        [safeSelf setNeedsLayout];
+    });
+}
+
 -(void)updateImageWithAbsolutePath:(NSString*)absolutePath
 {
     self->_sourceType = SYGallerySourceTypeImageLocal;
