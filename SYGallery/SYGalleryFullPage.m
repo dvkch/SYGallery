@@ -248,7 +248,7 @@
 
 #pragma mark - View methods
 
--(void)updateImageWithData:(NSData*)data
+-(void)updateImageWithImage:(UIImage*)image
 {
     self->_sourceType = SYGallerySourceTypeImageData;
     self.hasBeenLoaded = YES;
@@ -261,7 +261,7 @@
     int64_t delayInMilliSeconds = 10.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_fullImageView setImage:[UIImage imageWithData:data]];
+        [safeSelf->_fullImageView setImage:image];
         [safeSelf resetZoomFactors];
         [safeSelf setNeedsDisplay];
         [safeSelf setNeedsLayout];

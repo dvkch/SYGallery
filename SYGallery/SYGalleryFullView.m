@@ -229,9 +229,9 @@
     
     switch (sourceType) {
         case SYGallerySourceTypeImageData:
-            [pageView updateImageWithData:[self.dataSource gallery:self
-                                                       dataAtIndex:(uint)pageIndex
-                                                           andSize:SYGalleryPhotoSizeFull]];
+            [pageView updateImageWithImage:[self.dataSource gallery:self
+                                                        dataAtIndex:(uint)pageIndex
+                                                            andSize:SYGalleryPhotoSizeFull]];
             break;
         case SYGallerySourceTypeImageDistant:
             [pageView updateImageWithUrl:[self.dataSource gallery:self

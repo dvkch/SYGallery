@@ -203,7 +203,7 @@
     return resourcePath;
 }
 
--(NSData *)gallery:(id<SYGalleryView>)gallery dataAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+-(UIImage *)gallery:(id<SYGalleryView>)gallery dataAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
 {
     NSString *resourceName = nil;
     if(size == SYGalleryPhotoSizeThumb)
@@ -212,7 +212,7 @@
         resourceName = [self->_localPathsFulls objectAtIndex:index];
     
     NSString *resourcePath = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"jpg"];
-    return [NSData dataWithContentsOfFile:resourcePath];
+    return [UIImage imageWithContentsOfFile:resourcePath];
 }
 
 - (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size

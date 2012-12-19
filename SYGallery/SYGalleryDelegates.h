@@ -47,7 +47,7 @@ typedef enum {
 - (NSString*)gallery:(id<SYGalleryView>)gallery absolutePathAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 - (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 - (NSString*)gallery:(id<SYGalleryView>)gallery textAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
-- (NSData*)gallery:(id<SYGalleryView>)gallery dataAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
+- (UIImage*)gallery:(id<SYGalleryView>)gallery dataAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 @optional
 - (BOOL)gallery:(id<SYGalleryView>)gallery canDeleteAtIndex:(NSUInteger)index;
 - (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index;

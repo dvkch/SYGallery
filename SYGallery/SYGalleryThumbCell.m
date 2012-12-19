@@ -162,7 +162,7 @@
     });
 }
 
--(void)updateCellForData:(NSData *)data {
+-(void)updateCellForImage:(UIImage*)image {
     [self resetCellUsingDefaults:NO];
     self.hasBeenLoaded = YES;
     
@@ -173,7 +173,7 @@
     int64_t delayInMilliSeconds = 10.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_thumbImageView setImage:[UIImage imageWithData:data]];
+        [safeSelf->_thumbImageView setImage:image];
         [safeSelf->_activityIndicatorView stopAnimating];
         [safeSelf setNeedsDisplay];
     });
