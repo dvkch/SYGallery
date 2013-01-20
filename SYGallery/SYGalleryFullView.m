@@ -176,7 +176,8 @@
 
 -(void)setActionDelegate:(id<SYGalleryFullViewActions>)actionDelegate {
     self->_actionDelegate = actionDelegate;
-    [self.actionDelegate gallery:self showedUpPictureAtIndex:[self currentIndexCalculated]];
+    if([self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
+        [self.actionDelegate gallery:self showedUpPictureAtIndex:[self currentIndexCalculated]];
 }
 
 -(void)reloadGalleryAndScrollToIndex:(NSUInteger)index {
