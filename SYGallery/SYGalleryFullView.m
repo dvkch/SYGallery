@@ -288,11 +288,13 @@
 
     NSUInteger currentIndex = [self currentIndexCalculated];
     
-    if(currentIndex != 0) {
-        [self loadPageAtIndex:currentIndex -1];
-    }
     [self loadPageAtIndex:currentIndex];
-    [self loadPageAtIndex:currentIndex +1];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(currentIndex != 0) {
+            [self loadPageAtIndex:currentIndex -1];
+        }
+        [self loadPageAtIndex:currentIndex +1];
+    });
     
     if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
         [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];

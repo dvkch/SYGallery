@@ -42,7 +42,12 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.fullPicView setActionDelegate:self];
     [self.fullPicView setAppearanceDelegate:[SYGalleryAppearance sharedAppearance]];
     [self.fullPicView addActionWithName:@"Show details" andTarget:self andSelector:@selector(imageAction1) andTag:0];
-    [self.fullPicView reloadGalleryAndScrollToIndex:0];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"loaded index %d in gallery %@", [self firstIndex], self.fullPicView);
+    [self.fullPicView reloadGalleryAndScrollToIndex:[self firstIndex]];
 }
 
 -(void)imageAction1 {
