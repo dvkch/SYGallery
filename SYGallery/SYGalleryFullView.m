@@ -24,6 +24,8 @@
 -(void)resetPagesZooms;
 
 -(void)loadPageAtIndex:(uint)pageIndex;
+-(void)unloadPageAtIndex:(uint)pageIndex;
+-(void)unloadPagesHidden;
 
 -(void)updateScrollView;
 @end
@@ -47,6 +49,8 @@
 #pragma mark - Private methods
 
 -(void)loadView {
+    self->_loadImageQueue = dispatch_queue_create("sygallery", NULL);
+    
     self.backgroundColor = [UIColor blackColor];
     
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
@@ -207,7 +211,7 @@
         return;
     
     // loads page from array, replaces the placeholder if necessary
-    SYGalleryFullPage *pageView = [self->_galleryPages objectAtIndex:pageIndex];
+    __block SYGalleryFullPage *pageView = [self->_galleryPages objectAtIndex:pageIndex];
     if (![pageView isKindOfClass:[NSNull class]])
         return;
     
@@ -228,34 +232,60 @@
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
         textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
     
-    switch (sourceType) {
-        case SYGallerySourceTypeImageData:
-            [pageView updateImageWithImage:[self.dataSource gallery:self
-                                                        dataAtIndex:(uint)pageIndex
-                                                            andSize:SYGalleryPhotoSizeFull]];
-            break;
-        case SYGallerySourceTypeImageDistant:
-            [pageView updateImageWithUrl:[self.dataSource gallery:self
-                                                       urlAtIndex:(uint)pageIndex
-                                                          andSize:SYGalleryPhotoSizeFull]];
-            break;
-        case SYGallerySourceTypeImageLocal:
-            [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
-                                                       absolutePathAtIndex:(uint)pageIndex
-                                                                   andSize:SYGalleryPhotoSizeFull]];
-            break;
-        case SYGallerySourceTypeText:
-            [pageView updateTextWithString:[self.dataSource gallery:self
-                                                        textAtIndex:(uint)pageIndex
-                                                            andSize:SYGalleryPhotoSizeFull]
-                              andTextColor:textColor
-                               andTextFont:textFont];
-            
-        default:
-            break;
-    }
+    dispatch_async(self->_loadImageQueue, ^{
+        switch (sourceType) {
+            case SYGallerySourceTypeImageData:
+                [pageView updateImageWithImage:[self.dataSource gallery:self
+                                                            dataAtIndex:(uint)pageIndex
+                                                                andSize:SYGalleryPhotoSizeFull]];
+                break;
+            case SYGallerySourceTypeImageDistant:
+                [pageView updateImageWithUrl:[self.dataSource gallery:self
+                                                           urlAtIndex:(uint)pageIndex
+                                                              andSize:SYGalleryPhotoSizeFull]];
+                break;
+            case SYGallerySourceTypeImageLocal:
+                [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
+                                                           absolutePathAtIndex:(uint)pageIndex
+                                                                       andSize:SYGalleryPhotoSizeFull]];
+                break;
+            case SYGallerySourceTypeText:
+                [pageView updateTextWithString:[self.dataSource gallery:self
+                                                            textAtIndex:(uint)pageIndex
+                                                                andSize:SYGalleryPhotoSizeFull]
+                                  andTextColor:textColor
+                                   andTextFont:textFont];
+                
+            default:
+                break;
+        }
+    });
     
     [self->_scrollView addSubview:pageView];
+}
+
+-(void)unloadPageAtIndex:(uint)pageIndex
+{
+    if (pageIndex >= [self numberOfPictures] || ! self.dataSource)
+        return;
+    
+    [self->_galleryPages replaceObjectAtIndex:pageIndex withObject:[NSNull null]];
+}
+
+-(void)unloadPagesHidden
+{
+    return;
+#warning CORRECT IMPEMENTATION NEEDED
+    
+    BOOL keepPageInMemory = NO;
+    uint currentIndex = [self currentIndexCalculated];
+    
+    for(uint i = 0; i < [self numberOfPictures]; ++i)
+    {
+        keepPageInMemory = i >= currentIndex -2 && i <= currentIndex -2;
+        if(!keepPageInMemory)
+            [self unloadPageAtIndex:i];
+    }
 }
 
 -(void)scrollToPage:(uint)pageIndex animated:(BOOL)animated {
@@ -289,12 +319,13 @@
     NSUInteger currentIndex = [self currentIndexCalculated];
     
     [self loadPageAtIndex:currentIndex];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(currentIndex != 0) {
-            [self loadPageAtIndex:currentIndex -1];
-        }
-        [self loadPageAtIndex:currentIndex +1];
-    });
+    [self unloadPagesHidden];
+    [self loadPageAtIndex:currentIndex +1];
+    if(currentIndex > 0)
+        [self loadPageAtIndex:currentIndex -1];
+    [self loadPageAtIndex:currentIndex +2];
+    if(currentIndex > 1)
+        [self loadPageAtIndex:currentIndex -2];
     
     if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
         [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];

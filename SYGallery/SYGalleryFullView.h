@@ -13,9 +13,11 @@
 #define PAGE_MARGIN 20.f
 
 @interface SYGalleryFullView : UIScrollView <SYGalleryView, UIScrollViewDelegate> {
+@private
     UIScrollView *_scrollView;
     NSMutableArray *_galleryPages;
     SYGalleryActionView *_actionListView;
+    dispatch_queue_t _loadImageQueue;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
