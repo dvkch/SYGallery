@@ -19,7 +19,6 @@
 
 @implementation SYGalleryThumbCell : GMGridViewCell
 
-@synthesize hasBeenLoaded = _hasBeenLoaded;
 @synthesize cellSize = _cellSize;
 
 #pragma mark - Initialization
@@ -43,7 +42,6 @@
     if(useDefaults)
         [self setDefaults];
     
-    self.hasBeenLoaded = NO;
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
     
     
@@ -147,7 +145,6 @@
 #pragma mark - View methods
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath {
     [self resetCellUsingDefaults:NO];
-    self.hasBeenLoaded = YES;
     
     [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self->_activityIndicatorView startAnimating];
@@ -164,7 +161,6 @@
 
 -(void)updateCellForImage:(UIImage*)image {
     [self resetCellUsingDefaults:NO];
-    self.hasBeenLoaded = YES;
     
     [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self->_activityIndicatorView startAnimating];
@@ -181,7 +177,6 @@
 
 -(void)updateCellForUrl:(NSString*)url {
     [self resetCellUsingDefaults:NO];
-    self.hasBeenLoaded = YES;
     
     // cannot use a block version of NSURLConnection because if we load another picture
     // while the first hasn't been loaded it may result in a bizarre behavior
@@ -200,7 +195,6 @@
 
 -(void)updateCellForMissingImage {
     [self resetCellUsingDefaults:NO];
-    self.hasBeenLoaded = YES;
     
     [self->_thumbImageView setContentMode:UIViewContentModeCenter];
     [self->_thumbImageView setImage:[UIImage imageNamed:@"no_picture.png"]];
@@ -208,7 +202,6 @@
 
 -(void)updateCellForText:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont *)textFont {
     [self resetCellUsingDefaults:NO];
-    self.hasBeenLoaded = YES;
     
     self->_textLabel.text = text;
     self->_textLabel.textColor = textColor ? textColor : [UIColor whiteColor];
@@ -254,14 +247,7 @@
 -(void)setBadgeHidden:(BOOL)badgeHidden
 {
     self->_badgeHidden = badgeHidden;
-    if(badgeHidden) {
-        [self->_badgeView setHideWhenZero:YES];
-        [self->_badgeView setValue:0];
-    }
-    else {
-        [self->_badgeView setValue:self->_badgeValue];
-        [self->_badgeView setHideWhenZero:NO];
-    }
+    [self->_badgeView setHidden:badgeHidden];
 }
 
 -(void)setBackgroundColor:(UIColor *)backgroundColor {
@@ -306,7 +292,6 @@
         
         safeSelf->_thumbLoadData = nil;
         safeSelf->_thumbLoadConnection = nil;
-        safeSelf.hasBeenLoaded = NO;
     });
 }
 

@@ -12,7 +12,6 @@
 
 @interface SYGalleryThumbView (Private)
 -(void)loadView;
--(void)setupCachedCellsArray;
 @end
 
 
@@ -20,7 +19,6 @@
 
 @synthesize dataSource = _dataSource;
 @synthesize actionDelegate = _actionDelegate;
-@synthesize cacheImages = _cacheImages;
 @synthesize edit = _edit;
 @synthesize lastClickedItemIndex = _lastClickedItemIndex;
 
@@ -44,7 +42,6 @@
     /*************  PROPERTIES INIT  *************/
     /*********************************************/
     self->_edit = NO;
-    self->_cacheImages = NO;
     
     /*********************************************/
     /**************  GRIDVIEW INIT  **************/
@@ -80,25 +77,9 @@
     self.clipsToBounds = YES;
 }
 
--(void)setupCachedCellsArray {
-    int capacity = [self numberOfItemsInGMGridView:self->_gridView];
-    capacity = capacity < 0 ? 0 : capacity;
-    
-    if(self->_cacheImages) {
-        self->_cachedCells = [NSMutableArray arrayWithCapacity:(uint)capacity];
-        for (uint i = 0; i < (uint)capacity; ++i)
-            [self->_cachedCells addObject:[[SYGalleryThumbCell alloc] init]];
-    }
-    
-    else
-        self->_cachedCells = nil;
-}
-
 #pragma mark - View methods
 
 -(void)reloadGallery {
-    [self setupCachedCellsArray];
-    
     CGFloat cellSpacing = DEFAULT_CELL_SPACING;
     if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSpacing:)])
         cellSpacing = [self.appearanceDelegate galleryThumbCellSpacing:self];
@@ -117,11 +98,6 @@
 -(void)setActionDelegate:(id<SYGalleryThumbViewActions>)actionDelegate {
     self->_actionDelegate = actionDelegate;
     [self reloadGallery];
-}
-
--(void)setCacheImages:(BOOL)cacheImages {
-    self->_cacheImages = cacheImages;
-    [self setupCachedCellsArray];
 }
 
 -(void)setEdit:(BOOL)edit {
@@ -168,23 +144,13 @@
     if(index < 0)
         return  [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, cellSize, cellSize)];
 
-    SYGalleryThumbCell *cell = nil;
     NSString *cellIdentifier = @"photoCell";
-
-    // loading cached cell if said so
-    if(self->_cacheImages)
-        cell = [self->_cachedCells objectAtIndex:(uint)index];
-    else
-        cell = (SYGalleryThumbCell *)[self->_gridView dequeueReusableCellWithIdentifier:cellIdentifier];
+    SYGalleryThumbCell *cell = (SYGalleryThumbCell *)[self->_gridView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    // cell couldn't be loaded from cached nor queued reusable cells
     if(!cell)
         cell = [[SYGalleryThumbCell alloc] initWithFrame:CGRectMake(0.f, 0.f, cellSize, cellSize)];
     
-    // caching cell if necessary
-    if(self->_cacheImages)
-        [self->_cachedCells replaceObjectAtIndex:(uint)index withObject:cell];
-    
+    [cell setReuseIdentifier:cellIdentifier];
     [cell setCellSize:cellSize];
     
     UIColor *borderColor = DEFAULT_CELL_BORDER_COLOR;
@@ -213,34 +179,30 @@
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
         textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
     
-    if(!self->_cacheImages || !cell.hasBeenLoaded) {
-        
-        switch (sourceType) {
-            case SYGallerySourceTypeImageData:
-                [cell updateCellForImage:[self.dataSource gallery:self
-                                                      dataAtIndex:(uint)index
-                                                          andSize:SYGalleryPhotoSizeThumb]];
-                break;
-            case SYGallerySourceTypeImageDistant:
-                [cell updateCellForUrl:[self.dataSource gallery:self
-                                                     urlAtIndex:(uint)index
-                                                        andSize:SYGalleryPhotoSizeThumb]];
-                break;
-            case SYGallerySourceTypeImageLocal:
-                [cell updateCellForAbsolutePath:[self.dataSource gallery:self
-                                                     absolutePathAtIndex:(uint)index
-                                                                 andSize:SYGalleryPhotoSizeThumb]];
-                break;
-            case SYGallerySourceTypeText:
-                [cell updateCellForText:[self.dataSource gallery:self
-                                                     textAtIndex:(uint)index
-                                                         andSize:SYGalleryPhotoSizeThumb]
-                           andTextColor:textColor
-                            andTextFont:textFont];
-                break;
-        }
+    switch (sourceType) {
+        case SYGallerySourceTypeImageData:
+            [cell updateCellForImage:[self.dataSource gallery:self
+                                                  dataAtIndex:(uint)index
+                                                      andSize:SYGalleryPhotoSizeThumb]];
+            break;
+        case SYGallerySourceTypeImageDistant:
+            [cell updateCellForUrl:[self.dataSource gallery:self
+                                                 urlAtIndex:(uint)index
+                                                    andSize:SYGalleryPhotoSizeThumb]];
+            break;
+        case SYGallerySourceTypeImageLocal:
+            [cell updateCellForAbsolutePath:[self.dataSource gallery:self
+                                                 absolutePathAtIndex:(uint)index
+                                                             andSize:SYGalleryPhotoSizeThumb]];
+            break;
+        case SYGallerySourceTypeText:
+            [cell updateCellForText:[self.dataSource gallery:self
+                                                 textAtIndex:(uint)index
+                                                     andSize:SYGalleryPhotoSizeThumb]
+                       andTextColor:textColor
+                        andTextFont:textFont];
+            break;
     }
-    
     
     BOOL showBadge = NO;
     NSUInteger badgeValue = 0;
@@ -250,8 +212,10 @@
     if([self.dataSource respondsToSelector:@selector(gallery:badgeValueAtIndex:)])
         badgeValue = [self.dataSource gallery:self badgeValueAtIndex:(uint)index];
     
+    if(showBadge)
+        [cell setBadgeValue:badgeValue];
+    
     [cell setBadgeHidden:!showBadge];
-    [cell setBadgeValue:badgeValue];
     
     return cell;
 }

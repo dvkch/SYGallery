@@ -38,7 +38,6 @@
 -(void)setBackgroundColor:(UIColor *)backgroundColor;
 -(UIColor*)backgroundColor;
 
-@property (atomic) BOOL hasBeenLoaded;
 @property (atomic) CGFloat cellSize;
 
 @end
