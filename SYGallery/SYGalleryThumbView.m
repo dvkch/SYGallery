@@ -53,9 +53,9 @@
     self->_gridView.backgroundColor = [UIColor clearColor];
     
     self->_gridView.style = GMGridViewStyleSwap;
-    self->_gridView.itemSpacing = DEFAULT_CELL_SPACING;
-    self->_gridView.minEdgeInsets = UIEdgeInsetsMake(DEFAULT_CELL_SPACING, DEFAULT_CELL_SPACING,
-                                                     DEFAULT_CELL_SPACING, DEFAULT_CELL_SPACING);
+    self->_gridView.itemSpacing = SYGALLERY_DEFAULT_CELL_SPACING;
+    self->_gridView.minEdgeInsets = UIEdgeInsetsMake(SYGALLERY_DEFAULT_CELL_SPACING, SYGALLERY_DEFAULT_CELL_SPACING,
+                                                     SYGALLERY_DEFAULT_CELL_SPACING, SYGALLERY_DEFAULT_CELL_SPACING);
     self->_gridView.centerGrid = NO;
     self->_gridView.showsVerticalScrollIndicator = YES;
     self->_gridView.showsHorizontalScrollIndicator = NO;
@@ -79,8 +79,9 @@
 
 #pragma mark - View methods
 
--(void)reloadGallery {
-    CGFloat cellSpacing = DEFAULT_CELL_SPACING;
+-(void)reloadGalleryAndKeepEditState:(BOOL)keepEditState {
+    [self setEdit:keepEditState && self.edit];
+    CGFloat cellSpacing = SYGALLERY_DEFAULT_CELL_SPACING;
     if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSpacing:)])
         cellSpacing = [self.appearanceDelegate galleryThumbCellSpacing:self];
     
@@ -92,17 +93,17 @@
 
 -(void)setDataSource:(id<SYGalleryDataSource>)dataSource {
     self->_dataSource = dataSource;
-    [self reloadGallery];
+    [self reloadGalleryAndKeepEditState:NO];
 }
 
 -(void)setActionDelegate:(id<SYGalleryThumbViewActions>)actionDelegate {
     self->_actionDelegate = actionDelegate;
-    [self reloadGallery];
+    [self reloadGalleryAndKeepEditState:NO];
 }
 
 -(void)setEdit:(BOOL)edit {
     self->_edit = edit;
-    [self->_gridView setEditing:edit animated:YES];
+    [self->_gridView setEditing:edit];
 }
 
 -(void)setFrame:(CGRect)frame {
@@ -128,7 +129,7 @@
 
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
     
-    CGFloat cellSize = DEFAULT_CELL_SIZE;
+    CGFloat cellSize = SYGALLERY_DEFAULT_CELL_SIZE;
     if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSize:)])
         cellSize = [self.appearanceDelegate galleryThumbCellSize:self];
     
@@ -137,7 +138,7 @@
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     
-    CGFloat cellSize = DEFAULT_CELL_SIZE;
+    CGFloat cellSize = SYGALLERY_DEFAULT_CELL_SIZE;
     if([self.appearanceDelegate respondsToSelector:@selector(galleryThumbCellSize:)])
         cellSize = [self.appearanceDelegate galleryThumbCellSize:self];
     
@@ -153,15 +154,15 @@
     [cell setReuseIdentifier:cellIdentifier];
     [cell setCellSize:cellSize];
     
-    UIColor *borderColor = DEFAULT_CELL_BORDER_COLOR;
+    UIColor *borderColor = SYGALLERY_DEFAULT_CELL_BORDER_COLOR;
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:thumbBorderColorAtIndex:)])
         borderColor = [self.appearanceDelegate gallery:self thumbBorderColorAtIndex:(uint)index];
     
-    CGFloat borderSize = DEFAULT_CELL_BORDER_SIZE;
+    CGFloat borderSize = SYGALLERY_DEFAULT_CELL_BORDER_SIZE;
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:thumbBorderSizeAtIndex:)])
         borderSize = [self.appearanceDelegate gallery:self thumbBorderSizeAtIndex:(uint)index];
     
-    UIColor *backColor = DEFAULT_CELL_BACKGROUND_COLOR;
+    UIColor *backColor = SYGALLERY_DEFAULT_CELL_BACKGROUND_COLOR;
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:thumbBackgroundColor:)])
         backColor = [self.appearanceDelegate gallery:self thumbBackgroundColor:(uint)index];
     

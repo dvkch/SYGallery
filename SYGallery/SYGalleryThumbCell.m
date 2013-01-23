@@ -11,10 +11,12 @@
 #import "SYGalleryThumbCell.h"
 #import "GMGridViewCell.h"
 #import "MKNumberBadgeView.h"
+#import "NSURLConnection+Blocks.h"
 
 @interface SYGalleryThumbCell (Private)
 -(void)setDefaults;
 -(void)resetCellUsingDefaults:(BOOL)useDefaults;
+-(void)updateCellForImage_private:(UIImage *)image;
 @end
 
 @implementation SYGalleryThumbCell : GMGridViewCell
@@ -93,6 +95,7 @@
     /*********************************************/
     if(!self->_thumbImageView)
         self->_thumbImageView = [[UIImageView alloc] init];
+    [self->_thumbImageView setImage:nil];
     [self->_thumbImageView setFrame:subViewFrame];
     [self->_thumbImageView setClipsToBounds:YES];
     [self->_thumbImageView setBackgroundColor:[UIColor clearColor]];
@@ -142,6 +145,14 @@
         [self->_mainView addSubview:self->_activityIndicatorView];
 }
 
+-(void)updateCellForImage_private:(UIImage *)image
+{
+    [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self->_thumbImageView setImage:image];
+    [self->_activityIndicatorView stopAnimating];
+}
+
+
 #pragma mark - View methods
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath {
     [self resetCellUsingDefaults:NO];
@@ -162,35 +173,43 @@
 -(void)updateCellForImage:(UIImage*)image {
     [self resetCellUsingDefaults:NO];
     
-    [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self->_activityIndicatorView startAnimating];
     
-    __block SYGalleryThumbCell *safeSelf = self;
-    int64_t delayInMilliSeconds = 10.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_thumbImageView setImage:image];
-        [safeSelf->_activityIndicatorView stopAnimating];
-        [safeSelf setNeedsDisplay];
-    });
+    [self performSelectorOnMainThread:@selector(updateCellForImage_private:)
+                           withObject:image
+                        waitUntilDone:NO
+                                modes:@[UITrackingRunLoopMode, NSDefaultRunLoopMode]];
 }
 
 -(void)updateCellForUrl:(NSString*)url {
     [self resetCellUsingDefaults:NO];
     
-    // cannot use a block version of NSURLConnection because if we load another picture
-    // while the first hasn't been loaded it may result in a bizarre behavior
-
-    if(self->_thumbLoadConnection)
-        [self->_thumbLoadConnection cancel];
+    [self->_activityIndicatorView startAnimating];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                     cachePolicy:NSURLRequestReturnCacheDataElseLoad
                                                 timeoutInterval:5.];
-    self->_thumbLoadConnection = [NSURLConnection connectionWithRequest:request delegate:self];
-    self->_thumbLoadData = [NSMutableData data];
-    [self->_thumbLoadConnection start];
-    [self->_activityIndicatorView startAnimating];
+    
+    [NSURLConnection asyncRequest:request success:^(NSData *data, NSURLResponse *response)
+     {
+        [self performSelectorOnMainThread:@selector(updateCellForImage_private:)
+                               withObject:[UIImage imageWithData:data]
+                            waitUntilDone:NO
+                                    modes:@[UITrackingRunLoopMode, NSDefaultRunLoopMode]];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+     }
+                          failure:^(NSData *data, NSError *err)
+     {
+        [self performSelectorOnMainThread:@selector(updateCellForMissingImage)
+                               withObject:nil
+                            waitUntilDone:NO
+                                    modes:@[UITrackingRunLoopMode, NSDefaultRunLoopMode]];
+        
+        [self->_activityIndicatorView stopAnimating];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+     }];
 }
 
 -(void)updateCellForMissingImage {
@@ -260,46 +279,10 @@
 
 #pragma mark - NSURLConnection delegate methods
 
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [self->_thumbLoadData setLength:0];
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-}
-
-- (void)connection:(NSURLConnection *)conn didReceiveData:(NSData *)data
-{
-    [self->_thumbLoadData appendData:data];
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-}
-
--(void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    __block SYGalleryThumbCell *safeSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [safeSelf->_activityIndicatorView stopAnimating];
-        [safeSelf->_thumbImageView setImage:[UIImage imageWithData:self->_thumbLoadData]];
-        [safeSelf setNeedsDisplay];
-        
-        safeSelf->_thumbLoadData = nil;
-        safeSelf->_thumbLoadConnection = nil;
-    });
-    
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-}
-
--(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    __block SYGalleryThumbCell *safeSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [safeSelf->_activityIndicatorView stopAnimating];
-        
-        safeSelf->_thumbLoadData = nil;
-        safeSelf->_thumbLoadConnection = nil;
-    });
-}
 
 /*
-@property (nonatomic, strong) UIView *contentView;         // The contentView - default is nil
 @property (nonatomic, strong) UIImage *deleteButtonIcon;   // Delete button image
 @property (nonatomic) CGPoint deleteButtonOffset;          // Delete button offset relative to the origin
-@property (nonatomic, strong) NSString *reuseIdentifier;
 @property (nonatomic, getter=isHighlighted) BOOL highlighted;
 */
 

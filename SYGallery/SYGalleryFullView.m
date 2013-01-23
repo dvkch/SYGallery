@@ -49,8 +49,6 @@
 #pragma mark - Private methods
 
 -(void)loadView {
-    self->_loadImageQueue = dispatch_queue_create("sygallery", NULL);
-    
     self.backgroundColor = [UIColor blackColor];
     
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
@@ -232,35 +230,33 @@
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
         textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
     
-    dispatch_async(self->_loadImageQueue, ^{
-        switch (sourceType) {
-            case SYGallerySourceTypeImageData:
-                [pageView updateImageWithImage:[self.dataSource gallery:self
-                                                            dataAtIndex:(uint)pageIndex
-                                                                andSize:SYGalleryPhotoSizeFull]];
-                break;
-            case SYGallerySourceTypeImageDistant:
-                [pageView updateImageWithUrl:[self.dataSource gallery:self
-                                                           urlAtIndex:(uint)pageIndex
-                                                              andSize:SYGalleryPhotoSizeFull]];
-                break;
-            case SYGallerySourceTypeImageLocal:
-                [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
-                                                           absolutePathAtIndex:(uint)pageIndex
-                                                                       andSize:SYGalleryPhotoSizeFull]];
-                break;
-            case SYGallerySourceTypeText:
-                [pageView updateTextWithString:[self.dataSource gallery:self
-                                                            textAtIndex:(uint)pageIndex
-                                                                andSize:SYGalleryPhotoSizeFull]
-                                  andTextColor:textColor
-                                   andTextFont:textFont];
-                
-            default:
-                break;
-        }
-    });
-    
+    switch (sourceType) {
+        case SYGallerySourceTypeImageData:
+            [pageView updateImageWithImage:[self.dataSource gallery:self
+                                                        dataAtIndex:(uint)pageIndex
+                                                            andSize:SYGalleryPhotoSizeFull]];
+            break;
+        case SYGallerySourceTypeImageDistant:
+            [pageView updateImageWithUrl:[self.dataSource gallery:self
+                                                       urlAtIndex:(uint)pageIndex
+                                                          andSize:SYGalleryPhotoSizeFull]];
+            break;
+        case SYGallerySourceTypeImageLocal:
+            [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
+                                                       absolutePathAtIndex:(uint)pageIndex
+                                                                   andSize:SYGalleryPhotoSizeFull]];
+            break;
+        case SYGallerySourceTypeText:
+            [pageView updateTextWithString:[self.dataSource gallery:self
+                                                        textAtIndex:(uint)pageIndex
+                                                            andSize:SYGalleryPhotoSizeFull]
+                              andTextColor:textColor
+                               andTextFont:textFont];
+            
+        default:
+            break;
+    }
+
     [self->_scrollView addSubview:pageView];
 }
 

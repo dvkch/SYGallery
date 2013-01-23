@@ -26,6 +26,6 @@ GMGridViewSortingDelegate>
 
 @property (readonly) NSUInteger lastClickedItemIndex;
 
--(void)reloadGallery;
+-(void)reloadGalleryAndKeepEditState:(BOOL)keepEditState;
 
 @end

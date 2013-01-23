@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F810E4111668E2CC00089EB2 /* SYGalleryAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = F810E4101668E2CC00089EB2 /* SYGalleryAppearance.m */; };
+		F810E4111668E2CC00089EB2 /* SYAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = F810E4101668E2CC00089EB2 /* SYAppearance.m */; };
 		F81891CF163AD28E00C8E806 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891C3163AD28E00C8E806 /* 1.jpg */; };
 		F81891D0163AD28E00C8E806 /* 1_s.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891C4163AD28E00C8E806 /* 1_s.jpg */; };
 		F81891D1163AD28E00C8E806 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F81891C5163AD28E00C8E806 /* 2.jpg */; };
@@ -25,6 +25,8 @@
 		F81891EC163AF33E00C8E806 /* SYDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F81891EB163AF33E00C8E806 /* SYDataSource.m */; };
 		F847C53016387AC300245B53 /* no_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52C16387AC300245B53 /* no_picture.png */; };
 		F847C53116387AC300245B53 /* no_picture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52D16387AC300245B53 /* no_picture@2x.png */; };
+		F8537DC916AFD98C003282DC /* NSURLConnection+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537DC716AFD98C003282DC /* NSURLConnection+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F8537DCA16AFD98C003282DC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F8537DC816AFD98C003282DC /* README.md */; };
 		F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F88EA4731645808F00D25742 /* SYGalleryActionView.m */; };
 		F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */; };
 		F8B96E111638116600EC9487 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E101638116600EC9487 /* UIKit.framework */; };
@@ -51,8 +53,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F810E40F1668E2CC00089EB2 /* SYGalleryAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryAppearance.h; sourceTree = "<group>"; };
-		F810E4101668E2CC00089EB2 /* SYGalleryAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryAppearance.m; sourceTree = "<group>"; };
+		F810E40F1668E2CC00089EB2 /* SYAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYAppearance.h; sourceTree = "<group>"; };
+		F810E4101668E2CC00089EB2 /* SYAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYAppearance.m; sourceTree = "<group>"; };
 		F81891C3163AD28E00C8E806 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		F81891C4163AD28E00C8E806 /* 1_s.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1_s.jpg; sourceTree = "<group>"; };
 		F81891C5163AD28E00C8E806 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
@@ -75,6 +77,9 @@
 		F847C52D16387AC300245B53 /* no_picture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_picture@2x.png"; sourceTree = "<group>"; };
 		F847C52E16387AC300245B53 /* no_picture_org.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = no_picture_org.pdf; sourceTree = "<group>"; };
 		F847C52F16387AC300245B53 /* no_picture_org.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_picture_org.png; sourceTree = "<group>"; };
+		F8537DC616AFD98C003282DC /* NSURLConnection+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+Blocks.h"; sourceTree = "<group>"; };
+		F8537DC716AFD98C003282DC /* NSURLConnection+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+Blocks.m"; sourceTree = "<group>"; };
+		F8537DC816AFD98C003282DC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		F88EA4721645808F00D25742 /* SYGalleryActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryActionView.h; sourceTree = "<group>"; };
 		F88EA4731645808F00D25742 /* SYGalleryActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryActionView.m; sourceTree = "<group>"; };
 		F8A9CE5D16419C3B0097372D /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
@@ -164,6 +169,17 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		F8537DC516AFD98C003282DC /* NSURLConnection-Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				F8537DC616AFD98C003282DC /* NSURLConnection+Blocks.h */,
+				F8537DC716AFD98C003282DC /* NSURLConnection+Blocks.m */,
+				F8537DC816AFD98C003282DC /* README.md */,
+			);
+			name = "NSURLConnection-Blocks";
+			path = "../Lib/NSURLConnection-Blocks";
+			sourceTree = "<group>";
+		};
 		F8A9CE5C16419C3B0097372D /* DACircularProgress */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,8 +233,8 @@
 				F81891C2163AD28E00C8E806 /* Images */,
 				F81891EA163AF33E00C8E806 /* SYDataSource.h */,
 				F81891EB163AF33E00C8E806 /* SYDataSource.m */,
-				F810E40F1668E2CC00089EB2 /* SYGalleryAppearance.h */,
-				F810E4101668E2CC00089EB2 /* SYGalleryAppearance.m */,
+				F810E40F1668E2CC00089EB2 /* SYAppearance.h */,
+				F810E4101668E2CC00089EB2 /* SYAppearance.m */,
 			);
 			path = SYGalleryExample;
 			sourceTree = "<group>";
@@ -261,6 +277,7 @@
 		F8B96E47163815F000EC9487 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				F8537DC516AFD98C003282DC /* NSURLConnection-Blocks */,
 				F8CEF7C516553FDE0043828E /* MKNumberBadgeView */,
 				F8A9CE5C16419C3B0097372D /* DACircularProgress */,
 				F8B96E4B163817DA00EC9487 /* GMGridView */,
@@ -376,6 +393,7 @@
 				F81891D8163AD28E00C8E806 /* 5_s.jpg in Resources */,
 				F81891D9163AD28E00C8E806 /* 6.jpg in Resources */,
 				F81891DA163AD28E00C8E806 /* 6_s.jpg in Resources */,
+				F8537DCA16AFD98C003282DC /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,7 +421,8 @@
 				F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */,
 				F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */,
 				F8CEF7C816553FDE0043828E /* MKNumberBadgeView.m in Sources */,
-				F810E4111668E2CC00089EB2 /* SYGalleryAppearance.m in Sources */,
+				F810E4111668E2CC00089EB2 /* SYAppearance.m in Sources */,
+				F8537DC916AFD98C003282DC /* NSURLConnection+Blocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

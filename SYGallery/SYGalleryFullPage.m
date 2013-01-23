@@ -107,7 +107,7 @@
     /*********************************************/
     /************  PROGRESSVIEW INIT  ************/
     /*********************************************/
-    CGFloat progressSize = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 80.f;
+    CGFloat progressSize = SYGALLERY_IPAD ? 120.f : 80.f;
     if(!self->_circularProgressView)
         self->_circularProgressView = [[DACircularProgressView alloc]
                                        initWithFrame:CGRectMake(0.f, 0.f, progressSize, progressSize)];
@@ -325,19 +325,14 @@
     [self->_fullTextView setHidden:NO];
     [self->_fullImageView setHidden:YES];
     
-    __block SYGalleryFullPage *safeSelf = self;
-    int64_t delayInMilliSeconds = 10.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_fullTextView setTextColor:(textColor ? textColor : [UIColor whiteColor])];
-        if(textFont)
-            [safeSelf->_fullTextView setFont:textFont];
-        [safeSelf->_fullTextView setText:text];
-        [safeSelf->_fullTextView sizeToFit];
-        [safeSelf resetZoomFactors];
-        [safeSelf setNeedsDisplay];
-        [safeSelf setNeedsLayout];
-    });
+    [self->_fullTextView setTextColor:(textColor ? textColor : [UIColor whiteColor])];
+    if(textFont)
+        [self->_fullTextView setFont:textFont];
+    [self->_fullTextView setText:text];
+    [self->_fullTextView sizeToFit];
+    [self resetZoomFactors];
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
 }
 
 - (void)setFrame:(CGRect)frame

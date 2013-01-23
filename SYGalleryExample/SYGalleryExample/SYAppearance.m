@@ -1,5 +1,5 @@
 //
-//  SYGalleryAppearance.m
+//  SYAppearance.m
 //  SYGalleryExample
 //
 //  Created by rominet on 11/30/12.
@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SYGalleryAppearance.h"
+#import "SYAppearance.h"
 
-@implementation SYGalleryAppearance
+@implementation SYAppearance
 
-+(SYGalleryAppearance *)sharedAppearance {
++(SYAppearance *)sharedAppearance {
     static dispatch_once_t once;
     static id sharedInstance;
     dispatch_once(&once, ^{
@@ -49,7 +49,7 @@
 
 - (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBorderColorAtIndex:(NSUInteger)index
 {
-    switch (index % 3) {
+    switch (index % 4) {
         case 0:
             return [UIColor blackColor];
             break;
@@ -59,13 +59,16 @@
         case 2:
             return [UIColor clearColor];
             break;
+        case 4:
+            return SYGALLERY_DEFAULT_CELL_BORDER_COLOR;
+            break;
     }
     return nil;
 }
 
 - (CGFloat)gallery:(id<SYGalleryView>)gallery thumbBorderSizeAtIndex:(NSUInteger)index
 {
-    switch (index % 3) {
+    switch (index % 4) {
         case 0:
             return 1.f;
             break;
@@ -74,6 +77,9 @@
             break;
         case 2:
             return 1.f;
+            break;
+        case 3:
+            return SYGALLERY_DEFAULT_CELL_BORDER_SIZE;
             break;
     }
     return 0.f;

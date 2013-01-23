@@ -19,7 +19,7 @@
 #import "SYGalleryFullView.h"
 
 #import "SYDataSource.h"
-#import "SYGalleryAppearance.h"
+#import "SYAppearance.h"
 
 
 @implementation SYViewControllerThumbs
@@ -33,11 +33,11 @@ AUTOROTATE_ALL_ORIENTATIONS
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.thumbsView setDataSource:[SYDataSource sharedDataSource]];
     [self.thumbsView setActionDelegate:self];
-    [self.thumbsView setCacheImages:YES];
-    [self.thumbsView setAppearanceDelegate:[SYGalleryAppearance sharedAppearance]];
-    [self.thumbsView reloadGallery];
+    [self.thumbsView setAppearanceDelegate:[SYAppearance sharedAppearance]];
+    [self.thumbsView reloadGalleryAndKeepEditState:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,6 +59,7 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self setButtonDistantPics:nil];
     [self setButtonText:nil];
     [self setButtonData:nil];
+    [self setButtonEdit:nil];
     [super viewDidUnload];
 }
 
@@ -74,7 +75,9 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonDistantPics setTintColor:nil];
     [self.buttonText setTintColor:nil];
     [self.buttonData setTintColor:nil];
-    [self.thumbsView reloadGallery];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.thumbsView reloadGalleryAndKeepEditState:NO];
+    });
 }
 
 - (IBAction)buttonDistPicsClick:(id)sender {
@@ -83,7 +86,9 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonDistantPics setTintColor:[UIColor blackColor]];
     [self.buttonText setTintColor:nil];
     [self.buttonData setTintColor:nil];
-    [self.thumbsView reloadGallery];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.thumbsView reloadGalleryAndKeepEditState:NO];
+    });
 }
 
 - (IBAction)buttonDataClick:(id)sender {
@@ -92,7 +97,9 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonDistantPics setTintColor:nil];
     [self.buttonText setTintColor:nil];
     [self.buttonData setTintColor:[UIColor blackColor]];
-    [self.thumbsView reloadGallery];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.thumbsView reloadGalleryAndKeepEditState:NO];
+    });
 }
 
 - (IBAction)buttonTextClick:(id)sender {
@@ -101,7 +108,9 @@ AUTOROTATE_ALL_ORIENTATIONS
     [self.buttonDistantPics setTintColor:nil];
     [self.buttonText setTintColor:[UIColor blackColor]];
     [self.buttonData setTintColor:nil];
-    [self.thumbsView reloadGallery];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.thumbsView reloadGalleryAndKeepEditState:NO];
+    });
 }
 
 #pragma mark - SYGalleryActions
@@ -119,6 +128,7 @@ AUTOROTATE_ALL_ORIENTATIONS
 
 - (void)gallery:(id<SYGalleryView>)gallery changedEditStateTo:(BOOL)edit
 {
+    [self.buttonEdit setStyle:(edit ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered)];
     NSLog(@"Gallery in edit mode: %@", edit ? @"YES" : @"NO");
 }
 

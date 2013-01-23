@@ -10,7 +10,7 @@
 #import "SYGalleryFullView.h"
 
 #import "SYDataSource.h"
-#import "SYGalleryAppearance.h"
+#import "SYAppearance.h"
 
 @interface SYViewControllerFull ()
 -(void)imageAction1;
@@ -40,13 +40,13 @@ AUTOROTATE_ALL_ORIENTATIONS
 	// Do any additional setup after loading the view.
     [self.fullPicView setDataSource:[SYDataSource sharedDataSource] andFirstItemToShow:[self firstIndex]];
     [self.fullPicView setActionDelegate:self];
-    [self.fullPicView setAppearanceDelegate:[SYGalleryAppearance sharedAppearance]];
+    [self.fullPicView setAppearanceDelegate:[SYAppearance sharedAppearance]];
     [self.fullPicView addActionWithName:@"Show details" andTarget:self andSelector:@selector(imageAction1) andTag:0];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"loaded index %d in gallery %@", [self firstIndex], self.fullPicView);
+    NSLog(@"loaded index %d in gallery <%@: 0x%x>", [self firstIndex], [self.fullPicView class], self.fullPicView);
     [self.fullPicView reloadGalleryAndScrollToIndex:[self firstIndex]];
 }
 

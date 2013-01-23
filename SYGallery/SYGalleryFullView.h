@@ -17,7 +17,6 @@
     UIScrollView *_scrollView;
     NSMutableArray *_galleryPages;
     SYGalleryActionView *_actionListView;
-    dispatch_queue_t _loadImageQueue;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;

@@ -8,6 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "SYGalleryActionView.h"
+#import "SYGalleryDelegates.h"
 
 @interface SYGalleryActionView (Private)
 -(void)loadView;
@@ -136,7 +137,7 @@
     CGFloat fY = 0.f;
     CGFloat fWH = 0.f;
 
-    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    if(SYGALLERY_IPAD) {
         [self->_mainButton.titleLabel setFont:[UIFont systemFontOfSize:24.f]];
         fWH = 31.25f;
     }

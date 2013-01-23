@@ -11,12 +11,13 @@
 @class SYGalleryThumbView;
 @class SYGalleryFullView;
 
-#define DEFAULT_CELL_SIZE ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 120.f : 75.f)
-#define DEFAULT_CELL_SPACING ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 6.99f : 4.f)
+#define SYGALLERY_IPAD  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+#define SYGALLERY_DEFAULT_CELL_SIZE (SYGALLERY_IPAD ? 120.f : 75.f)
+#define SYGALLERY_DEFAULT_CELL_SPACING (SYGALLERY_IPAD ? 6.99f : 4.f)
 
-#define DEFAULT_CELL_BORDER_SIZE 1.f
-#define DEFAULT_CELL_BORDER_COLOR [UIColor blackColor]
-#define DEFAULT_CELL_BACKGROUND_COLOR [UIColor colorWithWhite:1.f alpha:.4f]
+#define SYGALLERY_DEFAULT_CELL_BORDER_SIZE .5f
+#define SYGALLERY_DEFAULT_CELL_BORDER_COLOR [UIColor colorWithWhite:0.f alpha:.4f]
+#define SYGALLERY_DEFAULT_CELL_BACKGROUND_COLOR [UIColor colorWithWhite:1.f alpha:.4f]
 
 @protocol SYGalleryView
 @end

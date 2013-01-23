@@ -1,5 +1,5 @@
 //
-//  SYGalleryAppearance.h
+//  SYAppearance.h
 //  SYGalleryExample
 //
 //  Created by rominet on 11/30/12.
@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SYGalleryDelegates.h"
 
-@interface SYGalleryAppearance : NSObject <SYGalleryAppearence>
+@interface SYAppearance : NSObject <SYGalleryAppearence>
 
-+(SYGalleryAppearance*)sharedAppearance;
++(SYAppearance*)sharedAppearance;
 
 @end

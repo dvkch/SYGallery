@@ -67,6 +67,7 @@
                     <connections>
                         <outlet property="buttonData" destination="fxX-JV-xwx" id="8WC-6d-Cnx"/>
                         <outlet property="buttonDistantPics" destination="Xeq-r1-STl" id="CIF-rT-eUN"/>
+                        <outlet property="buttonEdit" destination="HjR-BK-fzG" id="lzg-QN-ea0"/>
                         <outlet property="buttonLocalPics" destination="VUY-wX-4JF" id="526-ad-5vW"/>
                         <outlet property="buttonText" destination="wXq-Ov-CrQ" id="y1X-Yy-abI"/>
                         <outlet property="thumbsView" destination="Mkw-g6-hBF" id="oFQ-9V-zYA"/>
@@ -118,35 +119,6 @@
             <point key="canvasLocation" x="-123" y="217"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="SYGalleryFullView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYGalleryFullView.h"/>
-        </class>
-        <class className="SYGalleryThumbView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYGalleryThumbView.h"/>
-        </class>
-        <class className="SYViewControllerFull" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYViewControllerFull.h"/>
-            <relationships>
-                <relationship kind="outlet" name="fullPicView" candidateClass="SYGalleryFullView"/>
-            </relationships>
-        </class>
-        <class className="SYViewControllerThumbs" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SYViewControllerThumbs.h"/>
-            <relationships>
-                <relationship kind="action" name="buttonDataClick:"/>
-                <relationship kind="action" name="buttonDistPicsClick:"/>
-                <relationship kind="action" name="buttonLocalPicsClick:"/>
-                <relationship kind="action" name="buttonTextClick:"/>
-                <relationship kind="action" name="editButtonClick:"/>
-                <relationship kind="outlet" name="buttonData" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="buttonDistantPics" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="buttonLocalPics" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="buttonText" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="thumbsView" candidateClass="SYGalleryThumbView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

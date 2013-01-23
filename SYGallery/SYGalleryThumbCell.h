@@ -10,7 +10,7 @@
 
 @class MKNumberBadgeView;
 
-@interface SYGalleryThumbCell : GMGridViewCell <NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
+@interface SYGalleryThumbCell : GMGridViewCell {
 @private
     UIView *_mainView;
     UIImageView *_thumbImageView;
@@ -21,8 +21,6 @@
     BOOL _badgeHidden;
     
     UIActivityIndicatorView *_activityIndicatorView;
-    NSURLConnection *_thumbLoadConnection;
-    NSMutableData *_thumbLoadData;
 }
 
 -(void)updateCellForImage:(UIImage*)image;
