@@ -14,8 +14,7 @@
 #import "NSURLConnection+Blocks.h"
 
 @interface SYGalleryThumbCell (Private)
--(void)setDefaults;
--(void)resetCellUsingDefaults:(BOOL)useDefaults;
+-(void)resetCellUsingDefaults;
 -(void)updateCellForImage_private:(UIImage *)image;
 @end
 
@@ -26,23 +25,18 @@
 #pragma mark - Initialization
 - (id)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithFrame:frame]) { [self resetCellUsingDefaults:YES]; }
+    if (self = [super initWithFrame:frame]) { [self resetCellUsingDefaults]; }
     return self;
 }
 
 #pragma mark - Private methods
 
--(void)setDefaults {
-    self->_badgeHidden = YES;
-    self->_badgeValue = 0;
-}
-
--(void)resetCellUsingDefaults:(BOOL)useDefaults {
+-(void)resetCellUsingDefaults {
     /*********************************************/
     /*************  PROPERTIES INIT  *************/
     /*********************************************/
-    if(useDefaults)
-        [self setDefaults];
+    self->_badgeHidden = YES;
+    self->_badgeValue = 0;
     
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
     
@@ -51,23 +45,27 @@
     /************  CONTENTVIEW INIT  *************/
     /*********************************************/
     if(!self.contentView)
+    {
         self.contentView = [[UIView alloc] initWithFrame:subViewFrame];
-    [self.contentView setBackgroundColor:[UIColor clearColor]];
-    [self.contentView setClipsToBounds:NO];
-    [self.contentView setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self.contentView setClipsToBounds:NO];
+        [self.contentView setAutoresizingMask:
+         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self.contentView setBackgroundColor:[UIColor clearColor]];
+    }
     
-    
+#warning MainView really necessary ? (for badge maybe)
     /*********************************************/
     /**************  MAINVIEW INIT  **************/
     /*********************************************/
     if (!self->_mainView)
+    {
         self->_mainView = [[UIView alloc] init];
-    [self->_mainView setFrame:subViewFrame];
-    [self->_mainView setClipsToBounds:YES];
-    [self->_mainView setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-    // background color set via appearance delegate of SYGalleryThumbView
+        [self->_mainView setFrame:subViewFrame];
+        [self->_mainView setClipsToBounds:YES];
+        [self->_mainView setAutoresizingMask:
+         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        // background color set via appearance delegate of SYGalleryThumbView
+    }
     
     if([self->_mainView superview] == nil)
         [self.contentView addSubview:self->_mainView];
@@ -77,14 +75,16 @@
     /*************  TEXTLABEL INIT  **************/
     /*********************************************/
     if (!self->_textLabel)
+    {
         self->_textLabel = [[UILabel alloc] init];
-    [self->_textLabel setFrame:subViewFrame];
-    [self->_textLabel setBackgroundColor:[UIColor clearColor]];
-    [self->_textLabel setClipsToBounds:YES];
-    [self->_textLabel setLineBreakMode:UILineBreakModeWordWrap];
-    [self->_textLabel setNumberOfLines:0];
-    [self->_textLabel setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self->_textLabel setFrame:subViewFrame];
+        [self->_textLabel setBackgroundColor:[UIColor clearColor]];
+        [self->_textLabel setClipsToBounds:YES];
+        [self->_textLabel setLineBreakMode:UILineBreakModeWordWrap];
+        [self->_textLabel setNumberOfLines:0];
+        [self->_textLabel setAutoresizingMask:
+         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    }
     
     if([self->_textLabel superview] == nil)
         [self->_mainView addSubview:self->_textLabel];
@@ -94,14 +94,16 @@
     /*************  THUMBVIEW INIT  **************/
     /*********************************************/
     if(!self->_thumbImageView)
+    {
         self->_thumbImageView = [[UIImageView alloc] init];
+        [self->_thumbImageView setFrame:subViewFrame];
+        [self->_thumbImageView setClipsToBounds:YES];
+        [self->_thumbImageView setBackgroundColor:[UIColor clearColor]];
+        [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
+        [self->_thumbImageView setAutoresizingMask:
+         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    }
     [self->_thumbImageView setImage:nil];
-    [self->_thumbImageView setFrame:subViewFrame];
-    [self->_thumbImageView setClipsToBounds:YES];
-    [self->_thumbImageView setBackgroundColor:[UIColor clearColor]];
-    [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self->_thumbImageView setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
     if([self->_thumbImageView superview] == nil)
         [self->_mainView addSubview:self->_thumbImageView];
@@ -112,17 +114,19 @@
     /*********************************************/
     // MKNumberBadgeView won't initialize properly if not using initWithFrame or initWithCoder
     if(!self->_badgeView)
+    {
         self->_badgeView = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(0.f, 0.f, 0.f, 0.f)];
-    CGFloat totalHeight = self->_badgeView.badgeSize.height + self->_badgeView.strokeWidth * 2.f;
-    CGRect badgeFrame = CGRectMake(0.f, -3.f, self.frame.size.width + 2.f, totalHeight);
-    [self->_badgeView setFrame:badgeFrame];
-    [self->_badgeView setHidden:self->_badgeHidden];
-    [self->_badgeView setShadow:NO];
-    [self->_badgeView setValue:self->_badgeValue];
-    [self->_badgeView setHideWhenZero:NO];
-    [self->_badgeView setAlignment:UITextAlignmentRight];
-    [self->_badgeView setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+        CGFloat totalHeight = self->_badgeView.badgeSize.height + self->_badgeView.strokeWidth * 2.f;
+        CGRect badgeFrame = CGRectMake(0.f, -3.f, self.frame.size.width + 2.f, totalHeight);
+        [self->_badgeView setFrame:badgeFrame];
+        [self->_badgeView setHideWhenZero:NO];
+        [self->_badgeView setAlignment:UITextAlignmentRight];
+        [self->_badgeView setAutoresizingMask:
+         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+        [self->_badgeView setShadow:NO];
+        [self->_badgeView setValue:self->_badgeValue];
+        [self->_badgeView setHidden:self->_badgeHidden];
+    }
     
     if([self->_badgeView superview] == nil)
         [self.contentView addSubview:self->_badgeView];
@@ -132,14 +136,16 @@
     /********  ACTIVITY INDICATOR INIT  **********/
     /*********************************************/
     if(!self->_activityIndicatorView)
+    {
         self->_activityIndicatorView = [[UIActivityIndicatorView alloc]
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self->_activityIndicatorView setFrame:subViewFrame];
-    [self->_activityIndicatorView setBackgroundColor:[UIColor clearColor]];
-    [self->_activityIndicatorView setHidesWhenStopped:YES];
-    [self->_activityIndicatorView stopAnimating];
-    [self->_activityIndicatorView setAutoresizingMask:
-     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self->_activityIndicatorView setFrame:subViewFrame];
+        [self->_activityIndicatorView setBackgroundColor:[UIColor clearColor]];
+        [self->_activityIndicatorView setHidesWhenStopped:YES];
+        [self->_activityIndicatorView stopAnimating];
+        [self->_activityIndicatorView setAutoresizingMask:
+         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    }
 
     if([self->_activityIndicatorView superview] == nil)
         [self->_mainView addSubview:self->_activityIndicatorView];
@@ -155,24 +161,24 @@
 
 #pragma mark - View methods
 -(void)updateCellForAbsolutePath:(NSString*)absolutePath andShowActivityIndicator:(BOOL)showActivityIndicator {
-    [self resetCellUsingDefaults:NO];
+    [self->_thumbImageView setImage:nil];
     
     [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
     if(showActivityIndicator)
         [self->_activityIndicatorView startAnimating];
     
     __block SYGalleryThumbCell *safeSelf = self;
-    int64_t delayInMilliSeconds = 10.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_thumbImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
-        [safeSelf->_activityIndicatorView stopAnimating];
-        [safeSelf setNeedsDisplay];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *image = [UIImage imageWithContentsOfFile:absolutePath];
+        [safeSelf performSelectorOnMainThread:@selector(updateCellForImage_private:)
+                                   withObject:image
+                                waitUntilDone:NO
+                                        modes:@[NSRunLoopCommonModes, UITrackingRunLoopMode]];
     });
 }
 
 -(void)updateCellForImage:(UIImage*)image andShowActivityIndicator:(BOOL)showActivityIndicator {
-    [self resetCellUsingDefaults:NO];
+    [self->_thumbImageView setImage:nil];
     
     if(showActivityIndicator)
         [self->_activityIndicatorView startAnimating];
@@ -184,7 +190,7 @@
 }
 
 -(void)updateCellForUrl:(NSString*)url {
-    [self resetCellUsingDefaults:NO];
+    [self->_thumbImageView setImage:nil];
     
     [self->_activityIndicatorView startAnimating];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -215,14 +221,14 @@
 }
 
 -(void)updateCellForMissingImage {
-    [self resetCellUsingDefaults:NO];
+    [self->_thumbImageView setImage:nil];
     
     [self->_thumbImageView setContentMode:UIViewContentModeCenter];
     [self->_thumbImageView setImage:[UIImage imageNamed:@"no_picture.png"]];
 }
 
 -(void)updateCellForText:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont *)textFont {
-    [self resetCellUsingDefaults:NO];
+    [self->_thumbImageView setImage:nil];
     
     self->_textLabel.text = text;
     self->_textLabel.textColor = textColor ? textColor : [UIColor whiteColor];
