@@ -67,6 +67,8 @@ typedef enum {
 - (UIColor*)gallery:(id<SYGalleryView>)gallery textColorAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 - (UIFont*)gallery:(id<SYGalleryView>)gallery textFontAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size;
 
+- (BOOL)gallery:(id<SYGalleryView>)gallery showActivityIndicatorForThumbnailAtIndex:(NSUInteger)index;
+
 - (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBorderColorAtIndex:(NSUInteger)index;
 - (CGFloat)gallery:(id<SYGalleryView>)gallery thumbBorderSizeAtIndex:(NSUInteger)index;
 - (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBackgroundColor:(NSUInteger)index;

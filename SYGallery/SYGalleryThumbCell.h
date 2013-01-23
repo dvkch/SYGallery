@@ -23,8 +23,8 @@
     UIActivityIndicatorView *_activityIndicatorView;
 }
 
--(void)updateCellForImage:(UIImage*)image;
--(void)updateCellForAbsolutePath:(NSString*)absolutePath;
+-(void)updateCellForImage:(UIImage*)image andShowActivityIndicator:(BOOL)showActivityIndicator;
+-(void)updateCellForAbsolutePath:(NSString*)absolutePath andShowActivityIndicator:(BOOL)showActivityIndicator;
 -(void)updateCellForUrl:(NSString*)url;
 -(void)updateCellForMissingImage;
 -(void)updateCellForText:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont*)textFont;

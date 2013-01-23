@@ -154,11 +154,12 @@
 
 
 #pragma mark - View methods
--(void)updateCellForAbsolutePath:(NSString*)absolutePath {
+-(void)updateCellForAbsolutePath:(NSString*)absolutePath andShowActivityIndicator:(BOOL)showActivityIndicator {
     [self resetCellUsingDefaults:NO];
     
     [self->_thumbImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self->_activityIndicatorView startAnimating];
+    if(showActivityIndicator)
+        [self->_activityIndicatorView startAnimating];
     
     __block SYGalleryThumbCell *safeSelf = self;
     int64_t delayInMilliSeconds = 10.0;
@@ -170,10 +171,11 @@
     });
 }
 
--(void)updateCellForImage:(UIImage*)image {
+-(void)updateCellForImage:(UIImage*)image andShowActivityIndicator:(BOOL)showActivityIndicator {
     [self resetCellUsingDefaults:NO];
     
-    [self->_activityIndicatorView startAnimating];
+    if(showActivityIndicator)
+        [self->_activityIndicatorView startAnimating];
     
     [self performSelectorOnMainThread:@selector(updateCellForImage_private:)
                            withObject:image

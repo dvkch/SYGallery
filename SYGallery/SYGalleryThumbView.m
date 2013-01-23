@@ -180,11 +180,16 @@
     if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
         textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)index andSize:SYGalleryPhotoSizeThumb];
     
+    BOOL showActivityIndicator = YES;
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:showActivityIndicatorForThumbnailAtIndex:)])
+        showActivityIndicator = [self.appearanceDelegate gallery:self showActivityIndicatorForThumbnailAtIndex:(uint)index];    
+    
     switch (sourceType) {
         case SYGallerySourceTypeImageData:
             [cell updateCellForImage:[self.dataSource gallery:self
                                                   dataAtIndex:(uint)index
-                                                      andSize:SYGalleryPhotoSizeThumb]];
+                                                      andSize:SYGalleryPhotoSizeThumb]
+            andShowActivityIndicator:showActivityIndicator];
             break;
         case SYGallerySourceTypeImageDistant:
             [cell updateCellForUrl:[self.dataSource gallery:self
@@ -194,7 +199,8 @@
         case SYGallerySourceTypeImageLocal:
             [cell updateCellForAbsolutePath:[self.dataSource gallery:self
                                                  absolutePathAtIndex:(uint)index
-                                                             andSize:SYGalleryPhotoSizeThumb]];
+                                                             andSize:SYGalleryPhotoSizeThumb]
+                   andShowActivityIndicator:showActivityIndicator];
             break;
         case SYGallerySourceTypeText:
             [cell updateCellForText:[self.dataSource gallery:self
