@@ -11,8 +11,6 @@
 #import "SYGalleryFullPage.h"
 #import "SYGalleryActionView.h"
 
-#import "UIView+Infos.h"
-
 @interface SYGalleryFullView (Private)
 -(void)loadView;
 

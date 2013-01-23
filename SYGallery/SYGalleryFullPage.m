@@ -8,11 +8,14 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "DACircularProgressView.h"
+#import "NSURLConnection+Blocks.h"
 
 #import "SYGalleryFullPage.h"
 
 @interface SYGalleryFullPage (Private)
 -(void)loadView;
+
+-(void)updateImage_private:(UIImage *)image;
 
 -(void)centerSubView:(UIView*)subview inView:(UIView*)view;
 
@@ -27,7 +30,6 @@
 @implementation SYGalleryFullPage
 
 @synthesize pageNumber = _pageNumber;
-@synthesize hasBeenLoaded = _hasBeenLoaded;
 @synthesize isZoomed = _isZoomed;
 @synthesize actionDelegate = _actionDelegate;
 
@@ -246,52 +248,46 @@
     subview.frame = frameToCenter;
 }
 
+-(void)updateImage_private:(UIImage *)image
+{
+    [self->_circularProgressView setHidden:YES];
+    [self->_fullTextView setHidden:YES];
+    
+    [self->_fullImageView setImage:image];
+    [self->_fullImageView setHidden:NO];
+    
+    [self resetZoomFactors];
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+}
+
 #pragma mark - View methods
 
 -(void)updateImageWithImage:(UIImage*)image
 {
     self->_sourceType = SYGallerySourceTypeImageData;
-    self.hasBeenLoaded = YES;
     
-    [self->_circularProgressView setHidden:YES];
-    [self->_fullTextView setHidden:YES];
-    [self->_fullImageView setHidden:NO];
-    
-    __block SYGalleryFullPage *safeSelf = self;
-    int64_t delayInMilliSeconds = 10.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_fullImageView setImage:image];
-        [safeSelf resetZoomFactors];
-        [safeSelf setNeedsDisplay];
-        [safeSelf setNeedsLayout];
-    });
+    [self performSelectorOnMainThread:@selector(updateImage_private:)
+                           withObject:image
+                        waitUntilDone:NO
+                                modes:@[NSRunLoopCommonModes, UITrackingRunLoopMode]];
 }
 
 -(void)updateImageWithAbsolutePath:(NSString*)absolutePath
 {
     self->_sourceType = SYGallerySourceTypeImageLocal;
-    self.hasBeenLoaded = YES;
-    
-    [self->_circularProgressView setHidden:YES];
-    [self->_fullTextView setHidden:YES];
-    [self->_fullImageView setHidden:NO];
-    
-    __block SYGalleryFullPage *safeSelf = self;
-    int64_t delayInMilliSeconds = 10.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInMilliSeconds * (int64_t)NSEC_PER_MSEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [safeSelf->_fullImageView setImage:[UIImage imageWithContentsOfFile:absolutePath]];
-        [safeSelf resetZoomFactors];
-        [safeSelf setNeedsDisplay];
-        [safeSelf setNeedsLayout];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *image = [UIImage imageWithContentsOfFile:absolutePath];
+        [self performSelectorOnMainThread:@selector(updateImage_private:)
+                               withObject:image
+                            waitUntilDone:NO
+                                    modes:@[NSRunLoopCommonModes, UITrackingRunLoopMode]];
     });
 }
 
 -(void)updateImageWithUrl:(NSString*)url
 {
     self->_sourceType = SYGallerySourceTypeImageDistant;
-    self.hasBeenLoaded = YES;
     
     [self->_fullTextView setHidden:YES];
     [self->_fullImageView setHidden:NO];
@@ -317,7 +313,6 @@
 {
     
     self->_sourceType = SYGallerySourceTypeText;
-    self.hasBeenLoaded = YES;
     
     [self->_circularProgressView setHidden:YES];
     [self->_fullImageView setHidden:YES];
@@ -443,7 +438,6 @@
         
         safeSelf->_picData = nil;
         safeSelf->_picConnection = nil;
-        safeSelf.hasBeenLoaded = NO;
     });
 }
 

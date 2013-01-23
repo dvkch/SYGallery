@@ -259,8 +259,7 @@
 -(void)setBadgeValue:(NSUInteger)value
 {
     self->_badgeValue = value;
-    if (!self->_badgeHidden)
-        [self->_badgeView setValue:self->_badgeValue];
+    [self->_badgeView setValue:self->_badgeValue];
 }
 
 -(void)setBadgeHidden:(BOOL)badgeHidden
