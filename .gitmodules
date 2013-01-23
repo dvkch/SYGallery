@@ -7,6 +7,3 @@
 [submodule "Lib/iPhoneMK"]
 	path = Lib/iPhoneMK
 	url = git://github.com/michaelkamprath/iPhoneMK.git
-[submodule "Lib/NSURLConnection-Blocks"]
-	path = Lib/NSURLConnection-Blocks
-	url = https://github.com/rickerbh/NSURLConnection-Blocks.git
