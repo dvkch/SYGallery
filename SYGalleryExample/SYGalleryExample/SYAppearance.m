@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SYAppearance.h"
+#import "SYDataSource.h"
 
 @implementation SYAppearance
 
@@ -49,17 +50,17 @@
 
 - (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBorderColorAtIndex:(NSUInteger)index
 {
-    switch (index % 4) {
-        case 0:
+    switch ([[SYDataSource sharedDataSource] sourceType]) {
+        case SYGallerySourceTypeImageLocal:
             return [UIColor blackColor];
             break;
-        case 1:
-            return [UIColor colorWithWhite:1.f alpha:.8f];
+        case SYGallerySourceTypeImageDistant:
+            return [UIColor colorWithWhite:1.f alpha:.4f];
             break;
-        case 2:
+        case SYGallerySourceTypeImageData:
             return [UIColor clearColor];
             break;
-        case 4:
+        case SYGallerySourceTypeText:
             return SYGALLERY_DEFAULT_CELL_BORDER_COLOR;
             break;
     }
@@ -68,17 +69,17 @@
 
 - (CGFloat)gallery:(id<SYGalleryView>)gallery thumbBorderSizeAtIndex:(NSUInteger)index
 {
-    switch (index % 4) {
-        case 0:
+    switch ([[SYDataSource sharedDataSource] sourceType]) {
+        case SYGallerySourceTypeImageLocal:
             return 1.f;
             break;
-        case 1:
+        case SYGallerySourceTypeImageDistant:
             return 4.f;
             break;
-        case 2:
+        case SYGallerySourceTypeImageData:
             return 1.f;
             break;
-        case 3:
+        case SYGallerySourceTypeText:
             return SYGALLERY_DEFAULT_CELL_BORDER_SIZE;
             break;
     }

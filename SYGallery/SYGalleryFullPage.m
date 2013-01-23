@@ -318,17 +318,19 @@
 
 -(void)updateTextWithString:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont *)textFont
 {
+    
     self->_sourceType = SYGallerySourceTypeText;
     self.hasBeenLoaded = YES;
     
     [self->_circularProgressView setHidden:YES];
-    [self->_fullTextView setHidden:NO];
     [self->_fullImageView setHidden:YES];
     
+    [self->_fullTextView setText:text];
     [self->_fullTextView setTextColor:(textColor ? textColor : [UIColor whiteColor])];
     if(textFont)
         [self->_fullTextView setFont:textFont];
-    [self->_fullTextView setText:text];
+    
+    [self->_fullTextView setHidden:NO];
     [self->_fullTextView sizeToFit];
     [self resetZoomFactors];
     [self setNeedsDisplay];

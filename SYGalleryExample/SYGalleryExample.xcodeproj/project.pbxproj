@@ -27,6 +27,7 @@
 		F847C53116387AC300245B53 /* no_picture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F847C52D16387AC300245B53 /* no_picture@2x.png */; };
 		F8537DC916AFD98C003282DC /* NSURLConnection+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537DC716AFD98C003282DC /* NSURLConnection+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F8537DCA16AFD98C003282DC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F8537DC816AFD98C003282DC /* README.md */; };
+		F8537DCD16AFE1EA003282DC /* UIView+Infos.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537DCC16AFE1E5003282DC /* UIView+Infos.m */; };
 		F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F88EA4731645808F00D25742 /* SYGalleryActionView.m */; };
 		F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */; };
 		F8B96E111638116600EC9487 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E101638116600EC9487 /* UIKit.framework */; };
@@ -80,6 +81,8 @@
 		F8537DC616AFD98C003282DC /* NSURLConnection+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+Blocks.h"; sourceTree = "<group>"; };
 		F8537DC716AFD98C003282DC /* NSURLConnection+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+Blocks.m"; sourceTree = "<group>"; };
 		F8537DC816AFD98C003282DC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		F8537DCB16AFE1E5003282DC /* UIView+Infos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIView+Infos.h"; path = "../../../SyanComponents/UIView Categories/UIView+Infos.h"; sourceTree = "<group>"; };
+		F8537DCC16AFE1E5003282DC /* UIView+Infos.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIView+Infos.m"; path = "../../../SyanComponents/UIView Categories/UIView+Infos.m"; sourceTree = "<group>"; };
 		F88EA4721645808F00D25742 /* SYGalleryActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryActionView.h; sourceTree = "<group>"; };
 		F88EA4731645808F00D25742 /* SYGalleryActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryActionView.m; sourceTree = "<group>"; };
 		F8A9CE5D16419C3B0097372D /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
@@ -235,6 +238,8 @@
 				F81891EB163AF33E00C8E806 /* SYDataSource.m */,
 				F810E40F1668E2CC00089EB2 /* SYAppearance.h */,
 				F810E4101668E2CC00089EB2 /* SYAppearance.m */,
+				F8537DCB16AFE1E5003282DC /* UIView+Infos.h */,
+				F8537DCC16AFE1E5003282DC /* UIView+Infos.m */,
 			);
 			path = SYGalleryExample;
 			sourceTree = "<group>";
@@ -423,6 +428,7 @@
 				F8CEF7C816553FDE0043828E /* MKNumberBadgeView.m in Sources */,
 				F810E4111668E2CC00089EB2 /* SYAppearance.m in Sources */,
 				F8537DC916AFD98C003282DC /* NSURLConnection+Blocks.m in Sources */,
+				F8537DCD16AFE1EA003282DC /* UIView+Infos.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

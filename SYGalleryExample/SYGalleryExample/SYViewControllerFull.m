@@ -46,7 +46,11 @@ AUTOROTATE_ALL_ORIENTATIONS
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"loaded index %d in gallery <%@: 0x%x>", [self firstIndex], [self.fullPicView class], self.fullPicView);
+    NSLog(@"loaded index %d in gallery <%@: 0x%x>",
+          [self firstIndex],
+          [self.fullPicView class],
+          &*self.fullPicView);
+    
     [self.fullPicView reloadGalleryAndScrollToIndex:[self firstIndex]];
 }
 

@@ -11,6 +11,8 @@
 #import "SYGalleryFullPage.h"
 #import "SYGalleryActionView.h"
 
+#import "UIView+Infos.h"
+
 @interface SYGalleryFullView (Private)
 -(void)loadView;
 
@@ -185,6 +187,9 @@
 -(void)reloadGalleryAndScrollToIndex:(NSUInteger)index {
     uint picCount = [self numberOfPictures];
     
+    for(UIView *subview in [self->_scrollView subviews])
+        [subview removeFromSuperview];
+    
     self->_galleryPages = [[NSMutableArray alloc] init];
     for (uint i = 0; i < picCount; i++)
         [self->_galleryPages addObject:[NSNull null]];
@@ -264,6 +269,10 @@
 {
     if (pageIndex >= [self numberOfPictures] || ! self.dataSource)
         return;
+    
+    SYGalleryFullPage *page = [self->_galleryPages objectAtIndex:pageIndex];
+    if(![page isKindOfClass:[NSNull class]])
+        [page removeFromSuperview];
     
     [self->_galleryPages replaceObjectAtIndex:pageIndex withObject:[NSNull null]];
 }
