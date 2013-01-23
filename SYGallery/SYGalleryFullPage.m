@@ -293,9 +293,6 @@
     self->_sourceType = SYGallerySourceTypeImageDistant;
     self.hasBeenLoaded = YES;
     
-    // cannot use a block version of NSURLConnection because if we load another picture
-    // while the first hasn't been loaded it may result in a bizarre behavior
-    
     [self->_fullTextView setHidden:YES];
     [self->_fullImageView setHidden:NO];
     

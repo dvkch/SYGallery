@@ -19,6 +19,8 @@
 #define SYGALLERY_DEFAULT_CELL_BORDER_COLOR [UIColor colorWithWhite:0.f alpha:.4f]
 #define SYGALLERY_DEFAULT_CELL_BACKGROUND_COLOR [UIColor colorWithWhite:1.f alpha:.4f]
 
+#define SYGALLERY_INT_BETWEEN_A_AND_B(i, A, B) (i >= MIN(A, B) && i <= MAX(A, B))
+
 @protocol SYGalleryView
 @end
 

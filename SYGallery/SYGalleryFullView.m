@@ -26,6 +26,8 @@
 -(void)resetPagesZooms;
 
 -(void)loadPageAtIndex:(uint)pageIndex;
+-(void)loadPagesCloseToVisibleIncludingCurrentIndex:(BOOL)includingCurrentIndex;
+
 -(void)unloadPageAtIndex:(uint)pageIndex;
 -(void)unloadPagesHidden;
 
@@ -265,6 +267,17 @@
     [self->_scrollView addSubview:pageView];
 }
 
+-(void)loadPagesCloseToVisibleIncludingCurrentIndex:(BOOL)includingCurrentIndex
+{
+    int currentIndex = (int)[self currentIndexCalculated];
+    int pagesCount   = (int)[self numberOfPictures];
+    
+    for(int i = 0; i < pagesCount; ++i)
+        if(SYGALLERY_INT_BETWEEN_A_AND_B(i, currentIndex-2, currentIndex+2)
+           && ((currentIndex == i && includingCurrentIndex) || currentIndex != i))
+            [self loadPageAtIndex:(uint)i];
+}
+
 -(void)unloadPageAtIndex:(uint)pageIndex
 {
     if (pageIndex >= [self numberOfPictures] || ! self.dataSource)
@@ -279,17 +292,13 @@
 
 -(void)unloadPagesHidden
 {
-    return;
-#warning CORRECT IMPEMENTATION NEEDED
+    int currentIndex = (int)[self currentIndexCalculated];
+    int pagesCount   = (int)[self numberOfPictures];
     
-    BOOL keepPageInMemory = NO;
-    uint currentIndex = [self currentIndexCalculated];
-    
-    for(uint i = 0; i < [self numberOfPictures]; ++i)
-    {
-        keepPageInMemory = i >= currentIndex -2 && i <= currentIndex -2;
-        if(!keepPageInMemory)
-            [self unloadPageAtIndex:i];
+    @autoreleasepool {
+        for(int i = 0; i < pagesCount; ++i)
+            if(!SYGALLERY_INT_BETWEEN_A_AND_B(i, currentIndex-2, currentIndex+2))
+                [self unloadPageAtIndex:(uint)i];
     }
 }
 
@@ -317,93 +326,27 @@
 }
 
 #pragma mark - UIScrollViewDelegate<NSObject>
-- (void)scrollViewDidScroll:(UIScrollView *)sender {
-    
-    [self->_actionListView setOpened:NO];
 
-    NSUInteger currentIndex = [self currentIndexCalculated];
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    [self->_actionListView setOpened:NO];
+    
+    uint currentIndex = [self currentIndexCalculated];
     
     [self loadPageAtIndex:currentIndex];
     [self unloadPagesHidden];
-    [self loadPageAtIndex:currentIndex +1];
-    if(currentIndex > 0)
-        [self loadPageAtIndex:currentIndex -1];
-    [self loadPageAtIndex:currentIndex +2];
-    if(currentIndex > 1)
-        [self loadPageAtIndex:currentIndex -2];
-    
-    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
-        [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];
-}
-
-/*
-// any zoom scale changes
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    [self loadPagesCloseToVisibleIncludingCurrentIndex:NO];
     
 }
 
-// called on start of dragging (may require some time and or distance to move)
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    
-}
-
-// called on finger up if the user dragged. velocity is in points/second.
-// targetContentOffset may be changed to adjust where the scroll view comes
-// to rest. not called when pagingEnabled is YES
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
-                     withVelocity:(CGPoint)velocity
-              targetContentOffset:(inout CGPoint *)targetContentOffset {
-    
-}
-
-// called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
-                  willDecelerate:(BOOL)decelerate {
-    
-}
-
-// called on finger up as we are moving
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    
-}
-
-// called when scroll view grinds to a halt
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-}
-
-// called when setContentOffset/scrollRectVisible:animated: finishes. not called if not animating
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    uint currentIndex = [self currentIndexCalculated];
+    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
+        [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];
     
+    for (UIView *subview in [self->_scrollView subviews])
+        if([subview isKindOfClass:[SYGalleryFullPage class]])
+            [(SYGalleryFullPage*)subview resetZoomFactors];
 }
-
-// return a view that will be scaled. if delegate returns nil, nothing happens
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    
-}
-
-// called before the scroll view begins zooming its content
-- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView
-                          withView:(UIView *)view {
-    
-}
-
-// scale between minimum and maximum. called after any 'bounce' animations
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView
-                       withView:(UIView *)view
-                        atScale:(float)scale {
-    
-}
-
-// return a yes if you want to scroll to the top. if not defined, assumes YES
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
-    
-}
-
-// called when scrolling animation finished. may be called immediately if already at top
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    
-}
-*/
 
 @end
