@@ -13,6 +13,6 @@
 @interface SYViewControllerFull : UIViewController <SYGalleryFullViewActions>
 
 @property (weak, nonatomic) IBOutlet SYGalleryFullView *fullPicView;
-@property (nonatomic) NSUInteger firstIndex;
+@property (nonatomic) NSIndexPath *firstIndexPath;
 
 @end

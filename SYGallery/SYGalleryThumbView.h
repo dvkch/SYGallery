@@ -8,24 +8,29 @@
 
 #import <UIKit/UIKit.h>
 #import "SYGalleryDelegates.h"
-#import "GMGridView.h"
+#import "PSTCollectionView.h"
 
 @interface SYGalleryThumbView : UIView <SYGalleryView,
-GMGridViewActionDelegate,
-GMGridViewDataSource,
-GMGridViewSortingDelegate>
+PSTCollectionViewDataSource,
+PSTCollectionViewDelegate,
+PSTCollectionViewDelegateFlowLayout,
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout>
 {
-    GMGridView *_gridView;
+    PSUICollectionView *_gridView;
+    PSUICollectionViewFlowLayout *_flowLayout;
 }
 
 @property (weak, nonatomic) id<SYGalleryDataSource> dataSource;
 @property (weak, nonatomic) id<SYGalleryThumbViewActions> actionDelegate;
 @property (weak, nonatomic) id<SYGalleryAppearence> appearanceDelegate;
 
-@property (nonatomic) BOOL edit;
+@property (nonatomic) BOOL multiSelect;
+@property (readonly) NSIndexPath *lastClickedItemIndexPath;
+@property (readonly) NSArray *selectedIndexPaths;
 
-@property (readonly) NSUInteger lastClickedItemIndex;
-
--(void)reloadGalleryAndKeepEditState:(BOOL)keepEditState;
+-(void)reloadGallery;
+-(void)deselectAllAnimated:(BOOL)animated;
 
 @end

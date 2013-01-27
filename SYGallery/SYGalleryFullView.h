@@ -23,11 +23,12 @@
 @property (weak, nonatomic) id<SYGalleryFullViewActions> actionDelegate;
 @property (weak, nonatomic) id<SYGalleryAppearence> appearanceDelegate;
 
--(void)setDataSource:(id<SYGalleryDataSource>)dataSource andFirstItemToShow:(NSUInteger)firstItem;
--(void)reloadGalleryAndScrollToIndex:(NSUInteger)index;
--(void)scrollToPage:(uint)pageIndex animated:(BOOL)animated;
+-(void)setDataSource:(id<SYGalleryDataSource>)dataSource andFirstIndexPathToShow:(NSIndexPath*)indexPath;
+-(void)reloadGalleryAndScrollToIndexPath:(NSIndexPath*)indexPath;
+-(void)scrollToPath:(NSIndexPath*)indexPath animated:(BOOL)animated;
 
 -(uint)currentIndexCalculated;
+-(NSIndexPath*)currentIndexPathCalculated;
 
 -(void)addActionWithName:(NSString *)name
                andTarget:(id)target

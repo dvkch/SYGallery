@@ -270,7 +270,7 @@
     [self performSelectorOnMainThread:@selector(updateImage_private:)
                            withObject:image
                         waitUntilDone:NO
-                                modes:@[NSRunLoopCommonModes, UITrackingRunLoopMode]];
+                                modes:SYGALLERY_REFRESH_RUNLOOP_MODES];
 }
 
 -(void)updateImageWithAbsolutePath:(NSString*)absolutePath
@@ -281,7 +281,7 @@
         [self performSelectorOnMainThread:@selector(updateImage_private:)
                                withObject:image
                             waitUntilDone:NO
-                                    modes:@[NSRunLoopCommonModes, UITrackingRunLoopMode]];
+                                    modes:SYGALLERY_REFRESH_RUNLOOP_MODES];
     });
 }
 
@@ -311,7 +311,6 @@
 
 -(void)updateTextWithString:(NSString *)text andTextColor:(UIColor*)textColor andTextFont:(UIFont *)textFont
 {
-    
     self->_sourceType = SYGallerySourceTypeText;
     
     [self->_circularProgressView setHidden:YES];
@@ -319,8 +318,7 @@
     
     [self->_fullTextView setText:text];
     [self->_fullTextView setTextColor:(textColor ? textColor : [UIColor whiteColor])];
-    if(textFont)
-        [self->_fullTextView setFont:textFont];
+    [self->_fullTextView setFont:textFont];
     
     [self->_fullTextView setHidden:NO];
     [self->_fullTextView sizeToFit];

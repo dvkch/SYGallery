@@ -167,16 +167,28 @@
 
 #pragma mark - SYGalleryDataSource
 
-- (NSUInteger)numberOfItemsInGallery:(id<SYGalleryView>)gallery
+-(NSUInteger)totalNumberOfItemsInGallery:(id<SYGalleryView>)gallery
+{
+    return [self->_localPathsFulls count] * 2 + [self->_textsFulls count] + [self->_distantPathsFulls count];
+}
+
+-(NSUInteger)numberOfSectionsInGallery:(id<SYGalleryView>)gallery
+{
+    return 4;
+}
+
+-(NSUInteger)gallery:(id<SYGalleryView>)gallery numberOfItemsInSection:(NSUInteger)section
 {
     uint numberOfItems = 0;
-    switch (self.sourceType) {
+    switch ((SYGallerySourceType)section) {
         case SYGallerySourceTypeImageLocal:
-        case SYGallerySourceTypeImageData:
             numberOfItems = [self->_localPathsFulls count];
             break;
         case SYGallerySourceTypeImageDistant:
             numberOfItems = [self->_distantPathsFulls count];
+            break;
+        case SYGallerySourceTypeImageData:
+            numberOfItems = [self->_localPathsFulls count];
             break;
         case SYGallerySourceTypeText:
             numberOfItems = [self->_textsFulls count];
@@ -186,88 +198,58 @@
     return numberOfItems;
 }
 
-- (SYGallerySourceType)gallery:(id<SYGalleryView>)gallery sourceTypeAtIndex:(NSUInteger)index
+- (SYGallerySourceType)gallery:(id<SYGalleryView>)gallery sourceTypeAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.sourceType;
+    return (SYGallerySourceType)indexPath.section;
 }
 
-- (NSString*)gallery:(id<SYGalleryView>)gallery absolutePathAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+- (NSString*)gallery:(id<SYGalleryView>)gallery absolutePathAtIndexPath:(NSIndexPath *)indexPath
+             andSize:(SYGalleryItemSize)size
 {
     NSString *resourceName = nil;
-    if(size == SYGalleryPhotoSizeThumb)
-        resourceName = [self->_localPathsThumbs objectAtIndex:index];
+    if(size == SYGalleryItemSizeThumb)
+        resourceName = [self->_localPathsThumbs objectAtIndex:(uint)indexPath.row];
     else
-        resourceName = [self->_localPathsFulls objectAtIndex:index];
+        resourceName = [self->_localPathsFulls objectAtIndex:(uint)indexPath.row];
     
     NSString *resourcePath = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"jpg"];
     return resourcePath;
 }
 
--(UIImage *)gallery:(id<SYGalleryView>)gallery dataAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+-(UIImage *)gallery:(id<SYGalleryView>)gallery dataAtIndexPath:(NSIndexPath *)indexPath andSize:(SYGalleryItemSize)size
 {
     NSString *resourceName = nil;
-    if(size == SYGalleryPhotoSizeThumb)
-        resourceName = [self->_localPathsThumbs objectAtIndex:index];
+    if(size == SYGalleryItemSizeThumb)
+        resourceName = [self->_localPathsThumbs objectAtIndex:(uint)indexPath.row];
     else
-        resourceName = [self->_localPathsFulls objectAtIndex:index];
+        resourceName = [self->_localPathsFulls objectAtIndex:(uint)indexPath.row];
     
     NSString *resourcePath = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"jpg"];
     return [UIImage imageWithContentsOfFile:resourcePath];
 }
 
-- (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+- (NSString*)gallery:(id<SYGalleryView>)gallery urlAtIndexPath:(NSIndexPath *)indexPath andSize:(SYGalleryItemSize)size
 {
-    if(size == SYGalleryPhotoSizeThumb)
-        return [self->_distantPathsThumbs objectAtIndex:index];
+    if(size == SYGalleryItemSizeThumb)
+        return [self->_distantPathsThumbs objectAtIndex:(uint)indexPath.row];
     else
-        return [self->_distantPathsFulls objectAtIndex:index];
+        return [self->_distantPathsFulls objectAtIndex:(uint)indexPath.row];
 }
 
--(NSString *)gallery:(id<SYGalleryView>)gallery textAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+-(NSString *)gallery:(id<SYGalleryView>)gallery textAtIndexPath:(NSIndexPath *)indexPath andSize:(SYGalleryItemSize)size
 {
-    if(size == SYGalleryPhotoSizeThumb)
-        return [self->_textsThumbs objectAtIndex:index];
+    if(size == SYGalleryItemSizeThumb)
+        return [self->_textsThumbs objectAtIndex:(uint)indexPath.row];
     else
-        return [self->_textsFulls objectAtIndex:index];
+        return [self->_textsFulls objectAtIndex:(uint)indexPath.row];
 }
 
-- (BOOL)gallery:(id<SYGalleryView>)gallery canDeleteAtIndex:(NSUInteger)index
-{
-    // even indexes only
-    return index % 2 == 0;
+-(BOOL)gallery:(id<SYGalleryView>)gallery shouldDisplayBadgeAtIndexPath:(NSIndexPath *)indexPath {
+    return ((uint)indexPath.row % 11) != 0;
 }
 
-- (void)gallery:(id<SYGalleryView>)gallery deleteItemInAtIndex:(NSUInteger)index {
-    
-    switch ([self gallery:nil sourceTypeAtIndex:index]) {
-        case SYGallerySourceTypeImageData:
-            [self->_localPathsFulls removeObjectAtIndex:index];
-            [self->_localPathsThumbs removeObjectAtIndex:index];
-            break;
-        case SYGallerySourceTypeImageLocal:
-            [self->_localPathsFulls removeObjectAtIndex:index];
-            [self->_localPathsThumbs removeObjectAtIndex:index];
-            break;
-        case SYGallerySourceTypeImageDistant:
-            [self->_distantPathsFulls removeObjectAtIndex:index];
-            [self->_distantPathsThumbs removeObjectAtIndex:index];
-            break;
-        case SYGallerySourceTypeText:
-            [self->_textsFulls removeObjectAtIndex:index];
-            [self->_textsThumbs removeObjectAtIndex:index];
-            break;
-            
-        default:
-            break;
-    }
-}
-
--(BOOL)gallery:(id<SYGalleryView>)gallery shouldDisplayBadgeAtIndex:(NSUInteger)index {
-    return (index % 11) != 0;
-}
-
--(NSUInteger)gallery:(id<SYGalleryView>)gallery badgeValueAtIndex:(NSUInteger)index {
-    int nb = index % 11 - 1;
+-(NSUInteger)gallery:(id<SYGalleryView>)gallery badgeValueAtIndexPath:(NSIndexPath *)indexPath {
+    int nb = (uint)indexPath.row % 11 - 1;
     return (nb == -1 ? 0 : (uint)nb);
 }
 

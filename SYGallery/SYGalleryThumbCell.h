@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Syan. All rights reserved.
 //
 
-#import "GMGridViewCell.h"
+#import "PSTCollectionView.h"
 
 @class MKNumberBadgeView;
 
-@interface SYGalleryThumbCell : GMGridViewCell {
+@interface SYGalleryThumbCell : PSUICollectionViewCell {
 @private
     UIView *_mainView;
     UIImageView *_thumbImageView;
@@ -21,6 +21,8 @@
     BOOL _badgeHidden;
     
     UIActivityIndicatorView *_activityIndicatorView;
+    
+    SYGallerySourceType _sourceType;
 }
 
 -(void)updateCellForImage:(UIImage*)image andShowActivityIndicator:(BOOL)showActivityIndicator;
@@ -36,6 +38,6 @@
 -(void)setBackgroundColor:(UIColor *)backgroundColor;
 -(UIColor*)backgroundColor;
 
-@property (atomic) CGFloat cellSize;
+@property (atomic) CGSize cellSize;
 
 @end

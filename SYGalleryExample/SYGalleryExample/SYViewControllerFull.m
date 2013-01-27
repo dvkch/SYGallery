@@ -18,12 +18,15 @@
 
 @implementation SYViewControllerFull
 
-@synthesize firstIndex = _firstIndex;
+@synthesize firstIndexPath = _firstIndexPath;
 
 #pragma mark - SYGalleryFullpageActions
 
-- (void)gallery:(id<SYGalleryView>)gallery showedUpPictureAtIndex:(NSUInteger)index {
-    [self setTitle:[NSString stringWithFormat:@"%d / %d", index +1, [[SYDataSource sharedDataSource] numberOfItemsInGallery:self->_fullPicView]]];
+- (void)gallery:(id<SYGalleryView>)gallery showedUpPictureAtIndexPath:(NSIndexPath *)indexPath {
+    [self setTitle:[NSString stringWithFormat:@"%d / %d",
+                    indexPath.row +1,
+                    [[SYDataSource sharedDataSource] gallery:gallery
+                                      numberOfItemsInSection:(uint)indexPath.section]]];
 }
 
 AUTOROTATE_ALL_ORIENTATIONS
@@ -38,7 +41,9 @@ AUTOROTATE_ALL_ORIENTATIONS
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.fullPicView setDataSource:[SYDataSource sharedDataSource] andFirstItemToShow:[self firstIndex]];
+    [self.fullPicView setDataSource:[SYDataSource sharedDataSource]
+            andFirstIndexPathToShow:[self firstIndexPath]];
+    
     [self.fullPicView setActionDelegate:self];
     [self.fullPicView setAppearanceDelegate:[SYAppearance sharedAppearance]];
     [self.fullPicView addActionWithName:@"Show details" andTarget:self andSelector:@selector(imageAction1) andTag:0];
@@ -46,23 +51,25 @@ AUTOROTATE_ALL_ORIENTATIONS
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"fullpage gallery <%@: 0x%x> appeared with initial index %d",
+    NSLog(@"fullpage gallery <%@: 0x%x> appeared with initial indexpath %@",
           [self.fullPicView class],
           &*self.fullPicView,
-          [self firstIndex]);
+          [self firstIndexPath]);
     
-    [self.fullPicView reloadGalleryAndScrollToIndex:[self firstIndex]];
+    [self.fullPicView reloadGalleryAndScrollToIndexPath:[self firstIndexPath]];
 }
 
 -(void)imageAction1 {
+    NSIndexPath *indexPath = [self.fullPicView currentIndexPathCalculated];
+    
     SYGallerySourceType sourceType = [[SYDataSource sharedDataSource] gallery:self.fullPicView
-                                                            sourceTypeAtIndex:[self.fullPicView currentIndexCalculated]];
+                                                        sourceTypeAtIndexPath:indexPath];
     
     if(sourceType == SYGallerySourceTypeImageLocal)
     {
         NSString *filePath = [[SYDataSource sharedDataSource] gallery:self.fullPicView
-                                                  absolutePathAtIndex:[self.fullPicView currentIndexCalculated]
-                                                              andSize:SYGalleryPhotoSizeFull];
+                                              absolutePathAtIndexPath:indexPath
+                                                              andSize:SYGalleryItemSizeFull];
         
         NSFileManager *dm = [NSFileManager defaultManager];
         NSDictionary *attrs = [dm attributesOfItemAtPath:filePath error:nil];
@@ -79,8 +86,8 @@ AUTOROTATE_ALL_ORIENTATIONS
     else if(sourceType == SYGallerySourceTypeImageDistant)
     {
         NSString *fileURL = [[SYDataSource sharedDataSource] gallery:self.fullPicView
-                                                          urlAtIndex:[self.fullPicView currentIndexCalculated]
-                                                              andSize:SYGalleryPhotoSizeFull];
+                                                      urlAtIndexPath:indexPath
+                                                             andSize:SYGalleryItemSizeFull];
         
         NSString *details = [NSString stringWithFormat:@"FileURL: %@", fileURL];
         

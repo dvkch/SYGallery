@@ -15,6 +15,8 @@
 -(void)loadView;
 
 -(uint)numberOfPictures;
+-(NSIndexPath*)indexPathForIndex:(uint)index;
+-(uint)indexForIndexPath:(NSIndexPath*)indexPath;
 
 -(CGRect)frameForPageIndex:(uint)index;
 -(void)updatePageFrame:(uint)index;
@@ -97,12 +99,53 @@
 }
 
 -(uint)numberOfPictures {
-    uint n = 0;
+    uint nTotal = 0;
     if(self.dataSource)
-        n = [self.dataSource numberOfItemsInGallery:self];
-
-    return n;
+        nTotal = [self.dataSource totalNumberOfItemsInGallery:self];
+    
+    return nTotal;
 }
+
+-(NSIndexPath*)indexPathForIndex:(uint)index {
+    
+    NSUInteger numberOfSections = 0;
+    if(self.dataSource)
+        numberOfSections = [self.dataSource numberOfSectionsInGallery:self];
+    
+    NSUInteger sectionIndex = 0;
+    NSUInteger previousPictureCount = 0;
+    for(uint i = 0; i < numberOfSections; ++i)
+    {
+        NSUInteger numberOfPicsInSection = [self.dataSource gallery:self numberOfItemsInSection:i];
+        if(index >= previousPictureCount && index < previousPictureCount + numberOfPicsInSection)
+        {
+            sectionIndex = i;
+            break;
+        }
+        previousPictureCount += numberOfPicsInSection;
+    }
+    return [NSIndexPath indexPathForItem:(int)(index - previousPictureCount) inSection:(int)sectionIndex];
+}
+
+-(uint)indexForIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger numberOfSections = 0;
+    if(self.dataSource)
+        numberOfSections = [self.dataSource numberOfSectionsInGallery:self];
+    
+    if(indexPath.section >= (int)numberOfSections)
+        return 0;
+    
+    NSUInteger index = 0;
+    for(int i = 0; i < indexPath.section; ++i)
+    {
+        NSUInteger numberOfPicsInSection = [self.dataSource gallery:self numberOfItemsInSection:(uint)i];
+        index += numberOfPicsInSection;
+    }
+    
+    index += (uint)indexPath.row;
+    return index;
+}
+
 
 -(CGRect)frameForPageIndex:(uint)index {
     
@@ -155,14 +198,19 @@
     return (uint)(floor((self->_scrollView.contentOffset.x - pageWidth / 2.f) / pageWidth) + 1);
 }
 
+-(NSIndexPath *)currentIndexPathCalculated {
+    return [self indexPathForIndex:[self currentIndexCalculated]];
+}
+
 -(void)setFrame:(CGRect)frame {
-    NSUInteger currentIndex = [self currentIndexCalculated];
+    NSIndexPath *currentIndexPath = [self currentIndexPathCalculated];
     [super setFrame:frame];
 
     [self updateScrollView];
     [self updatePagesFrames];
     [self resetPagesZooms];
-    [self scrollToPage:currentIndex animated:NO];
+    
+    [self scrollToPath:currentIndexPath animated:NO];
 
     [self setNeedsDisplay];
     [self setNeedsLayout];
@@ -170,21 +218,24 @@
 
 -(void)setDataSource:(id<SYGalleryDataSource>)dataSource {
     self->_dataSource = dataSource;
-    [self reloadGalleryAndScrollToIndex:0];
+    [self reloadGalleryAndScrollToIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
 }
 
--(void)setDataSource:(id<SYGalleryDataSource>)dataSource andFirstItemToShow:(NSUInteger)firstItem {
+-(void)setDataSource:(id<SYGalleryDataSource>)dataSource andFirstIndexPathToShow:(NSIndexPath *)indexPath {
     self->_dataSource = dataSource;
-    [self reloadGalleryAndScrollToIndex:firstItem];
+    [self reloadGalleryAndScrollToIndexPath:indexPath];
 }
 
 -(void)setActionDelegate:(id<SYGalleryFullViewActions>)actionDelegate {
     self->_actionDelegate = actionDelegate;
-    if([self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
-        [self.actionDelegate gallery:self showedUpPictureAtIndex:[self currentIndexCalculated]];
+    if([self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndexPath:)])
+    {
+        NSIndexPath *indexPath = [self indexPathForIndex:[self currentIndexCalculated]];
+        [self.actionDelegate gallery:self showedUpPictureAtIndexPath:indexPath];
+    }
 }
 
--(void)reloadGalleryAndScrollToIndex:(NSUInteger)index {
+-(void)reloadGalleryAndScrollToIndexPath:(NSIndexPath *)indexPath {
     uint picCount = [self numberOfPictures];
     
     for(UIView *subview in [self->_scrollView subviews])
@@ -194,7 +245,8 @@
     for (uint i = 0; i < picCount; i++)
         [self->_galleryPages addObject:[NSNull null]];
     
-    NSUInteger indexToLoad = index >= [self numberOfPictures] ? 0 : index;
+    NSUInteger indexToLoad = [self indexForIndexPath:indexPath];
+    indexToLoad = indexToLoad >= [self numberOfPictures] ? 0 : indexToLoad;
     
     [self loadPageAtIndex:indexToLoad];
     
@@ -202,14 +254,15 @@
     [self updatePagesFrames];
     [self resetPagesZooms];
 
-    [self scrollToPage:indexToLoad animated:NO];
+    [self scrollToPath:indexPath animated:NO];
     
-    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
-        [self.actionDelegate gallery:self showedUpPictureAtIndex:indexToLoad];
+    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndexPath:)])
+        [self.actionDelegate gallery:self showedUpPictureAtIndexPath:indexPath];
 }
 
 -(void)loadPageAtIndex:(uint)pageIndex {
-        
+    NSIndexPath *indexPath = [self indexPathForIndex:pageIndex];
+    
     if (pageIndex >= [self numberOfPictures] || ! self.dataSource)
         return;
     
@@ -226,35 +279,35 @@
     [self->_galleryPages replaceObjectAtIndex:pageIndex withObject:pageView];
     
     SYGallerySourceType sourceType = [self.dataSource gallery:self
-                                            sourceTypeAtIndex:(uint)pageIndex];
+                                            sourceTypeAtIndexPath:indexPath];
     
     UIColor *textColor = nil;
-    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textColorAtIndex:andSize:)])
-        textColor = [self.appearanceDelegate gallery:self textColorAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textColorAtIndexPath:andSize:)])
+        textColor = [self.appearanceDelegate gallery:self textColorAtIndexPath:indexPath andSize:SYGalleryItemSizeFull];
     UIFont *textFont = nil;
-    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndex:andSize:)])
-        textFont = [self.appearanceDelegate gallery:self textFontAtIndex:(uint)pageIndex andSize:SYGalleryPhotoSizeFull];
+    if([self.appearanceDelegate respondsToSelector:@selector(gallery:textFontAtIndexPath:andSize:)])
+        textFont = [self.appearanceDelegate gallery:self textFontAtIndexPath:indexPath andSize:SYGalleryItemSizeFull];
     
     switch (sourceType) {
         case SYGallerySourceTypeImageData:
             [pageView updateImageWithImage:[self.dataSource gallery:self
-                                                        dataAtIndex:(uint)pageIndex
-                                                            andSize:SYGalleryPhotoSizeFull]];
+                                                    dataAtIndexPath:indexPath
+                                                            andSize:SYGalleryItemSizeFull]];
             break;
         case SYGallerySourceTypeImageDistant:
             [pageView updateImageWithUrl:[self.dataSource gallery:self
-                                                       urlAtIndex:(uint)pageIndex
-                                                          andSize:SYGalleryPhotoSizeFull]];
+                                                   urlAtIndexPath:indexPath
+                                                          andSize:SYGalleryItemSizeFull]];
             break;
         case SYGallerySourceTypeImageLocal:
             [pageView updateImageWithAbsolutePath:[self.dataSource gallery:self
-                                                       absolutePathAtIndex:(uint)pageIndex
-                                                                   andSize:SYGalleryPhotoSizeFull]];
+                                                   absolutePathAtIndexPath:indexPath
+                                                                   andSize:SYGalleryItemSizeFull]];
             break;
         case SYGallerySourceTypeText:
             [pageView updateTextWithString:[self.dataSource gallery:self
-                                                        textAtIndex:(uint)pageIndex
-                                                            andSize:SYGalleryPhotoSizeFull]
+                                                    textAtIndexPath:indexPath
+                                                            andSize:SYGalleryItemSizeFull]
                               andTextColor:textColor
                                andTextFont:textFont];
             
@@ -300,8 +353,9 @@
     }
 }
 
--(void)scrollToPage:(uint)pageIndex animated:(BOOL)animated {
+-(void)scrollToPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
     
+    NSUInteger pageIndex = [self indexForIndexPath:indexPath];
     CGRect rect = CGRectMake(self->_scrollView.frame.size.width * pageIndex,
                              0.f,
                              self->_scrollView.frame.size.width,
@@ -339,8 +393,11 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
     uint currentIndex = [self currentIndexCalculated];
-    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndex:)])
-        [self.actionDelegate gallery:self showedUpPictureAtIndex:currentIndex];
+    if(self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(gallery:showedUpPictureAtIndexPath:)])
+    {
+        NSIndexPath *indexPath = [self indexPathForIndex:currentIndex];
+        [self.actionDelegate gallery:self showedUpPictureAtIndexPath:indexPath];
+    }
     
     for (UIView *subview in [self->_scrollView subviews])
         if([subview isKindOfClass:[SYGalleryFullPage class]])

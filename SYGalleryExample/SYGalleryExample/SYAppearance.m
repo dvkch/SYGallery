@@ -23,32 +23,36 @@
 
 - (CGFloat)galleryThumbCellSize:(id<SYGalleryView>)gallery
 {
-    return 60.f;
+    return 75.f;
 }
 
 - (CGFloat)galleryThumbCellSpacing:(id<SYGalleryView>)gallery
 {
-    return 2.f;
+    return 4.f;
 }
 
--(UIColor *)gallery:(id<SYGalleryView>)gallery textColorAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+-(UIColor *)gallery:(id<SYGalleryView>)gallery textColorAtIndexPath:(NSIndexPath *)indexPath andSize:(SYGalleryItemSize)size
 {
-    if(size == SYGalleryPhotoSizeThumb)
+    if(size == SYGalleryItemSizeThumb)
         return [UIColor blackColor];
     else
         return [UIColor whiteColor];
 }
 
--(UIFont *)gallery:(id<SYGalleryView>)gallery textFontAtIndex:(NSUInteger)index andSize:(SYGalleryPhotoSize)size
+-(UIFont *)gallery:(id<SYGalleryView>)gallery textFontAtIndexPath:(NSIndexPath *)indexPath andSize:(SYGalleryItemSize)size
 {
-    if(size == SYGalleryPhotoSizeThumb)
-        return nil; // will select proper font size to fit in view
+    if(size == SYGalleryItemSizeThumb)
+        return (indexPath.row == 0 ?
+                [UIFont fontWithName:@"AppleColorEmoji" size:50.f] :
+                nil); // nil will cause the gallery to choose the right size to make the text fit
     else
-        return (index == 0 ? [UIFont systemFontOfSize:50.f] : [UIFont systemFontOfSize:10.f]);
+        return (indexPath.row == 0 ?
+                [UIFont fontWithName:@"AppleColorEmoji" size:50.f] :
+                [UIFont systemFontOfSize:10.f]);
 }
 
 
-- (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBorderColorAtIndex:(NSUInteger)index
+- (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBorderColorAtIndexPath:(NSIndexPath *)indexPath
 {
     switch ([[SYDataSource sharedDataSource] sourceType]) {
         case SYGallerySourceTypeImageLocal:
@@ -67,7 +71,7 @@
     return nil;
 }
 
-- (CGFloat)gallery:(id<SYGalleryView>)gallery thumbBorderSizeAtIndex:(NSUInteger)index
+- (CGFloat)gallery:(id<SYGalleryView>)gallery thumbBorderSizeAtIndexPath:(NSIndexPath *)indexPath
 {
     switch ([[SYDataSource sharedDataSource] sourceType]) {
         case SYGallerySourceTypeImageLocal:
@@ -86,7 +90,7 @@
     return 0.f;
 }
 
-- (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBackgroundColor:(NSUInteger)index
+- (UIColor*)gallery:(id<SYGalleryView>)gallery thumbBackgroundColorAtIndexPath:(NSIndexPath *)indexPath
 {
     return [UIColor colorWithWhite:0.5f alpha:.6f];
 }

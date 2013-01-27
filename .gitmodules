@@ -1,12 +1,12 @@
 [submodule "Lib/DACircularProgres"]
 	path = Lib/DACircularProgres
 	url = git://github.com/danielamitay/DACircularProgress.git
-[submodule "Lib/GMGridView"]
-	path = Lib/GMGridView
-	url = git://github.com/gmoledina/GMGridView.git
 [submodule "Lib/iPhoneMK"]
 	path = Lib/iPhoneMK
 	url = git://github.com/michaelkamprath/iPhoneMK.git
 [submodule "Lib/NSURLConnection-Blocks"]
 	path = Lib/NSURLConnection-Blocks
 	url = https://github.com/rickerbh/NSURLConnection-Blocks.git
+[submodule "Lib/PSTCollectionView"]
+	path = Lib/PSTCollectionView
+	url = https://github.com/steipete/PSTCollectionView.git
