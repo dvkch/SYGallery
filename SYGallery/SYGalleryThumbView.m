@@ -9,11 +9,11 @@
 #import "SYGalleryThumbView.h"
 #import "PSTCollectionView.h"
 #import "SYGalleryThumbCell.h"
+#import "SYGalleryThumbHeaderView.h"
 
 @interface SYGalleryThumbView (Private)
 -(void)loadView;
 @end
-
 
 @implementation SYGalleryThumbView
 
@@ -49,6 +49,8 @@
     if(!self->_flowLayout)
     {
         self->_flowLayout = [[PSUICollectionViewFlowLayout alloc] init];
+        
+        [self->_flowLayout setHeaderReferenceSize:SYGALLERY_DEFAULT_HEADER_SIZE];
         [self->_flowLayout setItemSize:CGSizeMake(SYGALLERY_DEFAULT_CELL_SIZE, SYGALLERY_DEFAULT_CELL_SIZE)];
         [self->_flowLayout setMinimumInteritemSpacing:SYGALLERY_DEFAULT_CELL_SPACING];
         [self->_flowLayout setMinimumLineSpacing:SYGALLERY_DEFAULT_CELL_SPACING];
@@ -78,6 +80,9 @@
     
     [self->_gridView registerClass:[SYGalleryThumbCell class]
         forCellWithReuseIdentifier:SYGALLERY_THUMB_REUSE_IDENTIFIER];
+    [self->_gridView registerClass:[SYGalleryThumbHeaderView class]
+        forSupplementaryViewOfKind:PSTCollectionElementKindSectionHeader
+               withReuseIdentifier:SYGALLERY_THUMB_HEADER_REUSE_IDENTIFIER];
     
     if([self->_gridView superview] == nil)
         [self addSubview:self->_gridView];
@@ -122,6 +127,9 @@
             cellSize = [self.appearanceDelegate galleryThumbCellSize:self];
         
         [self->_flowLayout setItemSize:CGSizeMake(cellSize, cellSize)];
+        
+        if(![self.dataSource respondsToSelector:@selector(gallery:titleForSection:)])
+            [self->_flowLayout setHeaderReferenceSize:CGSizeZero];
     }
 }
 
@@ -274,7 +282,27 @@
             viewForSupplementaryElementOfKind:(NSString *)kind
                                   atIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"zouu %@", kind);
+    NSString *title = @"";
+    if([self.dataSource respondsToSelector:@selector(gallery:titleForSection:)])
+        title = [self.dataSource gallery:self titleForSection:(uint)indexPath.section];
+    else
+        return nil;
+    
+    SYGalleryThumbHeaderView *headerView = [self->_gridView dequeueReusableSupplementaryViewOfKind:PSTCollectionElementKindSectionHeader withReuseIdentifier:SYGALLERY_THUMB_HEADER_REUSE_IDENTIFIER forIndexPath:indexPath];
+    
+    if(!headerView)
+        headerView = [[SYGalleryThumbHeaderView alloc] init];
+    
+    [headerView setTitle:title andTextColor:[UIColor blackColor] andTextFont:[UIFont boldSystemFontOfSize:16.f]];
+    
+    CGFloat spacing = self->_flowLayout.sectionInset.left;
+    CGRect labelFrame = CGRectMake(spacing, 0.f,
+                                   SYGALLERY_DEFAULT_HEADER_SIZE.width - 2 * spacing,
+                                   SYGALLERY_DEFAULT_HEADER_SIZE.height);
+    
+    [headerView setLabelFrame:labelFrame];
+    
+    return headerView;
 }
 
 
@@ -296,21 +324,6 @@
 
 
 #pragma mark - UICollectionViewDelegateFlowLayout
-
-/*
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section
-{
-    
-}
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section
-{
-    
-}
-*/
 
 @end
 

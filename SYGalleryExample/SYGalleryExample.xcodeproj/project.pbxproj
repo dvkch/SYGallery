@@ -38,6 +38,7 @@
 		F865141016B5675500751FB9 /* PSTGridLayoutItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F865140216B5675500751FB9 /* PSTGridLayoutItem.m */; };
 		F865141116B5675500751FB9 /* PSTGridLayoutRow.m in Sources */ = {isa = PBXBuildFile; fileRef = F865140416B5675500751FB9 /* PSTGridLayoutRow.m */; };
 		F865141216B5675500751FB9 /* PSTGridLayoutSection.m in Sources */ = {isa = PBXBuildFile; fileRef = F865140616B5675500751FB9 /* PSTGridLayoutSection.m */; };
+		F865144C16B6BE7300751FB9 /* SYGalleryThumbHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F865144B16B6BE7300751FB9 /* SYGalleryThumbHeaderView.m */; };
 		F88EA4741645808F00D25742 /* SYGalleryActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F88EA4731645808F00D25742 /* SYGalleryActionView.m */; };
 		F8A9CE7716419C3B0097372D /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9CE5E16419C3B0097372D /* DACircularProgressView.m */; };
 		F8B96E111638116600EC9487 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B96E101638116600EC9487 /* UIKit.framework */; };
@@ -110,6 +111,8 @@
 		F865140416B5675500751FB9 /* PSTGridLayoutRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutRow.m; sourceTree = "<group>"; };
 		F865140516B5675500751FB9 /* PSTGridLayoutSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutSection.h; sourceTree = "<group>"; };
 		F865140616B5675500751FB9 /* PSTGridLayoutSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutSection.m; sourceTree = "<group>"; };
+		F865144A16B6BE7300751FB9 /* SYGalleryThumbHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryThumbHeaderView.h; sourceTree = "<group>"; };
+		F865144B16B6BE7300751FB9 /* SYGalleryThumbHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryThumbHeaderView.m; sourceTree = "<group>"; };
 		F88EA4721645808F00D25742 /* SYGalleryActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYGalleryActionView.h; sourceTree = "<group>"; };
 		F88EA4731645808F00D25742 /* SYGalleryActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYGalleryActionView.m; sourceTree = "<group>"; };
 		F8A9CE5D16419C3B0097372D /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
@@ -319,6 +322,8 @@
 				F8F2ADF016383EFF00B96784 /* SYGalleryThumbCell.m */,
 				F88EA4721645808F00D25742 /* SYGalleryActionView.h */,
 				F88EA4731645808F00D25742 /* SYGalleryActionView.m */,
+				F865144A16B6BE7300751FB9 /* SYGalleryThumbHeaderView.h */,
+				F865144B16B6BE7300751FB9 /* SYGalleryThumbHeaderView.m */,
 			);
 			name = SYGallery;
 			path = ../SYGallery;
@@ -452,6 +457,7 @@
 				F865141016B5675500751FB9 /* PSTGridLayoutItem.m in Sources */,
 				F865141116B5675500751FB9 /* PSTGridLayoutRow.m in Sources */,
 				F865141216B5675500751FB9 /* PSTGridLayoutSection.m in Sources */,
+				F865144C16B6BE7300751FB9 /* SYGalleryThumbHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

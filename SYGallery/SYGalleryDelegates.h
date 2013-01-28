@@ -11,17 +11,19 @@
 @class SYGalleryThumbView;
 @class SYGalleryFullView;
 
-#define SYGALLERY_IPAD  ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-#define SYGALLERY_DEFAULT_CELL_SIZE (SYGALLERY_IPAD ? 120.f : 75.f)
-#define SYGALLERY_DEFAULT_CELL_SPACING (SYGALLERY_IPAD ? 6.99f : 4.f)
+#define SYGALLERY_IPAD          ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+#define SYGALLERY_DEFAULT_CELL_SIZE                 (SYGALLERY_IPAD ? 120.f : 75.f)
+#define SYGALLERY_DEFAULT_CELL_SPACING              (SYGALLERY_IPAD ? 6.99f : 4.f)
+#define SYGALLERY_DEFAULT_HEADER_SIZE               CGSizeMake(320.f, 20.f)
 
-#define SYGALLERY_DEFAULT_CELL_BORDER_SIZE 1.f
-#define SYGALLERY_DEFAULT_CELL_BORDER_COLOR [UIColor colorWithWhite:0.f alpha:.4f]
-#define SYGALLERY_DEFAULT_CELL_BACKGROUND_COLOR [UIColor colorWithWhite:1.f alpha:.4f]
+#define SYGALLERY_DEFAULT_CELL_BORDER_SIZE          1.f
+#define SYGALLERY_DEFAULT_CELL_BORDER_COLOR         [UIColor colorWithWhite:0.f alpha:.4f]
+#define SYGALLERY_DEFAULT_CELL_BACKGROUND_COLOR     [UIColor colorWithWhite:1.f alpha:.4f]
 
-#define SYGALLERY_INT_BETWEEN_A_AND_B(i, A, B) (i >= MIN(A, B) && i <= MAX(A, B))
+#define SYGALLERY_INT_BETWEEN_A_AND_B(i, A, B)      (i >= MIN(A, B) && i <= MAX(A, B))
 
-#define SYGALLERY_THUMB_REUSE_IDENTIFIER     @"SYGALLERY_THUMB_REUSE_IDENTIFIER"
+#define SYGALLERY_THUMB_REUSE_IDENTIFIER            @"SYGALLERY_THUMB_REUSE_IDENTIFIER"
+#define SYGALLERY_THUMB_HEADER_REUSE_IDENTIFIER     @"SYGALLERY_THUMB_HEADER_REUSE_IDENTIFIER"
 
 //#define SYGALLERY_REFRESH_RUNLOOP_MODES @[NSRunLoopCommonModes]
 #define SYGALLERY_REFRESH_RUNLOOP_MODES @[(NSString*)kCFRunLoopDefaultMode]

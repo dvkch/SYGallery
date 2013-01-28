@@ -253,4 +253,25 @@
     return (nb == -1 ? 0 : (uint)nb);
 }
 
+-(NSString *)gallery:(id<SYGalleryView>)gallery titleForSection:(NSUInteger)section
+{
+    NSString *title = @"";
+    switch ((SYGallerySourceType)section) {
+        case SYGallerySourceTypeImageLocal:
+            title = @"SYGallerySourceTypeImageLocal";
+            break;
+        case SYGallerySourceTypeImageDistant:
+            title = @"SYGallerySourceTypeImageDistant";
+            break;
+        case SYGallerySourceTypeImageData:
+            title = @"SYGallerySourceTypeImageData";
+            break;
+        case SYGallerySourceTypeText:
+            title = @"SYGallerySourceTypeText";
+            break;
+    }
+    
+    return title;
+}
+
 @end
