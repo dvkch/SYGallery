@@ -40,7 +40,9 @@
     self->_badgeHidden = YES;
     self->_badgeValue = 0;
     
-    [self setReuseIdentifier:SYGALLERY_THUMB_REUSE_IDENTIFIER];
+    if([self respondsToSelector:@selector(setReuseIdentifier:)])
+        [self setReuseIdentifier:SYGALLERY_THUMB_REUSE_IDENTIFIER];
+    
     CGRect subViewFrame = CGRectMake(0.f, 0.f, self.frame.size.width, self.frame.size.height);
     
     if(!self.selectedBackgroundView)

@@ -33,7 +33,8 @@
 
 -(void)loadView
 {
-    [self setReuseIdentifier:SYGALLERY_THUMB_HEADER_REUSE_IDENTIFIER];
+    if([self respondsToSelector:@selector(setReuseIdentifier:)])
+        [self setReuseIdentifier:SYGALLERY_THUMB_HEADER_REUSE_IDENTIFIER];
     
     if(!self->_label)
     {
