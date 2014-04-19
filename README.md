@@ -1,12 +1,68 @@
 SYGallery
 =========
 
-Pictures gallery to mimic iPhone app, using separated views to embed as you wish.
+Pictures gallery to mimic iPhone app, allowing you to create a gallery grid, and a full picture view. Both are implemented as `UIView*`s to you will be able to display them and embed them anywhere.
 
-Multiple data source type is one of the goal, as FGallery does.
+The library is still under development to fix some memory management issues and slowness on old iPhone models.
 
 
-Nota Bene
-=========
+Features
+========
 
-This project is not yet very well done. The fact I use it for my own apps forces me to investigate a lot of issues and fix them ASAP, but it also sometimes make me do a lot of changes in one commit (new submodule, etc) which CAN BREAK YOUR CODE ! So until I write otherwise here I really recommend iPhone app beginners to stay away from this one to keep their life simple ;-)
+### SYGalleryDataSource
+
+Image sizes: 
+
+- full size
+- thumbnail
+
+Image sources (possible to use all of them in a single gallery): 
+
+- image data as `UIImage*`
+- local image path as `NSString*`
+- distant image as `NSString*`
+- text as `NSString*`
+
+`UITableView`-like delegate system
+
+Section titles
+
+
+### SYGalleryAppearence
+
+#### Global settings
+Thumbnails:
+
+- sizes
+- spacing
+
+
+#### Per item settings
+Text:
+
+- color
+- font
+
+Spinner (activity indicator): enable/disable
+
+Thumbnails:
+
+- border color
+- border size
+- background color
+
+
+### SYGalleryThumbViewActions
+
+	- (void)gallery:(id<SYGalleryView>)gallery didTapOnItemAtIndexPath:(NSIndexPath*)indexPath;
+	- (void)gallery:(id<SYGalleryView>)gallery changedEditStateTo:(BOOL)edit;
+
+### SYGalleryFullViewActions
+
+	- (void)gallery:(id<SYGalleryView>)gallery showedUpPictureAtIndexPath:(NSIndexPath*)indexPath;
+
+
+License
+=======
+
+Free to use and redistribute, use at your own risk, and send me a postcard if you like it!
