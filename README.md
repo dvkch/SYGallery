@@ -65,11 +65,11 @@ Thumbnails:
 ScreenShots
 ===========
 
-![image](https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot0.png?raw=true =200x)
-![image](https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot1.png?raw=true =200x)
-![image](https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot2.png?raw=true =200x)
-![image](https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot3.png?raw=true =200x)
-![image](https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot4.png?raw=true =200x)
+<img src="https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot0.png?raw=true" style="width: 200px;"/>
+<img src="https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot1.png?raw=true" style="width: 200px;"/>
+<img src="https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot2.png?raw=true" style="width: 200px;"/>
+<img src="https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot3.png?raw=true" style="width: 200px;"/>
+<img src="https://github.com/dvkch/SYGallery/blob/master/Screenshots/Screenshot4.png?raw=true" style="width: 200px;"/>
 
 License
 =======
