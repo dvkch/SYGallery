@@ -5,6 +5,17 @@ Pictures gallery to mimic iPhone app, allowing you to create a gallery grid, and
 
 The library is still under development to fix some memory management issues and slowness on old iPhone models.
 
+Deprecated
+==========
+
+This is very easy to recreate using UICollectionView and depending on your needs iOS 8+ PhotosKit framework or SDWebImage.
+
+As such this library is deprecated and will no longer be maintained. 
+
+Read the code, share it, update it, fork it, it's all yours now. 
+
+Please do not open an issue.
+
 
 Features
 ========
